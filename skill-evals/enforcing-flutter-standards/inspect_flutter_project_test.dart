@@ -87,6 +87,8 @@ Future<void> main() async {
           [
             'lib/features/payments/presentation/presentation.dart',
             'lib/root_app.dart',
+            'packages/features/nested_features_package/lib/features/payments/'
+                'presentation/presentation.dart',
             'packages/package_a/lib/package_a.dart',
           ],
           'Package and feature/layer barrel candidates must be inventoried.',
@@ -101,6 +103,13 @@ Future<void> main() async {
           },
           {
             'path': 'lib/features/payments/presentation/presentation.dart',
+            'feature': 'payments',
+            'layer': 'presentation',
+          },
+          {
+            'path':
+                'packages/features/nested_features_package/lib/features/'
+                'payments/presentation/presentation.dart',
             'feature': 'payments',
             'layer': 'presentation',
           },
@@ -455,6 +464,18 @@ name: quoted_package
     root,
     'packages/package_#hash/lib/src/quoted.dart',
     'class QuotedPackage {}\n',
+  );
+
+  await _write(
+    root,
+    'packages/features/nested_features_package/pubspec.yaml',
+    'name: nested_features_package\n',
+  );
+  await _write(
+    root,
+    'packages/features/nested_features_package/lib/features/payments/'
+        'presentation/presentation.dart',
+    "export 'payment_screen.dart';\n",
   );
 }
 

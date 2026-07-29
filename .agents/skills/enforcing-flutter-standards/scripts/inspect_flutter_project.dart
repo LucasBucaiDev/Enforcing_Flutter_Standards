@@ -461,9 +461,14 @@ final class _DartInventory {
 
     for (final dartFile in dartFiles) {
       final segments = dartFile.path.split('/');
-      final featuresIndex = segments.indexOf('features');
-      if (featuresIndex <= 0 || featuresIndex + 2 >= segments.length) continue;
-      if (segments[featuresIndex - 1] != 'lib') continue;
+      var isFeaturePath = false;
+      for (var index = 0; index + 1 < segments.length; index++) {
+        if (segments[index] == 'lib' && segments[index + 1] == 'features') {
+          isFeaturePath = true;
+          break;
+        }
+      }
+      if (!isFeaturePath) continue;
 
       final filename = segments.last;
       final parentName = segments[segments.length - 2];
