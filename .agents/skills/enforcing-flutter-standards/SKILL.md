@@ -1,6 +1,6 @@
 ---
 name: enforcing-flutter-standards
-description: Use when auditing, creating, refactoring, debugging, or reviewing Flutter and Dart applications where architecture, Bloc or Cubit state, Freezed models, local packages, UI fidelity, dependencies, tests, or verification need consistent engineering standards.
+description: Use when auditing, creating, refactoring, debugging, or reviewing Flutter and Dart applications where architecture, Bloc or Cubit state, Freezed models, local packages, UI fidelity, dependencies, test-first fixes, or verification need consistent engineering standards.
 ---
 
 # Enforcing Flutter Standards
