@@ -60,27 +60,6 @@ Future<void> main() async {
           'packages/package_a',
         ], 'Flutter roots');
 
-        final edges = _records(inventory, 'packageEdges');
-        _expectEqual(edges, [
-          {
-            'from': 'packages/package_a',
-            'to': 'packages/package_b',
-            'dependency': 'package_b',
-          },
-          {
-            'from': 'packages/package_b',
-            'to': 'packages/package_a',
-            'dependency': 'package_a',
-          },
-        ], 'Path dependency edges must be complete and sorted.');
-        _expectEqual(
-          inventory['cycles'],
-          [
-            ['packages/package_a', 'packages/package_b', 'packages/package_a'],
-          ],
-          'The package cycle must be reported once in canonical order.',
-        );
-
         final largeFiles = _records(inventory, 'largeDartFiles');
         _expectEqual(
           largeFiles,
@@ -114,16 +93,18 @@ Future<void> main() async {
         );
 
         final featureLayers = _records(inventory, 'featureLayers');
-        _expect(
-          featureLayers.any(
-            (record) => _deepEquals(record, const {
-              'path': 'lib/features/payments/presentation/payment_screen.dart',
-              'feature': 'payments',
-              'layer': 'presentation',
-            }),
-          ),
-          'The payments/presentation source record is missing.',
-        );
+        _expectEqual(featureLayers, [
+          {
+            'path': 'lib/features/payments/presentation/payment_screen.dart',
+            'feature': 'payments',
+            'layer': 'presentation',
+          },
+          {
+            'path': 'lib/features/payments/presentation/presentation.dart',
+            'feature': 'payments',
+            'layer': 'presentation',
+          },
+        ], 'Feature/layer records must be complete and sorted.');
         _expectStringList(inventory['tests'], [
           'packages/package_a/test/package_a_test.dart',
           'test/root_test.dart',
@@ -141,6 +122,137 @@ Future<void> main() async {
           'melos.yaml',
           'scripts/check.sh',
         ], 'Project command sources');
+      },
+    );
+
+    passed += await _runTest(
+      'output modes catch default drift or text and JSON inconsistency',
+      () async {
+        final defaultResult = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+        ], workingDirectory: fixtureRoot.path);
+        _expectEqual(
+          defaultResult.exitCode,
+          0,
+          'No-argument defaults must succeed from the requested directory.',
+        );
+
+        final textResult = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--root',
+          fixtureRoot.path,
+          '--format',
+          'text',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          textResult.exitCode,
+          0,
+          'Explicit text inventory must exit successfully.',
+        );
+        _expectEqual(
+          defaultResult.stdout,
+          textResult.stdout,
+          'No arguments must default to the working directory and text mode.',
+        );
+
+        final jsonInventory = await _runJsonInspector(
+          inspector,
+          fixtureRoot,
+          repositoryRoot,
+        );
+        _expectEqual(
+          _parseTextInventory(textResult.stdout as String),
+          jsonInventory,
+          'Text and JSON modes must carry the same deterministic inventory.',
+        );
+      },
+    );
+
+    passed += await _runTest(
+      'cycle enumeration catches omitted or duplicate overlapping cycles',
+      () async {
+        final inventory = await _runJsonInspector(
+          inspector,
+          fixtureRoot,
+          repositoryRoot,
+        );
+        _expectEqual(
+          inventory['cycles'],
+          [
+            [
+              'packages/package_a',
+              'packages/package_b',
+              'packages/package_c',
+              'packages/package_a',
+            ],
+            ['packages/package_a', 'packages/package_c', 'packages/package_a'],
+          ],
+          'Every overlapping cycle must appear once in canonical order.',
+        );
+      },
+    );
+
+    passed += await _runTest(
+      'dependency parsing catches nested Git paths reported as local edges',
+      () async {
+        final inventory = await _runJsonInspector(
+          inspector,
+          fixtureRoot,
+          repositoryRoot,
+        );
+        final remoteEdges = _records(
+          inventory,
+          'packageEdges',
+        ).where((edge) => edge['dependency'] == 'remote_package').toList();
+        _expectEqual(
+          remoteEdges,
+          const [],
+          'Nested Git paths must not become local package edges.',
+        );
+      },
+    );
+
+    passed += await _runTest(
+      'dependency parsing catches quoted hash paths truncated as comments',
+      () async {
+        final inventory = await _runJsonInspector(
+          inspector,
+          fixtureRoot,
+          repositoryRoot,
+        );
+        _expectEqual(
+          _records(inventory, 'packageEdges'),
+          [
+            {
+              'from': '.',
+              'to': 'packages/package_#hash',
+              'dependency': 'quoted_package',
+            },
+            {
+              'from': 'packages/package_a',
+              'to': 'packages/package_b',
+              'dependency': 'package_b',
+            },
+            {
+              'from': 'packages/package_a',
+              'to': 'packages/package_c',
+              'dependency': 'package_c',
+            },
+            {
+              'from': 'packages/package_b',
+              'to': 'packages/package_c',
+              'dependency': 'package_c',
+            },
+            {
+              'from': 'packages/package_c',
+              'to': 'packages/package_a',
+              'dependency': 'package_a',
+            },
+          ],
+          'Quoted hash paths and local edges must remain exact and sorted.',
+        );
       },
     );
 
@@ -249,6 +361,12 @@ name: root_app
 dependencies:
   flutter:
     sdk: flutter
+  remote_package:
+    git:
+      url: https://example.invalid/repository.git
+      path: packages/package_a
+  quoted_package:
+    path: "packages/package_#hash" # local path
 ''');
   await _write(root, 'analysis_options.yaml', 'analyzer:\n  errors: {}\n');
   await _write(root, 'CHANGELOG.MD', '# Changes\n');
@@ -270,6 +388,11 @@ dependencies:
   await _writeLines(root, 'lib/l10n/app_localizations.dart', 500);
   await _writeLines(root, 'lib/generated/l10n.dart', 500);
   await _writeLines(root, 'build/ignored.dart', 500);
+  await _writeLines(root, '.dart_tool/ignored.dart', 500);
+  await _writeLines(root, '.hidden_cache/ignored.dart', 500);
+  await _writeLines(root, 'android/.gradle/ignored.dart', 500);
+  await _writeLines(root, 'ios/Pods/ignored.dart', 500);
+  await _writeLines(root, 'macos/Flutter/ephemeral/ignored.dart', 500);
   await _write(
     root,
     'lib/features/payments/presentation/payment_screen.dart',
@@ -290,6 +413,8 @@ dependencies:
     sdk: flutter
   package_b:
     path: ../package_b
+  package_c:
+    path: ../package_c
 ''');
   await _write(
     root,
@@ -310,10 +435,98 @@ dependencies:
   await _write(root, 'packages/package_b/pubspec.yaml', '''
 name: package_b
 dev_dependencies:
+  package_c:
+    path: ../package_c
+''');
+  await _write(root, 'packages/package_b/lib/src/b.dart', 'class B {}\n');
+
+  await _write(root, 'packages/package_c/pubspec.yaml', '''
+name: package_c
+dependencies:
   package_a:
     path: ../package_a
 ''');
-  await _write(root, 'packages/package_b/lib/src/b.dart', 'class B {}\n');
+  await _write(root, 'packages/package_c/lib/src/c.dart', 'class C {}\n');
+
+  await _write(root, 'packages/package_#hash/pubspec.yaml', '''
+name: quoted_package
+''');
+  await _write(
+    root,
+    'packages/package_#hash/lib/src/quoted.dart',
+    'class QuotedPackage {}\n',
+  );
+}
+
+Future<Map<String, dynamic>> _runJsonInspector(
+  File inspector,
+  Directory fixtureRoot,
+  Directory repositoryRoot,
+) async {
+  final result = await Process.run(Platform.resolvedExecutable, [
+    'run',
+    inspector.path,
+    '--root',
+    fixtureRoot.path,
+    '--format',
+    'json',
+  ], workingDirectory: repositoryRoot.path);
+  _expectEqual(
+    result.exitCode,
+    0,
+    'JSON inventory must exit successfully.\n'
+    'stdout: ${result.stdout}\n'
+    'stderr: ${result.stderr}',
+  );
+  final decoded = jsonDecode(result.stdout as String);
+  _expect(decoded is Map<String, dynamic>, 'Output must be a JSON object.');
+  return decoded as Map<String, dynamic>;
+}
+
+Map<String, dynamic> _parseTextInventory(String output) {
+  final lines = const LineSplitter().convert(output);
+  _expectEqual(
+    lines.first,
+    'Flutter project inventory (schema 1)',
+    'Text schema header changed.',
+  );
+  _expect(
+    lines.length > 1 && lines[1].startsWith('Root: '),
+    'Text root header is missing.',
+  );
+
+  final inventory = <String, dynamic>{
+    'schemaVersion': 1,
+    'root': lines[1].substring('Root: '.length),
+  };
+  var index = 2;
+  while (index < lines.length) {
+    final header = RegExp(
+      r'^([A-Za-z]+) \(([0-9]+)\):$',
+    ).firstMatch(lines[index]);
+    _expect(header != null, 'Invalid text section header: ${lines[index]}');
+    final key = header!.group(1)!;
+    final expectedCount = int.parse(header.group(2)!);
+    index++;
+
+    final values = <dynamic>[];
+    while (index < lines.length && lines[index].startsWith('  ')) {
+      final value = lines[index].substring(2);
+      values.add(
+        value.startsWith('{') || value.startsWith('[')
+            ? jsonDecode(value)
+            : value,
+      );
+      index++;
+    }
+    _expectEqual(
+      values.length,
+      expectedCount,
+      'Text section $key has the wrong count.',
+    );
+    inventory[key] = values;
+  }
+  return inventory;
 }
 
 Future<void> _write(Directory root, String relativePath, String content) async {

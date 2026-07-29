@@ -5,100 +5,106 @@ const _usage =
     'Usage: dart run inspect_flutter_project.dart '
     '--root DIRECTORY [--format json|text]';
 
-Future<void> main(List<String> arguments) async {
-  final options = _parseArguments(arguments);
-  if (options == null) {
-    exitCode = 64;
-    return;
-  }
-
-  final requestedRoot = Directory(options.root);
-  if (!requestedRoot.existsSync()) {
-    stderr.writeln('Root directory does not exist: ${options.root}');
-    exitCode = 66;
-    return;
-  }
-
-  String canonicalRoot;
-  try {
-    canonicalRoot = requestedRoot.resolveSymbolicLinksSync();
-  } on FileSystemException {
-    stderr.writeln('Unable to resolve root directory: ${options.root}');
-    exitCode = 66;
-    return;
-  }
-
-  final inventory = _Inspector(Directory(canonicalRoot)).inspect();
-  if (options.format == 'json') {
-    stdout.writeln(jsonEncode(inventory));
-  } else {
-    _printText(inventory);
-  }
+Future<void> main(List<String> arguments) {
+  return _InspectorCli().run(arguments);
 }
 
-_Options? _parseArguments(List<String> arguments) {
-  var root = '.';
-  var format = 'text';
-  var index = 0;
-
-  while (index < arguments.length) {
-    final argument = arguments[index];
-    if (argument != '--root' && argument != '--format') {
-      _usageError('Unknown argument: $argument');
-      return null;
-    }
-    if (index + 1 >= arguments.length) {
-      _usageError('Missing value for $argument');
-      return null;
+final class _InspectorCli {
+  Future<void> run(List<String> arguments) async {
+    final options = _parseArguments(arguments);
+    if (options == null) {
+      exitCode = 64;
+      return;
     }
 
-    final value = arguments[index + 1];
-    if (argument == '--root') {
-      if (value.isEmpty) {
-        _usageError('Root directory must not be empty.');
-        return null;
-      }
-      root = value;
+    final requestedRoot = Directory(options.root);
+    if (!requestedRoot.existsSync()) {
+      stderr.writeln('Root directory does not exist: ${options.root}');
+      exitCode = 66;
+      return;
+    }
+
+    String canonicalRoot;
+    try {
+      canonicalRoot = requestedRoot.resolveSymbolicLinksSync();
+    } on FileSystemException {
+      stderr.writeln('Unable to resolve root directory: ${options.root}');
+      exitCode = 66;
+      return;
+    }
+
+    final inventory = _Inspector(Directory(canonicalRoot)).inspect();
+    if (options.format == 'json') {
+      stdout.writeln(jsonEncode(inventory));
     } else {
-      if (value != 'json' && value != 'text') {
-        _usageError('Format must be "json" or "text".');
-        return null;
-      }
-      format = value;
+      _printText(inventory);
     }
-    index += 2;
   }
 
-  return _Options(root, format);
-}
+  _Options? _parseArguments(List<String> arguments) {
+    var root = '.';
+    var format = 'text';
+    var index = 0;
 
-void _usageError(String message) {
-  stderr.writeln(message);
-  stderr.writeln(_usage);
-}
+    while (index < arguments.length) {
+      final argument = arguments[index];
+      if (argument != '--root' && argument != '--format') {
+        _usageError('Unknown argument: $argument');
+        return null;
+      }
+      if (index + 1 >= arguments.length) {
+        _usageError('Missing value for $argument');
+        return null;
+      }
 
-void _printText(Map<String, Object> inventory) {
-  stdout.writeln(
-    'Flutter project inventory (schema ${inventory['schemaVersion']})',
-  );
-  stdout.writeln('Root: ${inventory['root']}');
+      final value = arguments[index + 1];
+      if (argument == '--root') {
+        if (value.isEmpty) {
+          _usageError('Root directory must not be empty.');
+          return null;
+        }
+        root = value;
+      } else {
+        if (value != 'json' && value != 'text') {
+          _usageError('Format must be "json" or "text".');
+          return null;
+        }
+        format = value;
+      }
+      index += 2;
+    }
 
-  for (final key in const [
-    'flutterRoots',
-    'packageEdges',
-    'cycles',
-    'largeDartFiles',
-    'barrels',
-    'featureLayers',
-    'tests',
-    'changelogs',
-    'analysisOptions',
-    'projectCommands',
-  ]) {
-    final values = inventory[key]! as List<Object>;
-    stdout.writeln('$key (${values.length}):');
-    for (final value in values) {
-      stdout.writeln('  ${value is String ? value : jsonEncode(value)}');
+    return _Options(root, format);
+  }
+
+  void _usageError(String message) {
+    stderr.writeln(message);
+    stderr.writeln(_usage);
+  }
+
+  void _printText(Map<String, Object> inventory) {
+    stdout.writeln(
+      'Flutter project inventory (schema ${inventory['schemaVersion']})',
+    );
+    stdout.writeln('Root: ${inventory['root']}');
+
+    for (final key in const [
+      'flutterRoots',
+      'packageEdges',
+      'cycles',
+      'largeDartFiles',
+      'barrels',
+      'featureLayers',
+      'tests',
+      'changelogs',
+      'analysisOptions',
+      'projectCommands',
+    ]) {
+      final values = inventory[key]! as List<Object>;
+      stdout.writeln('$key (${values.length}):');
+      for (final value in values) {
+        stdout.writeln('  ${value is String ? value : jsonEncode(value)}');
+      }
     }
   }
 }
@@ -110,7 +116,8 @@ final class _Inspector {
   final String rootPath;
 
   Map<String, Object> inspect() {
-    final files = _collectFiles();
+    final files = _FileTraversal(root).collectFiles();
+    final pubspecParser = _PubspecParser(rootPath);
     final packages = <_Package>[];
     final dartFiles = <_DartFile>[];
     final changelogs = <String>[];
@@ -123,9 +130,10 @@ final class _Inspector {
       final lowerBasename = basename.toLowerCase();
 
       if (lowerBasename == 'pubspec.yaml') {
-        packages.add(_parsePubspec(file, relativePath));
+        packages.add(pubspecParser.parse(file));
       }
-      if (lowerBasename.endsWith('.dart') && !_isGeneratedDart(relativePath)) {
+      if (lowerBasename.endsWith('.dart') &&
+          !_ProjectClassifiers.isGeneratedDart(relativePath)) {
         dartFiles.add(_DartFile(file, relativePath));
       }
       if (RegExp(
@@ -138,7 +146,7 @@ final class _Inspector {
           lowerBasename == 'analysis_options.yml') {
         analysisOptions.add(relativePath);
       }
-      if (_isProjectCommandSource(relativePath)) {
+      if (_ProjectClassifiers.isProjectCommandSource(relativePath)) {
         projectCommands.add(relativePath);
       }
     }
@@ -152,11 +160,9 @@ final class _Inspector {
     final packageByCanonicalPath = <String, _Package>{
       for (final package in packages) package.canonicalPath: package,
     };
-    final edges = _buildEdges(packages, packageByCanonicalPath);
-    final largeDartFiles = _largeDartFiles(dartFiles);
-    final barrels = _barrels(packages, dartFiles);
-    final featureLayers = _featureLayers(dartFiles);
-    final tests = _tests(dartFiles);
+    final dependencyGraph = _DependencyGraph(rootPath);
+    final edges = dependencyGraph.buildEdges(packages, packageByCanonicalPath);
+    final dartInventory = _DartInventory(dartFiles);
 
     return <String, Object>{
       'schemaVersion': 1,
@@ -166,18 +172,25 @@ final class _Inspector {
           .map((package) => package.path)
           .toList(),
       'packageEdges': edges.map((edge) => edge.toJson()).toList(),
-      'cycles': _cycles(packages, edges),
-      'largeDartFiles': largeDartFiles,
-      'barrels': barrels,
-      'featureLayers': featureLayers,
-      'tests': tests,
+      'cycles': _CycleAnalysis.find(packages, edges),
+      'largeDartFiles': dartInventory.largeFiles(),
+      'barrels': dartInventory.barrels(packages),
+      'featureLayers': dartInventory.featureLayers(),
+      'tests': dartInventory.tests(),
       'changelogs': changelogs,
       'analysisOptions': analysisOptions,
       'projectCommands': projectCommands,
     };
   }
+}
 
-  List<File> _collectFiles() {
+final class _FileTraversal {
+  _FileTraversal(this.root) : rootPath = root.path;
+
+  final Directory root;
+  final String rootPath;
+
+  List<File> collectFiles() {
     final files = <File>[];
 
     void visit(Directory directory) {
@@ -228,13 +241,20 @@ final class _Inspector {
     }
     return false;
   }
+}
 
-  _Package _parsePubspec(File pubspec, String relativePubspecPath) {
+final class _PubspecParser {
+  const _PubspecParser(this.rootPath);
+
+  final String rootPath;
+
+  _Package parse(File pubspec) {
     final lines = pubspec.readAsLinesSync();
     var name = '';
     var dependencySection = false;
     var currentDependency = '';
     var currentDependencyIndent = -1;
+    var dependencyChildIndent = -1;
     var flutterSdkDependency = false;
     final pathDependencies = <_PathDependency>[];
 
@@ -249,6 +269,7 @@ final class _Inspector {
             trimmed == 'dependencies:' || trimmed == 'dev_dependencies:';
         currentDependency = '';
         currentDependencyIndent = -1;
+        dependencyChildIndent = -1;
         if (trimmed.startsWith('name:')) {
           name = _yamlScalar(trimmed.substring('name:'.length));
         }
@@ -266,17 +287,22 @@ final class _Inspector {
       if (currentDependency.isEmpty || indent <= currentDependencyIndent) {
         currentDependency = key;
         currentDependencyIndent = indent;
+        dependencyChildIndent = -1;
         if (currentDependency == 'flutter' && value.contains('sdk: flutter')) {
           flutterSdkDependency = true;
         }
         continue;
       }
 
-      if (key == 'sdk' &&
+      dependencyChildIndent = dependencyChildIndent < 0
+          ? indent
+          : dependencyChildIndent;
+      if (indent == dependencyChildIndent &&
+          key == 'sdk' &&
           currentDependency == 'flutter' &&
           _yamlScalar(value) == 'flutter') {
         flutterSdkDependency = true;
-      } else if (key == 'path') {
+      } else if (indent == dependencyChildIndent && key == 'path') {
         final path = _yamlScalar(value);
         if (path.isNotEmpty) {
           pathDependencies.add(_PathDependency(currentDependency, path));
@@ -295,7 +321,62 @@ final class _Inspector {
     );
   }
 
-  List<_Edge> _buildEdges(
+  String _withoutYamlComment(String line) {
+    var inSingleQuotes = false;
+    var inDoubleQuotes = false;
+    var escaped = false;
+
+    for (var index = 0; index < line.length; index++) {
+      final character = line[index];
+      if (inDoubleQuotes) {
+        if (escaped) {
+          escaped = false;
+        } else if (character == '\\') {
+          escaped = true;
+        } else if (character == '"') {
+          inDoubleQuotes = false;
+        }
+        continue;
+      }
+      if (inSingleQuotes) {
+        if (character == "'" &&
+            index + 1 < line.length &&
+            line[index + 1] == "'") {
+          index++;
+        } else if (character == "'") {
+          inSingleQuotes = false;
+        }
+        continue;
+      }
+      if (character == '"') {
+        inDoubleQuotes = true;
+      } else if (character == "'") {
+        inSingleQuotes = true;
+      } else if (character == '#' &&
+          (index == 0 || line[index - 1].trim().isEmpty)) {
+        return line.substring(0, index);
+      }
+    }
+    return line;
+  }
+
+  String _yamlScalar(String value) {
+    var scalar = value.trim();
+    if (scalar.length >= 2 &&
+        ((scalar.startsWith("'") && scalar.endsWith("'")) ||
+            (scalar.startsWith('"') && scalar.endsWith('"')))) {
+      scalar = scalar.substring(1, scalar.length - 1);
+    }
+    return scalar.trim();
+  }
+}
+
+final class _DependencyGraph {
+  const _DependencyGraph(this.rootPath);
+
+  final String rootPath;
+
+  List<_Edge> buildEdges(
     List<_Package> packages,
     Map<String, _Package> packageByCanonicalPath,
   ) {
@@ -330,15 +411,23 @@ final class _Inspector {
 
   String _resolveDependencyPath(String declaringPath, String dependencyPath) {
     final baseUri = Uri.directory(declaringPath);
-    final resolvedPath = baseUri.resolve(dependencyPath).toFilePath();
+    final resolvedPath = baseUri
+        .resolveUri(Uri.file(dependencyPath))
+        .toFilePath();
     final directory = Directory(resolvedPath);
     if (directory.existsSync()) {
       return directory.resolveSymbolicLinksSync();
     }
     return directory.absolute.path;
   }
+}
 
-  List<Map<String, Object>> _largeDartFiles(List<_DartFile> dartFiles) {
+final class _DartInventory {
+  const _DartInventory(this.dartFiles);
+
+  final List<_DartFile> dartFiles;
+
+  List<Map<String, Object>> largeFiles() {
     final records = <Map<String, Object>>[];
     for (final dartFile in dartFiles) {
       final lineCount = _physicalLineCount(dartFile.file.readAsBytesSync());
@@ -354,10 +443,7 @@ final class _Inspector {
     return records;
   }
 
-  List<Map<String, Object>> _barrels(
-    List<_Package> packages,
-    List<_DartFile> dartFiles,
-  ) {
+  List<Map<String, Object>> barrels(List<_Package> packages) {
     final dartPaths = {for (final dartFile in dartFiles) dartFile.path};
     final recordsByPath = <String, Map<String, Object>>{};
 
@@ -393,7 +479,7 @@ final class _Inspector {
     return records;
   }
 
-  List<Map<String, Object>> _featureLayers(List<_DartFile> dartFiles) {
+  List<Map<String, Object>> featureLayers() {
     final records = <Map<String, Object>>[];
     for (final dartFile in dartFiles) {
       final segments = dartFile.path.split('/');
@@ -412,7 +498,7 @@ final class _Inspector {
     return records;
   }
 
-  List<String> _tests(List<_DartFile> dartFiles) {
+  List<String> tests() {
     final tests =
         dartFiles
             .where((dartFile) {
@@ -426,7 +512,21 @@ final class _Inspector {
     return tests;
   }
 
-  List<List<String>> _cycles(List<_Package> packages, List<_Edge> edges) {
+  int _physicalLineCount(List<int> bytes) {
+    if (bytes.isEmpty) return 0;
+    var count = 0;
+    for (final byte in bytes) {
+      if (byte == 10) count++;
+    }
+    if (bytes.last != 10) count++;
+    return count;
+  }
+}
+
+final class _CycleAnalysis {
+  const _CycleAnalysis._();
+
+  static List<List<String>> find(List<_Package> packages, List<_Edge> edges) {
     final knownNodes = {for (final package in packages) package.path};
     final graph = <String, List<String>>{
       for (final node in knownNodes) node: <String>[],
@@ -440,128 +540,103 @@ final class _Inspector {
       targets.sort();
     }
 
-    final visited = <String>{};
-    final active = <String>{};
-    final stack = <String>[];
     final cyclesByKey = <String, List<String>>{};
+    final nodes = graph.keys.toList()..sort();
+    for (final start in nodes) {
+      final active = <String>{};
+      final stack = <String>[];
 
-    void visit(String node) {
-      visited.add(node);
-      active.add(node);
-      stack.add(node);
+      void visit(String node) {
+        active.add(node);
+        stack.add(node);
 
-      for (final target in graph[node]!) {
-        if (!visited.contains(target)) {
-          visit(target);
-        } else if (active.contains(target)) {
-          final start = stack.indexOf(target);
-          final cycle = [...stack.sublist(start), target];
-          final canonical = _canonicalCycle(cycle);
-          cyclesByKey[canonical.join('\u0000')] = canonical;
+        for (final target in graph[node]!) {
+          if (target == start) {
+            final canonical = _canonicalCycle([...stack, start]);
+            cyclesByKey[canonical.join('\u0000')] = canonical;
+          } else if (target.compareTo(start) >= 0 && !active.contains(target)) {
+            visit(target);
+          }
         }
+
+        stack.removeLast();
+        active.remove(node);
       }
 
-      stack.removeLast();
-      active.remove(node);
-    }
-
-    final nodes = graph.keys.toList()..sort();
-    for (final node in nodes) {
-      if (!visited.contains(node)) visit(node);
+      visit(start);
     }
 
     final keys = cyclesByKey.keys.toList()..sort();
     return [for (final key in keys) cyclesByKey[key]!];
   }
-}
 
-List<String> _canonicalCycle(List<String> closedCycle) {
-  final nodes = closedCycle.sublist(0, closedCycle.length - 1);
-  List<String>? best;
-  for (var index = 0; index < nodes.length; index++) {
-    final rotated = [...nodes.sublist(index), ...nodes.sublist(0, index)];
-    if (best == null || _compareStringLists(rotated, best) < 0) {
-      best = rotated;
+  static List<String> _canonicalCycle(List<String> closedCycle) {
+    final nodes = closedCycle.sublist(0, closedCycle.length - 1);
+    List<String>? best;
+    for (var index = 0; index < nodes.length; index++) {
+      final rotated = [...nodes.sublist(index), ...nodes.sublist(0, index)];
+      if (best == null || _compareStringLists(rotated, best) < 0) {
+        best = rotated;
+      }
     }
+    return [...best!, best.first];
   }
-  return [...best!, best.first];
+
+  static int _compareStringLists(List<String> left, List<String> right) {
+    for (var index = 0; index < left.length; index++) {
+      final comparison = left[index].compareTo(right[index]);
+      if (comparison != 0) return comparison;
+    }
+    return left.length.compareTo(right.length);
+  }
 }
 
-int _compareStringLists(List<String> left, List<String> right) {
-  for (var index = 0; index < left.length; index++) {
-    final comparison = left[index].compareTo(right[index]);
-    if (comparison != 0) return comparison;
-  }
-  return left.length.compareTo(right.length);
-}
+final class _ProjectClassifiers {
+  const _ProjectClassifiers._();
 
-int _physicalLineCount(List<int> bytes) {
-  if (bytes.isEmpty) return 0;
-  var count = 0;
-  for (final byte in bytes) {
-    if (byte == 10) count++;
+  static bool isGeneratedDart(String path) {
+    final lowerPath = path.toLowerCase();
+    final basename = _basename(lowerPath);
+    if (const [
+      '.g.dart',
+      '.freezed.dart',
+      '.gr.dart',
+      '.mocks.dart',
+    ].any(lowerPath.endsWith)) {
+      return true;
+    }
+    if (RegExp(r'^app_localizations(?:_[^.]+)?\.dart$').hasMatch(basename)) {
+      return true;
+    }
+    if (RegExp(r'^messages_(?:all|[a-z0-9_]+)\.dart$').hasMatch(basename)) {
+      return true;
+    }
+    if (lowerPath.endsWith('/generated/l10n.dart')) return true;
+    return lowerPath.contains('/generated/intl/');
   }
-  if (bytes.last != 10) count++;
-  return count;
-}
 
-bool _isGeneratedDart(String path) {
-  final lowerPath = path.toLowerCase();
-  final basename = _basename(lowerPath);
-  if (const [
-    '.g.dart',
-    '.freezed.dart',
-    '.gr.dart',
-    '.mocks.dart',
-  ].any(lowerPath.endsWith)) {
-    return true;
+  static bool isProjectCommandSource(String path) {
+    final lowerPath = path.toLowerCase();
+    final basename = _basename(lowerPath);
+    final segments = lowerPath.split('/');
+
+    if (basename == 'melos.yaml' || basename == 'melos.yml') return true;
+    if (basename == 'makefile' || basename == 'gnumakefile') return true;
+    if (segments.first == 'scripts') return true;
+    if (lowerPath.startsWith('.github/workflows/')) return true;
+    return const {
+      '.gitlab-ci.yml',
+      '.gitlab-ci.yaml',
+      'azure-pipelines.yml',
+      'azure-pipelines.yaml',
+      '.circleci/config.yml',
+      '.circleci/config.yaml',
+      'bitrise.yml',
+      'bitrise.yaml',
+      'codemagic.yml',
+      'codemagic.yaml',
+    }.contains(lowerPath);
   }
-  if (RegExp(r'^app_localizations(?:_[^.]+)?\.dart$').hasMatch(basename)) {
-    return true;
-  }
-  if (RegExp(r'^messages_(?:all|[a-z0-9_]+)\.dart$').hasMatch(basename)) {
-    return true;
-  }
-  if (lowerPath.endsWith('/generated/l10n.dart')) return true;
-  return lowerPath.contains('/generated/intl/');
-}
-
-bool _isProjectCommandSource(String path) {
-  final lowerPath = path.toLowerCase();
-  final basename = _basename(lowerPath);
-  final segments = lowerPath.split('/');
-
-  if (basename == 'melos.yaml' || basename == 'melos.yml') return true;
-  if (basename == 'makefile' || basename == 'gnumakefile') return true;
-  if (segments.first == 'scripts') return true;
-  if (lowerPath.startsWith('.github/workflows/')) return true;
-  return const {
-    '.gitlab-ci.yml',
-    '.gitlab-ci.yaml',
-    'azure-pipelines.yml',
-    'azure-pipelines.yaml',
-    '.circleci/config.yml',
-    '.circleci/config.yaml',
-    'bitrise.yml',
-    'bitrise.yaml',
-    'codemagic.yml',
-    'codemagic.yaml',
-  }.contains(lowerPath);
-}
-
-String _withoutYamlComment(String line) {
-  final commentStart = line.indexOf('#');
-  return commentStart < 0 ? line : line.substring(0, commentStart);
-}
-
-String _yamlScalar(String value) {
-  var scalar = value.trim();
-  if (scalar.length >= 2 &&
-      ((scalar.startsWith("'") && scalar.endsWith("'")) ||
-          (scalar.startsWith('"') && scalar.endsWith('"')))) {
-    scalar = scalar.substring(1, scalar.length - 1);
-  }
-  return scalar.trim();
 }
 
 String _basename(String path) {
