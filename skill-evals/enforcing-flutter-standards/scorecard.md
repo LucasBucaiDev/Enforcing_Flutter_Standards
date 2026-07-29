@@ -226,15 +226,17 @@ mandatory verified test-first RED recovery from the manually verified code.
 
 ## Failure classifications
 
-S1–S6, A1.1–A1.9, and CP1 passed. CP2–CP5 materially failed by omitting
-required structural outputs under the combined pressure. Each is classified as
-**missing output field requiring a structural contract**: the responses
-correctly rejected shipping but did not state all required action contracts for
-vendor isolation, the exact design asset, persistence choice/approval, and the
-verified test-first recovery. No observed result requires the other categories:
-skipped discipline requiring an explicit prohibition and rationalization
-counter; conditional decision requiring an observable predicate; or retrieval
-failure requiring clearer reference routing.
+Historical RED-baseline checkpoint, superseded by the Task 9 GREEN evaluation:
+S1–S6, A1.1–A1.9, and CP1 passed in this baseline, while CP2–CP5 materially
+failed by omitting required structural outputs under combined pressure. They
+are each classified as **missing output field requiring a structural
+contract**: the responses correctly rejected shipping but did not state all
+required action contracts for vendor isolation, the exact design asset,
+persistence choice/approval, and the verified test-first recovery. No observed
+result requires the other categories: skipped discipline requiring an explicit
+prohibition and rationalization counter; conditional decision requiring an
+observable predicate; or retrieval failure requiring clearer reference
+routing.
 
 The valid-RED threshold is now met through the independently observed CP2–CP5
 omissions; no failure was manufactured.
