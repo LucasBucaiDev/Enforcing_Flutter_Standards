@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Engineering Standards"
+  short_description: "Audit and implement robust Flutter changes"
+  default_prompt: "Use $enforcing-flutter-standards to audit this Flutter change and propose a compliant implementation."
