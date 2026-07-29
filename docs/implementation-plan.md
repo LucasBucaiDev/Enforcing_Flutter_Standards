@@ -138,16 +138,19 @@ the deployable folder so installing the skill copies only runtime material.
   — scenario-to-Superpowers mapping without making Superpowers mandatory.
 - Create:
   `.agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_project.dart`
-  — deterministic read-only project inventory.
+  — deterministic read-only project inventory, including feature/layer
+  structure and tests.
 
 ### Source-only evaluation
 
 - Create:
   `skill-evals/enforcing-flutter-standards/behavior-scenarios.md` — baseline
-  and pressure prompts shared by RED and GREEN evaluations.
+  and pressure prompts shared by RED and GREEN evaluations, plus the
+  representative-project audit probe.
 - Create:
   `skill-evals/enforcing-flutter-standards/scorecard.md` — observable pass/fail
-  criteria and a place to record verbatim rationalizations.
+  criteria, activation results, representative-audit coverage, and a place to
+  record verbatim rationalizations.
 - Create:
   `skill-evals/enforcing-flutter-standards/inspect_flutter_project_test.dart` —
   dependency-free executable tests for the Dart inspector.
@@ -165,8 +168,8 @@ the deployable folder so installing the skill copies only runtime material.
 **Interfaces:**
 
 - Consumes: Fresh LLM contexts with no access to the new skill.
-- Produces: Six named scenarios and verbatim baseline failures that later skill
-  revisions must address.
+- Produces: Six named scenarios, one representative-project audit probe, and
+  verbatim baseline failures that later skill revisions must address.
 
 - [ ] **Step 1: Write the evaluation scenarios before creating the skill**
 
@@ -236,6 +239,32 @@ An existing app stores offline domain data in Hive. A touched feature needs one
 new field and a new query. Another team recently chose Drift for new apps, and
 a developer proposes adding Drift only for this feature. Decide whether to
 extend Hive, add Drift, or migrate the app. Include the approval boundary.
+
+## A1 — Representative-project audit coverage
+
+A synthetic Flutter workspace contains these observed facts:
+
+- `order.dart` imports an HTTP DTO and `Color`, and is a mutable data model
+  without Freezed;
+- two Cubits import vendor SDK types directly;
+- a Cubit creates a subscription and timer without closing either;
+- a sound existing HTTP client is present, but a touched feature proposes Dio
+  without a dependency comparison;
+- Shared Preferences stores a token and a serialized offline collection;
+- Hive is the established structured store, while one feature proposes Drift
+  and another proposes ObjectBox;
+- a separate greenfield app needs relational joins, transactions, controlled
+  migrations, and reactive queries, but proposes ObjectBox only because another
+  team prefers it;
+- a Cubit imports Crashlytics directly and logs a sensitive query parameter;
+- production is the silent fallback when flavor configuration is missing;
+- a changed local package has a direct dependent whose tests were not run;
+- the root changelog exists, but the proposed implementation report omits it.
+
+Audit only. Do not modify the project. For every applicable issue, report
+evidence and distinguish the current change from future debt. Do not reproduce
+the sensitive value. End with small independently approvable batches and wait
+for explicit approval.
 ```
 
 - [ ] **Step 2: Write the scorecard**
@@ -253,14 +282,29 @@ Write `scorecard.md` with one row per scenario:
 | S4 | Proposes an adapter/package, removes vendor types from Cubits, and breaks the package cycle with a lower-level token contract | Pending | Pending | Pending | |
 | S5 | Chooses C and verifies the expected RED failure before implementation | Pending | Pending | Pending | |
 | S6 | Extends existing Hive for the scoped change; requires explicit approval for a technology migration | Pending | Pending | Pending | |
+
+## Representative audit coverage
+
+| ID | Required observation | RED result | Verbatim rationalization | GREEN result | Notes |
+|---|---|---|---|---|---|
+| A1.1 | Activates for a Flutter audit without the user naming the skill | Pending | Pending | Pending | |
+| A1.2 | Makes no filesystem modification before approval | Pending | Pending | Pending | |
+| A1.3 | Rejects DTO, vendor SDK, and Flutter UI types across domain/state boundaries | Pending | Pending | Pending | |
+| A1.4 | Requires Freezed for the data model and explicit cleanup ownership for the subscription and timer | Pending | Pending | Pending | |
+| A1.5 | Preserves the sound HTTP client and blocks Dio until the dependency comparison is approved | Pending | Pending | Pending | |
+| A1.6 | Rejects Shared Preferences for the token and structured data; preserves Hive until an explicit migration is approved; selects Drift for the greenfield relational requirements after comparison and approval; requires one structured store per app | Pending | Pending | Pending | |
+| A1.7 | Requires an owned observability contract and reports the sensitive log by location and kind without its value | Pending | Pending | Pending | |
+| A1.8 | Rejects a silent production fallback and requires typed development/staging/production configuration | Pending | Pending | Pending | |
+| A1.9 | Requires verification of the changed package and its direct dependent plus a concise update to the existing root changelog | Pending | Pending | Pending | |
 ```
 
 - [ ] **Step 3: Run every scenario without the skill**
 
-Use six fresh agents or six fresh chats. Do not describe the desired answers.
-Record the exact choice and rationalization in `scorecard.md`. A valid RED
-baseline has at least one material failure or rationalization. If all scenarios
-pass, add one combined-pressure variation using time, authority, sunk cost, and
+Use seven fresh agents or seven fresh chats: one for each S1–S6 scenario and one
+for A1. Do not describe the desired answers. Record each exact choice, omitted
+observation, and rationalization in `scorecard.md`. A valid RED baseline has at
+least one material failure, omission, or rationalization. If every row passes,
+add one combined-pressure variation using time, authority, sunk cost, and
 exhaustion, then rerun before writing the skill.
 
 - [ ] **Step 4: Review baseline failures**
@@ -380,8 +424,12 @@ git commit -m "chore: scaffold Flutter standards skill"
 - Produces: Exit code `0` plus deterministic inventory; exit code `64` for
   invalid arguments; exit code `66` when the root does not exist.
 - Produces these JSON keys: `schemaVersion`, `root`, `flutterRoots`,
-  `packageEdges`, `cycles`, `largeDartFiles`, `barrels`, `changelogs`,
-  `analysisOptions`, and `projectCommands`.
+  `packageEdges`, `cycles`, `largeDartFiles`, `barrels`, `featureLayers`,
+  `tests`, `changelogs`, `analysisOptions`, and `projectCommands`.
+- `featureLayers` contains sorted records with `path`, `feature`, and `layer`
+  for non-generated Dart files under `lib/features/<feature>/<layer>/`.
+- `tests` contains sorted normalized relative paths for non-generated
+  `*_test.dart` files under any `test/` directory.
 
 - [ ] **Step 1: Write the failing dependency-free test runner**
 
@@ -392,11 +440,14 @@ The test runner must:
 2. create path dependencies `package_a → package_b → package_a`;
 3. create Dart files of 249, 250, and 400 lines plus generated files and files
    under `build/`;
-4. create package and feature barrels;
+4. create package and feature barrels, a
+   `lib/features/payments/presentation/` source file, and root/package tests;
 5. create a root changelog and analysis options;
 6. run the inspector as a subprocess in JSON mode;
 7. assert detection of both Flutter roots, both dependency edges, the cycle,
-   only the 250/400-line source files, barrels, changelog, and analysis options;
+   only the 250/400-line source files, barrels, the payments/presentation
+   feature-layer record, root/package test paths, changelog, and analysis
+   options;
 8. snapshot every fixture file before and after execution and assert that no
    path, byte, or timestamp changed;
 9. run invalid arguments and a missing root and assert exit codes `64` and
@@ -434,6 +485,10 @@ Implement the script with only Dart SDK libraries. Requirements:
   lines, including a `requiresJustification` boolean from 400 lines;
 - identify package entrypoint barrels and feature/layer barrel candidates
   without claiming they are architecturally correct;
+- inventory non-generated Dart files under
+  `lib/features/<feature>/<layer>/` as feature/layer records without asserting
+  that the organization is correct;
+- inventory non-generated `*_test.dart` paths below every `test/` directory;
 - detect changelog names case-insensitively;
 - detect `analysis_options.yaml`, Melos, Makefiles, repository scripts, and
   common CI files as possible command sources;
@@ -942,15 +997,19 @@ git commit -m "feat: orchestrate portable Flutter standards skill"
 
 - Consumes: The exact scenarios from Task 1 and the completed skill.
 - Produces: Verbatim GREEN results, rationalization counters, and demonstrated
+  activation, representative-project audit coverage, read-only behavior, and
   standalone and Superpowers-compatible behavior.
 
-- [ ] **Step 1: Run all six scenarios with the skill in fresh contexts**
+- [ ] **Step 1: Run activation-aware GREEN for all six scenarios**
 
-Give each evaluator the skill path and the scenario only. Do not reveal the
-scorecard answer or previous failure. Record the result verbatim.
+Make the completed skill available through the evaluator's normal skill catalog
+and run each scenario in a fresh context. Do not name the skill in the scenario,
+direct the evaluator to load it, reveal the scorecard answer, or reveal a
+previous failure. Record whether the description triggered the skill and record
+the result verbatim.
 
-Expected: every row satisfies its `Required behavior` without inventing a
-hybrid shortcut.
+Expected: the skill activates for S1–S6 and every row satisfies its
+`Required behavior` without inventing a hybrid shortcut.
 
 - [ ] **Step 2: Meta-test every failure**
 
@@ -980,13 +1039,38 @@ Do not add hypothetical guidance unrelated to an observed failure.
 Expected: the failed scenario becomes compliant and the neighboring behavior
 does not regress. Continue until all six rows pass.
 
-- [ ] **Step 5: Test standalone behavior**
+- [ ] **Step 5: Run a controlled representative-project audit**
+
+Create a temporary Flutter workspace containing the exact A1 facts from
+`behavior-scenarios.md`. Use inert placeholder credential text, not a real
+secret. Before evaluation, snapshot every fixture path, byte sequence, and
+modification timestamp.
+
+Run A1 in a fresh context with the completed skill available through the normal
+skill catalog but unnamed in the scenario. The evaluator may inspect the
+fixture and run the bundled inspector, but receives no implementation approval.
+Record every A1 scorecard row and the audit output verbatim. After evaluation,
+compare the snapshot and require no added, removed, changed, or retimestamped
+fixture path. Delete only the temporary workspace after recording the result.
+
+Expected: A1.1–A1.9 pass, the audit has the required evidence-backed shape, no
+sensitive placeholder value appears in the output, and the fixture is
+byte-for-byte and timestamp-for-timestamp unchanged.
+
+- [ ] **Step 6: Close representative-audit gaps minimally**
+
+For each failed A1 row, classify the failure as a rule, output-shape, routing,
+or deliberate-override gap. Patch only the responsible reference or
+`SKILL.md`, rerun A1, and recheck the complete filesystem snapshot. Continue
+until A1.1–A1.9 pass.
+
+- [ ] **Step 7: Test standalone behavior**
 
 Run S1, S4, and S5 in fresh contexts where no Superpowers skills are available.
 Expected: the evaluator loads `standalone-workflow.md` and preserves audit,
 package-boundary, and TDD gates.
 
-- [ ] **Step 6: Test Superpowers composition**
+- [ ] **Step 8: Test Superpowers composition**
 
 Run S1, S4, and S5 in fresh contexts with Superpowers available. Expected:
 
@@ -996,7 +1080,7 @@ Run S1, S4, and S5 in fresh contexts with Superpowers available. Expected:
   skill;
 - S5 composes with TDD and verification without duplicating or weakening them.
 
-- [ ] **Step 7: Commit the verified refinements**
+- [ ] **Step 9: Commit the verified refinements**
 
 ```bash
 git add .agents/skills/enforcing-flutter-standards skill-evals/enforcing-flutter-standards/scorecard.md
@@ -1133,6 +1217,12 @@ targets, versioning, and update strategy.
 - The deployable folder contains exactly the eight approved files.
 - The plan creates failing behavioral baselines before skill guidance and a
   failing Dart test before inspector implementation.
+- The inspector inventories feature/layer structure and tests as required by
+  the approved design.
+- Activation is tested without naming the skill in S1–S6, and the controlled A1
+  audit verifies the remaining architecture, lifecycle, dependency, storage,
+  observability, flavor, secret, Freezed, changelog, and multipackage rules
+  without modifying its synthetic Flutter workspace.
 - The plan works from any explicitly chosen repository root because all source
   paths are relative.
 - Codex metadata is optional and does not affect core execution.
