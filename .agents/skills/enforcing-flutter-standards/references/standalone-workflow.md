@@ -188,8 +188,10 @@ rather than removing the gate.
 - **Evidence/output:** Produce the exact implementation report contract below
   in the user's language, backed only by observed results.
 - **Stop condition:** Do not report completion if any required heading,
-  command result, RED evidence or allowed exception, changelog disposition,
-  skipped-validation reason, or remaining-debt classification is missing.
+  command result, applicable behavior-change RED evidence, pre-refactor
+  characterization result, or allowed no-test exception is missing, or if the
+  changelog disposition, skipped-validation reason, or remaining-debt
+  classification is missing.
 
 ## Exact implementation report contract
 
@@ -209,9 +211,16 @@ and approval.
 
 ## Tests written and observed RED
 
-List each test, its exact RED command, and the observed expected failure reason,
-followed by GREEN/REFACTOR results. If an allowed no-test predicate applies,
-state the exact predicate and non-test validation instead of claiming RED.
+Report the applicable evidence without fabricating a RED result:
+
+- Behavior changes: list each test, its exact RED command, the observed expected
+  failure reason, and its GREEN/REFACTOR results.
+- Uncovered refactors: list each characterization test, its exact pre-refactor
+  command and passing result that locks down existing behavior, followed by the
+  post-refactor rerun. Do not claim RED unless a separate behavior change
+  actually observed it.
+- Allowed no-test predicates: state the exact predicate and non-test validation
+  instead of claiming RED.
 
 ## Commands executed and actual results
 
