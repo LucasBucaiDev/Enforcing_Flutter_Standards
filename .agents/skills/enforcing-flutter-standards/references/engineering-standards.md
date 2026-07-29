@@ -137,10 +137,12 @@ class. Place local packages under `packages/`.
 
 | Observable predicate | Required decision | Approval boundary | Final-report evidence |
 |---|---|---|---|
-| A capability has an independent responsibility, small API, isolated tests, stable domain/repository/integration boundary, cross-cutting reuse, or meaningful SDK anti-corruption value. | Extract or use a focused local package. A significant SDK boundary may justify a package even with one current consumer. | Package extraction that expands the requested scope requires approval; adding dependencies follows dependency approval. | Name the boundary, its API, consumers, isolation benefit, and tests. |
-| Code requires no Flutter APIs. | Prefer a Dart package without a Flutter dependency. | Using a Flutter package instead requires a concrete Flutter API need. | Report package type and whether Flutter APIs are imported. |
-| Widgets, plugins, or Flutter APIs are required. | Use a Flutter package. | Normal package-scope approval applies. | Cite the Flutter APIs that require this package type. |
+| A capability forms an actual stable domain, repository, integration, cross-cutting reusable, or meaningful SDK anti-corruption boundary. Independent responsibility, a small API, and isolated tests are supporting evidence but do not establish that boundary on their own. | Extract or use one focused local package for that stable boundary. A significant SDK boundary may justify a package even with one current consumer; do not create one package per class. | Extraction is included only in an already approved named package batch. Extraction outside that batch or a broader package restructure requires explicit approval; adding dependencies follows dependency approval. | Name the stable architectural or anti-corruption boundary, supporting traits, API, consumers, isolation benefit, package batch approval, and tests. |
+| An approved stable package boundary requires no Flutter APIs. | Prefer a Dart package without a Flutter dependency. | The package type is included in the approved named extraction batch. Using a Flutter package instead requires an observed Flutter API need; adding dependencies follows dependency approval. | Report the approved boundary and package type, and confirm whether Flutter APIs are imported. |
+| An approved stable package boundary requires widgets, plugins, or Flutter APIs. | Use a Flutter package. | The package type is included in the approved named extraction batch; any new plugin or dependency requires separate dependency approval. | Name the approved boundary and cite the Flutter APIs that require this package type. |
 | A proposed local dependency introduces a cycle or points from a lower-level package to a higher-level feature/repository. | Reject the edge. Move a small contract, callback, or value provider to a lower, stable boundary. | A package-graph restructure beyond the affected cycle requires explicit approval. | Show the before/after dependency edges and cycle check. |
+| An approved local package boundary is consumed by the app or another local package. | Use a path dependency and constructor injection. | Wiring is included only in the approved named package/integration batch; adding dependencies or changing broader composition requires separate approval. | Name the path dependency, constructor boundary, consumer, approved batch, and dependency-resolution result. |
+| An approved dependency is global to the app, or exclusive to one feature. | Compose a global dependency at the app composition root; compose a feature-only dependency near that feature without turning the root into a giant container. | Scoped wiring is included only in the approved named batch. A broad composition-root restructure requires separate approval. | Classify the dependency as global or feature-only and name its composition location, rationale, approved batch, and relevant tests. |
 
 Required dependency direction:
 
@@ -154,8 +156,6 @@ a lower stable boundary; auth implements it, HTTP consumes it, and the graph
 remains acyclic. Cross-cutting contracts are leaves and know no concrete
 features.
 
-Use path dependencies and constructor injection. Compose global dependencies at
-the app composition root and feature-only dependencies near the feature.
 `BlocProvider` supplies Blocs and Cubits. `RepositoryProvider` is not a default
 policy or universal requirement.
 
@@ -168,9 +168,10 @@ policy or universal requirement.
 | `BlocProvider(create:)` creates a Bloc or Cubit. | Let the provider own and close the created instance. | None. | Identify the provider and created instance. |
 | `BlocProvider.value` receives an existing instance. | Preserve an explicit external owner that calls `close`; the provider does not assume ownership. | None. | Identify the instance owner and cleanup location. |
 
-Keep `main.dart` minimal and delegate to a focused bootstrap or composition
-root. Separate router, theme, observability, and complex integration setup when
-they accumulate distinct responsibilities; do not create ceremonial files.
+| Observable predicate | Required decision | Approval boundary | Final-report evidence |
+|---|---|---|---|
+| The project already has a coherent bootstrap and composition-root approach. | Preserve it and place scoped composition changes in its established locations. | The approved named feature/integration batch covers only its scoped composition edits; replacing or broadly restructuring the bootstrap requires separate approval. | Name the existing bootstrap/composition files, convention retained, scoped edits, and approved batch. |
+| `main.dart` or the existing bootstrap accumulates router, theme, observability, or complex integration setup as distinct responsibilities in the approved scope. | Keep indispensable startup in `main.dart` and separate only the observed distinct responsibilities into a focused bootstrap or composition root; do not create ceremonial files. | The split is included only in the already approved named batch that touches those responsibilities. A broader composition restructure or new dependency requires separate approval. | Name each observed responsibility, resulting owner/file, unchanged bootstrap conventions, approved batch, and any separately approved dependency. |
 
 ## 9. Dependency approval
 
@@ -266,7 +267,8 @@ preference.
 | A storage migration is explicitly requested and approved. | Define source and destination schemas; versioned idempotent execution; conversion validation; partial-failure behavior; backup and recovery/rollback; representative-data tests; the source of truth at every phase; temporary encapsulated coexistence only; no permanent dual writes; and removal of the old store. | Approve the technology choice and migration plan before implementation. Any destructive cutover or external action needs its own explicit authorization. | Report every migration contract item, versions, test fixtures/results, source-of-truth transitions, old-store removal, and any unexecuted recovery action. |
 
 Features depend on owned persistence contracts rather than concrete storage
-types. A transversal stable persistence boundary may live in a local package.
+types. Evaluate any persistence-package extraction with the stable-boundary
+contract in [Local packages and dependency direction](#7-local-packages-and-dependency-direction).
 
 ## 13. Navigation
 
@@ -284,22 +286,20 @@ types. A transversal stable persistence boundary may live in a local package.
 | A compatible new app needs crash reporting. | Prefer Crashlytics behind a provider-neutral owned contract such as `ErrorReporter`. Capture fatal Flutter and unhandled async errors; report as non-fatal only unexpected actionable errors, not every expected business failure. | Adding Firebase or Crashlytics requires dependency approval and compatible consent/collection configuration. | Record contract, adapter, captured categories, consent/configuration, approval, and adapter tests without real provider events. |
 | Features, UI, Blocs, Cubits, or repositories import provider types directly. | Move provider knowledge behind an owned adapter and contract. | Broad migration beyond touched consumers requires approval. | Cite imports removed and vendor-neutral consumers. |
 | Logging or reporting includes headers, bodies, payloads, query values, responses, tokens, credentials, personal data, signed URLs, webhooks, or API keys. | Remove or redact sensitive fields before recording; never version credentials or signed webhooks. Avoid production `print` and debug logging. | Rotation or revocation is an explicit external action requiring authorization. | Report the location and kind of suspected secret, never its value; record redaction and any recommended external action. |
-
-Include version, environment, and operation only when they improve diagnosis.
-Respect product consent and collection settings.
+| Version, environment, or operation context would materially improve diagnosis. | Include only the useful diagnostic fields after redaction and continue to respect product consent and collection settings. | Adding fields within an already approved named observability batch needs no separate approval; changing consent/collection behavior or adding provider capabilities requires explicit approval. | List each diagnostic field added, its diagnostic purpose, redaction treatment, consent/collection behavior, and approved batch. |
 
 ## 15. Environments and flavors
 
 | Observable predicate | Required decision | Approval boundary | Final-report evidence |
 |---|---|---|---|
 | Existing environment configuration is coherent. | Retain it; do not migrate to `.env`, `envied`, or another mechanism by preference alone. | A new configuration mechanism requires an observable need, comparison, and approval. | Name the existing mechanism and adequacy evidence or approved gap. |
-| A new app needs environments. | Use development, staging, and production entrypoints modeled on the Very Good CLI Flutter template. Keep entrypoints small, select typed configuration/dependencies, and delegate to a shared bootstrap. | Dependencies or project configuration changes follow normal approval. | List entrypoints, typed configuration, validation, and reproducible run/test/build commands. |
+| A new app needs environments. | Use development, staging, and production entrypoints modeled on the Very Good CLI Flutter template. Keep entrypoints small, select typed configuration/dependencies, and delegate to a shared bootstrap while preserving any coherent bootstrap convention already established. | This structure is included only in the already approved named new-app environment batch. New dependencies or a broader project restructure require separate approval. | List the approved batch, entrypoints, preserved or new shared bootstrap, typed configuration, validation, and reproducible run/test/build commands. |
 | A required configuration value is absent or invalid. | Validate at startup and fail with an actionable message. Never silently fall back to production. | None; choosing a product default for a non-required value may require a product decision. | Report validation behavior and tests for missing/invalid values. |
+| An existing project has a coherent bootstrap convention alongside its environment configuration. | Preserve that convention while applying typed validation and keeping environment endpoints/dependencies outside features. | Scoped changes are included only in the already approved named environment batch; replacing the bootstrap requires separate approval. | Name the preserved bootstrap convention, typed validation added, affected configuration boundaries, and approved batch. |
+| The product differentiates native identifiers, names, icons, or files by flavor. | Keep each differentiated native resource coherent with its development, staging, or production flavor. | Wiring already approved product-provided values is included only in the named flavor batch. Inventing or changing product identity/assets, adding dependencies, or broad native restructuring requires separate approval. | Provide a per-flavor resource matrix with source locations, product/design approvals for changed values, and relevant run/build results. |
 
 Keep environment endpoints and dependencies out of features. Do not scatter
-environment conditionals through UI, domain, or repositories. Keep native
-identifiers, names, icons, and files coherent per flavor when the product
-differentiates them.
+environment conditionals through UI, domain, or repositories.
 
 ## 16. TDD, tests, and coverage
 
@@ -317,21 +317,22 @@ Every behavior change follows:
 | New or changed behavior is implemented. | Cover the new behavior and relevant edge/error cases using TDD. | Exceptions are limited to generated code, documentation, configuration without logic, and visual-only changes without testable behavior; record the applicable predicate. | Report test names, verified RED failure reason, GREEN result, and relevant suite result. |
 | The repository defines a coverage threshold. | Preserve or increase it; never regress it. | Lowering the threshold requires explicit approval and an exception record. | Report command, before/required threshold when known, achieved coverage, and delta. |
 | No threshold exists in a new project. | Propose a high threshold and CI enforcement. | Adoption requires approval. | Record proposal and approval outcome. |
+| Changed behavior includes interactions, validation, state, or another observable widget behavior. | Add focused widget tests for the changed behavior. Preserve and adapt a coherent existing widget-testing approach when present; otherwise use the repository's established Flutter test tools. | Tests for the approved behavior are included only in its already approved named batch. A new testing dependency or broad testing restructure requires separate approval. | Name the existing approach preserved or repository test tools selected, changed behavior, widget tests, verified RED/GREEN commands and results, and approved batch. |
+| A screen or change is static or purely visual and has no testable behavior. | Do not require a widget test solely for that visual output; follow any stronger repository test convention and perform applicable visual validation. Golden tests remain optional. | Omitting a test is limited to this observed no-behavior predicate. Adding a golden/snapshot dependency or changing repository test policy requires explicit approval. | State the no-behavior evidence, repository convention applied, visual validation performed, and whether any separately approved test dependency was used. |
 
 Mirror `lib/` structure under `test/`. Split large suites by behavior. Keep
 reusable builders, fixtures, fakes, and helpers in test helpers without hiding
-the scenario or expectations. Widget tests are required for interactions,
-validation, states, and observable behavior, but not for static screens or
-purely visual changes. Golden tests are not mandatory.
+the scenario or expectations.
 
 ## 17. Changelog
 
 | Observable predicate | Required decision | Approval boundary | Final-report evidence |
 |---|---|---|---|
 | An approved implementation changes observable user, operational, or maintenance behavior and a canonical changelog exists. | Add one concise line in the existing language, format, and category. Use an issue identifier only when project convention does. | None within approved implementation scope. | Quote the changelog file, category, and entry. |
-| The change belongs to the application. | Update the root canonical changelog. | None. | Record root changelog path. |
+| The change belongs to the application and an existing canonical root changelog is present. | Update that root changelog. | The entry is included only in the already approved named implementation batch. Moving or replacing the canonical changelog requires separate approval. | Record the root changelog path, category, concise entry, and approved batch. |
 | A package is independently versioned, published, or released, or repository convention requires package entries. | Update that package's changelog. | Normal release-scope approval applies. | Record the package release convention and changelog path. |
-| No changelog exists, or a version bump is contemplated. | Report the absence or version decision; do not create a changelog or bump a version automatically. | Creation and version changes require explicit approval. | Record the search evidence and approval outcome. |
+| No canonical changelog exists. | Report its absence and request a decision; do not create one or claim a changelog update until the user approves creation. | Creating a changelog requires explicit approval. | Record searched locations, the absence result, the requested decision, its approval outcome, and that no update was claimed while undecided. |
+| A version bump is contemplated. | Report the version decision; do not bump automatically. | Every version change requires explicit approval. | Record the current/proposed version, reason, and approval outcome. |
 
 ## 18. Verification matrix
 
@@ -401,7 +402,7 @@ observable slots:
 | Freezed | Data or variant type | Required. |
 | Barrels | Cross-package/feature/layer API | Deliberate public barrel; direct imports inside self-exporting layers. |
 | File size | 250+ / 400+ non-generated lines | Review responsibility / require explicit retention justification. |
-| Package | Stable, reusable, independently testable, or anti-corruption boundary | Focused Dart package unless Flutter APIs are required. |
+| Package | Actual stable architectural or anti-corruption boundary; reuse/testing/API traits only support it | One focused package per stable boundary, not per class; Dart unless Flutter APIs are required. |
 | Package graph | Cycle or inverted dependency | Lower a small contract and restore acyclic direction. |
 | SDK | Significant integration reaches feature/state | Owned adapter/package and owned types. |
 | Lifecycle | Resource created | Creator owns cleanup; distinguish `create:` from `.value`. |
