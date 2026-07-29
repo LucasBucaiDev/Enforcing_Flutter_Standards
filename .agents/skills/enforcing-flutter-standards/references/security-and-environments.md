@@ -1,0 +1,28 @@
+# Flutter security and environments
+
+Load this reference for observability, logging, error reporting, secrets,
+redaction, environment configuration, flavors, or startup-validation decisions
+supported by observable project evidence.
+
+## Observability and secrets
+
+| Observable predicate | Required decision | Approval boundary | Final-report evidence |
+|---|---|---|---|
+| The project has a coherent, secure logging and error-reporting solution. | Retain it. | Migration requires evidence, dependency review, and approval. | Name the solution and the security/adequacy evidence. |
+| A compatible new app needs crash reporting. | Prefer Crashlytics behind a provider-neutral owned contract such as `ErrorReporter`. Capture fatal Flutter and unhandled async errors; report as non-fatal only unexpected actionable errors, not every expected business failure. | Adding Firebase or Crashlytics requires dependency approval and compatible consent/collection configuration. | Record contract, adapter, captured categories, consent/configuration, approval, and adapter tests without real provider events. |
+| Features, UI, Blocs, Cubits, or repositories import provider types directly. | Move provider knowledge behind an owned adapter and contract. | Broad migration beyond touched consumers requires approval. | Cite imports removed and vendor-neutral consumers. |
+| Logging or reporting includes headers, bodies, payloads, query values, responses, tokens, credentials, personal data, signed URLs, webhooks, or API keys. | Remove or redact sensitive fields before recording; never version credentials or signed webhooks. Avoid production `print` and debug logging. | Rotation or revocation is an explicit external action requiring authorization. | Report the location and kind of suspected secret, never its value; record redaction and any recommended external action. |
+| Version, environment, or operation context would materially improve diagnosis. | Include only the useful diagnostic fields after redaction and continue to respect product consent and collection settings. | Adding fields within an already approved named observability batch needs no separate approval; changing consent/collection behavior or adding provider capabilities requires explicit approval. | List each diagnostic field added, its diagnostic purpose, redaction treatment, consent/collection behavior, and approved batch. |
+
+## Environments and flavors
+
+| Observable predicate | Required decision | Approval boundary | Final-report evidence |
+|---|---|---|---|
+| Existing environment configuration is coherent. | Retain it; do not migrate to `.env`, `envied`, or another mechanism by preference alone. | A new configuration mechanism requires an observable need, comparison, and approval. | Name the existing mechanism and adequacy evidence or approved gap. |
+| A new app needs environments. | Use development, staging, and production entrypoints modeled on the Very Good CLI Flutter template. Keep entrypoints small, select typed configuration/dependencies, validate required values at startup, and delegate to a shared bootstrap while preserving any coherent bootstrap convention already established. | This structure is included only in the already approved named new-app environment batch. New dependencies or a broader project restructure require separate approval. | List the approved batch, entrypoints, preserved or new shared bootstrap, typed configuration, required-value validation, and reproducible run/test/build commands. |
+| A new-app environment batch or an already approved scoped change adds or migrates required configuration, or evidence shows an existing setup is not coherent or safe because missing/invalid required values can reach runtime. | Model the permitted development, staging, and production environments with typed configuration and selection, represent their required values with explicit types, validate them at startup, and fail with an actionable message. Never silently fall back to production. | New-app validation is included only in its approved environment batch. Existing-project validation requires the approved named configuration/remediation batch; choosing a product default requires a product decision. | State which predicate applied, the typed development, staging, and production configuration and selection, required values, safety evidence when applicable, approved batch/product decision, validation behavior, and tests for missing, invalid, and valid values. |
+| An existing project has coherent environment configuration and a coherent bootstrap convention. | Preserve both unchanged; do not add typed validation or migrate configuration incidentally. | No configuration or bootstrap change is included without a separate approved named batch. | Name the existing environment/bootstrap mechanism, evidence that it is coherent and safe, and confirm that no incidental configuration migration or validation change was made. |
+| The product differentiates native identifiers, names, icons, or files by flavor. | Keep each differentiated native resource coherent with its development, staging, or production flavor. | Wiring already approved product-provided values is included only in the named flavor batch. Inventing or changing product identity/assets, adding dependencies, or broad native restructuring requires separate approval. | Provide a per-flavor resource matrix with source locations, product/design approvals for changed values, and relevant run/build results. |
+
+Keep environment endpoints and dependencies out of features. Do not scatter
+environment conditionals through UI, domain, or repositories.
