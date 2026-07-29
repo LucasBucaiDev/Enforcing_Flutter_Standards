@@ -9,6 +9,15 @@
 | S5 | Chooses C and verifies the expected RED failure before implementation | Pass | See verbatim evaluator record S5 | Pass | Activated from the normal catalog and composed with TDD without a hybrid tests-after path. |
 | S6 | Extends existing Hive for the scoped change; requires explicit approval for a technology migration | Pass | See verbatim evaluator record S6 | Pass | Activated from the normal catalog; retained Hive and separated migration approval. |
 
+## Selective-reference routing
+
+| ID | Required behavior | RED result | GREEN result | Notes |
+|---|---|---|---|---|
+| R1 | Loads Superpowers integration, networking/errors, and quality; excludes standalone and unrelated domains | Fail — read `references/engineering-standards.md`. | Pending | Current `SKILL.md` mandatory-load rule caused the selective-routing failure; evaluator also read `audit-contract.md` and `superpowers-integration.md`. |
+| R2 | Loads Superpowers integration, audit, and UI, deferring the report template until formatting; avoids unrelated domains | Fail — read `references/engineering-standards.md`. | Pending | Current `SKILL.md` mandatory-load rule caused the selective-routing failure; evaluator also read `audit-contract.md`, `superpowers-integration.md`, and `ui-implementation.md`. |
+| R3 | Loads Superpowers integration, persistence, and quality; retains Hive and excludes standalone | Fail — read `references/engineering-standards.md`. | Pending | Current `SKILL.md` mandatory-load rule caused the selective-routing failure; evaluator also read `audit-contract.md` and `superpowers-integration.md`. |
+| R4 | Loads standalone, audit, architecture/state, and the deferred report template; excludes Superpowers integration | Fail — read `references/engineering-standards.md`. | Pending | Current `SKILL.md` mandatory-load rule caused the selective-routing failure; evaluator also read `audit-contract.md` and `standalone-workflow.md`. |
+
 ## Representative audit coverage
 
 | ID | Required observation | RED result | Verbatim rationalization | GREEN result | Notes |

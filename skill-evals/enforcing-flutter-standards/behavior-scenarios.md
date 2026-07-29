@@ -87,3 +87,101 @@ Audit only. Do not modify the project. For every applicable issue, report
 evidence and distinguish the current change from future debt. Do not reproduce
 the sensitive value. End with small independently approvable batches and wait
 for explicit approval.
+
+## Selective-reference routing
+
+Run each route in a fresh context. Give the evaluator access to the current
+deployable skill and the stated Superpowers availability. Capture every skill
+or reference file it reads before answering. A route fails when it reads a
+forbidden reference, skips a required reference, loads both general workflows,
+or weakens the requested decision.
+
+### R1 — Focused networking bug with Superpowers
+
+Superpowers systematic debugging, TDD, and verification skills are available.
+An existing Flutter repository has a focused bug: one API mapper lets a vendor
+HTTP exception escape instead of returning the project's typed failure. Inspect
+and propose the smallest test-first fix. Before the proposal, list every
+enforcing-flutter-standards reference loaded.
+
+Required Flutter references after optimization:
+- `superpowers-integration.md`
+- `networking-and-errors.md`
+- `quality-and-delivery.md`
+
+Forbidden Flutter references:
+- `architecture-and-state.md`
+- `packages-and-integrations.md`
+- `persistence.md`
+- `navigation.md`
+- `security-and-environments.md`
+- `ui-implementation.md`
+- `standalone-workflow.md`
+
+### R2 — Focused UI audit with Superpowers
+
+Superpowers is available. Audit only a changed Flutter screen against a
+screenshot. The screen has a missing exact custom SVG and a responsive overflow
+at narrow width; no data, networking, persistence, navigation, package,
+environment, or logging change is present. Before reporting, list every
+enforcing-flutter-standards reference loaded.
+
+Required Flutter references after optimization:
+- `superpowers-integration.md`
+- `audit-contract.md`
+- `ui-implementation.md`
+- `audit-report-template.md`, loaded only when formatting the report
+
+Forbidden Flutter references:
+- `architecture-and-state.md`
+- `packages-and-integrations.md`
+- `networking-and-errors.md`
+- `persistence.md`
+- `navigation.md`
+- `security-and-environments.md`
+- `standalone-workflow.md`
+
+### R3 — Persistence feature with Superpowers
+
+Superpowers brainstorming, planning, TDD, and verification skills are
+available. A touched feature in an existing app needs one new Hive field and
+query. No other architecture, networking, navigation, UI, environment,
+observability, or package change is requested. Decide the storage direction
+and approval boundary. Before answering, list every
+enforcing-flutter-standards reference loaded.
+
+Required Flutter references after optimization:
+- `superpowers-integration.md`
+- `persistence.md`
+- `quality-and-delivery.md`
+
+Forbidden Flutter references:
+- `architecture-and-state.md`
+- `packages-and-integrations.md`
+- `networking-and-errors.md`
+- `navigation.md`
+- `security-and-environments.md`
+- `ui-implementation.md`
+- `standalone-workflow.md`
+
+### R4 — Standalone architecture review
+
+No Superpowers skill is discoverable. Review a changed Freezed state and Cubit
+whose event semantics may require Bloc. No networking, persistence, navigation,
+UI, package, environment, or logging concern is present. Before reporting,
+list every enforcing-flutter-standards reference loaded.
+
+Required Flutter references after optimization:
+- `standalone-workflow.md`
+- `audit-contract.md`
+- `architecture-and-state.md`
+- `audit-report-template.md`, loaded only when formatting the report
+
+Forbidden Flutter references:
+- `superpowers-integration.md`
+- `packages-and-integrations.md`
+- `networking-and-errors.md`
+- `persistence.md`
+- `navigation.md`
+- `security-and-environments.md`
+- `ui-implementation.md`
