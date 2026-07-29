@@ -1,0 +1,422 @@
+import 'dart:convert';
+import 'dart:io';
+
+typedef AsyncTestBody = Future<void> Function();
+
+Future<void> main() async {
+  final repositoryRoot = Directory.current.absolute;
+  final inspector = File(
+    '${repositoryRoot.path}/.agents/skills/enforcing-flutter-standards/'
+    'scripts/inspect_flutter_project.dart',
+  );
+  final fixtureRoot = await Directory.systemTemp.createTemp(
+    'inspect_flutter_project_test_',
+  );
+
+  var passed = 0;
+  try {
+    await _createFixture(fixtureRoot);
+    final before = await _snapshot(fixtureRoot);
+
+    passed += await _runTest(
+      'inventory catches missing or incorrect project discovery',
+      () async {
+        final result = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--root',
+          fixtureRoot.path,
+          '--format',
+          'json',
+        ], workingDirectory: repositoryRoot.path);
+
+        _expectEqual(
+          result.exitCode,
+          0,
+          'JSON inventory must exit successfully.\n'
+          'stdout: ${result.stdout}\n'
+          'stderr: ${result.stderr}',
+        );
+
+        final decoded = jsonDecode(result.stdout as String);
+        _expect(
+          decoded is Map<String, dynamic>,
+          'Output must be a JSON object.',
+        );
+        final inventory = decoded as Map<String, dynamic>;
+
+        _expectEqual(
+          inventory['schemaVersion'],
+          1,
+          'Unexpected schema version.',
+        );
+        _expectEqual(
+          inventory['root'],
+          fixtureRoot.resolveSymbolicLinksSync(),
+          'Root must be canonical and absolute.',
+        );
+        _expectStringList(inventory['flutterRoots'], [
+          '.',
+          'packages/package_a',
+        ], 'Flutter roots');
+
+        final edges = _records(inventory, 'packageEdges');
+        _expectEqual(edges, [
+          {
+            'from': 'packages/package_a',
+            'to': 'packages/package_b',
+            'dependency': 'package_b',
+          },
+          {
+            'from': 'packages/package_b',
+            'to': 'packages/package_a',
+            'dependency': 'package_a',
+          },
+        ], 'Path dependency edges must be complete and sorted.');
+        _expectEqual(
+          inventory['cycles'],
+          [
+            ['packages/package_a', 'packages/package_b', 'packages/package_a'],
+          ],
+          'The package cycle must be reported once in canonical order.',
+        );
+
+        final largeFiles = _records(inventory, 'largeDartFiles');
+        _expectEqual(
+          largeFiles,
+          [
+            {
+              'path': 'lib/at_threshold.dart',
+              'lineCount': 250,
+              'requiresJustification': false,
+            },
+            {
+              'path': 'packages/package_a/lib/needs_justification.dart',
+              'lineCount': 400,
+              'requiresJustification': true,
+            },
+          ],
+          'Only non-generated Dart files at or above 250 lines belong here.',
+        );
+
+        final barrelPaths = _records(
+          inventory,
+          'barrels',
+        ).map((record) => record['path']).toList();
+        _expectEqual(
+          barrelPaths,
+          [
+            'lib/features/payments/presentation/presentation.dart',
+            'lib/root_app.dart',
+            'packages/package_a/lib/package_a.dart',
+          ],
+          'Package and feature/layer barrel candidates must be inventoried.',
+        );
+
+        final featureLayers = _records(inventory, 'featureLayers');
+        _expect(
+          featureLayers.any(
+            (record) => _deepEquals(record, const {
+              'path': 'lib/features/payments/presentation/payment_screen.dart',
+              'feature': 'payments',
+              'layer': 'presentation',
+            }),
+          ),
+          'The payments/presentation source record is missing.',
+        );
+        _expectStringList(inventory['tests'], [
+          'packages/package_a/test/package_a_test.dart',
+          'test/root_test.dart',
+        ], 'Tests');
+        _expectStringList(inventory['changelogs'], [
+          'CHANGELOG.MD',
+        ], 'Changelogs');
+        _expectStringList(inventory['analysisOptions'], [
+          'analysis_options.yaml',
+        ], 'Analysis options');
+        _expectStringList(inventory['projectCommands'], [
+          '.circleci/config.yml',
+          '.github/workflows/ci.yaml',
+          'Makefile',
+          'melos.yaml',
+          'scripts/check.sh',
+        ], 'Project command sources');
+      },
+    );
+
+    passed += await _runTest(
+      'read-only contract catches path, byte, or timestamp mutation',
+      () async {
+        final after = await _snapshot(fixtureRoot);
+        _expectEqual(
+          after.keys.toList(),
+          before.keys.toList(),
+          'Inspector changed the fixture file paths.',
+        );
+        for (final path in before.keys) {
+          final beforeFile = before[path]!;
+          final afterFile = after[path]!;
+          _expectEqual(
+            afterFile.bytes,
+            beforeFile.bytes,
+            'Inspector changed bytes for $path.',
+          );
+          _expectEqual(
+            afterFile.modifiedMicros,
+            beforeFile.modifiedMicros,
+            'Inspector changed the modification timestamp for $path.',
+          );
+        }
+      },
+    );
+
+    passed += await _runTest(
+      'argument validation catches invalid CLI input accepted as success',
+      () async {
+        final invalidFlag = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--unknown',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          invalidFlag.exitCode,
+          64,
+          'Unknown arguments must use EX_USAGE (64).',
+        );
+        _expect(
+          (invalidFlag.stderr as String).contains('Usage:'),
+          'Invalid arguments must print actionable usage to stderr.',
+        );
+
+        final invalidFormat = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--format',
+          'yaml',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          invalidFormat.exitCode,
+          64,
+          'Unsupported formats must use EX_USAGE (64).',
+        );
+      },
+    );
+
+    passed += await _runTest(
+      'missing-root handling catches nonexistent roots accepted as success',
+      () async {
+        final missingRoot = '${fixtureRoot.path}_missing';
+        final result = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--root',
+          missingRoot,
+          '--format',
+          'json',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          result.exitCode,
+          66,
+          'A missing root must use EX_NOINPUT (66).',
+        );
+      },
+    );
+
+    stdout.writeln('PASS: $passed tests');
+  } finally {
+    if (fixtureRoot.existsSync()) {
+      await fixtureRoot.delete(recursive: true);
+    }
+  }
+}
+
+Future<int> _runTest(String name, AsyncTestBody body) async {
+  try {
+    await body();
+    stdout.writeln('PASS: $name');
+    return 1;
+  } catch (error, stackTrace) {
+    stderr.writeln('FAIL: $name');
+    stderr.writeln(error);
+    stderr.writeln(stackTrace);
+    rethrow;
+  }
+}
+
+Future<void> _createFixture(Directory root) async {
+  await _write(root, 'pubspec.yaml', '''
+name: root_app
+dependencies:
+  flutter:
+    sdk: flutter
+''');
+  await _write(root, 'analysis_options.yaml', 'analyzer:\n  errors: {}\n');
+  await _write(root, 'CHANGELOG.MD', '# Changes\n');
+  await _write(root, 'melos.yaml', 'name: fixture_workspace\n');
+  await _write(root, 'Makefile', 'check:\n\t@echo check\n');
+  await _write(root, 'scripts/check.sh', '#!/bin/sh\nexit 0\n');
+  await _write(
+    root,
+    '.github/workflows/ci.yaml',
+    'jobs:\n  test:\n    runs-on: ubuntu-latest\n',
+  );
+  await _write(root, '.circleci/config.yml', 'version: 2.1\njobs: {}\n');
+
+  await _write(root, 'lib/root_app.dart', "export 'under_threshold.dart';\n");
+  await _writeLines(root, 'lib/under_threshold.dart', 249);
+  await _writeLines(root, 'lib/at_threshold.dart', 250);
+  await _writeLines(root, 'lib/generated.g.dart', 500);
+  await _writeLines(root, 'lib/generated.freezed.dart', 500);
+  await _writeLines(root, 'lib/l10n/app_localizations.dart', 500);
+  await _writeLines(root, 'lib/generated/l10n.dart', 500);
+  await _writeLines(root, 'build/ignored.dart', 500);
+  await _write(
+    root,
+    'lib/features/payments/presentation/payment_screen.dart',
+    'class PaymentScreen {}\n',
+  );
+  await _write(
+    root,
+    'lib/features/payments/presentation/presentation.dart',
+    "export 'payment_screen.dart';\n",
+  );
+  await _write(root, 'test/root_test.dart', 'void main() {}\n');
+  await _write(root, 'test/generated_test.mocks.dart', 'void main() {}\n');
+
+  await _write(root, 'packages/package_a/pubspec.yaml', '''
+name: package_a
+dependencies:
+  flutter:
+    sdk: flutter
+  package_b:
+    path: ../package_b
+''');
+  await _write(
+    root,
+    'packages/package_a/lib/package_a.dart',
+    "export 'needs_justification.dart';\n",
+  );
+  await _writeLines(
+    root,
+    'packages/package_a/lib/needs_justification.dart',
+    400,
+  );
+  await _write(
+    root,
+    'packages/package_a/test/package_a_test.dart',
+    'void main() {}\n',
+  );
+
+  await _write(root, 'packages/package_b/pubspec.yaml', '''
+name: package_b
+dev_dependencies:
+  package_a:
+    path: ../package_a
+''');
+  await _write(root, 'packages/package_b/lib/src/b.dart', 'class B {}\n');
+}
+
+Future<void> _write(Directory root, String relativePath, String content) async {
+  final file = File('${root.path}/$relativePath');
+  await file.parent.create(recursive: true);
+  await file.writeAsString(content);
+}
+
+Future<void> _writeLines(Directory root, String relativePath, int lineCount) {
+  return _write(
+    root,
+    relativePath,
+    '${List<String>.filled(lineCount, '// fixture line').join('\n')}\n',
+  );
+}
+
+Future<Map<String, _FileSnapshot>> _snapshot(Directory root) async {
+  final snapshots = <String, _FileSnapshot>{};
+  final files = await root
+      .list(recursive: true, followLinks: false)
+      .where((entity) => entity is File)
+      .cast<File>()
+      .toList();
+  files.sort((left, right) => left.path.compareTo(right.path));
+
+  for (final file in files) {
+    final stat = await file.stat();
+    final relativePath = _relativePath(root.path, file.path);
+    snapshots[relativePath] = _FileSnapshot(
+      await file.readAsBytes(),
+      stat.modified.microsecondsSinceEpoch,
+    );
+  }
+  return snapshots;
+}
+
+List<Map<String, dynamic>> _records(
+  Map<String, dynamic> inventory,
+  String key,
+) {
+  final value = inventory[key];
+  _expect(value is List<dynamic>, '$key must be a JSON list.');
+  return (value as List<dynamic>).map((record) {
+    _expect(record is Map<String, dynamic>, '$key entries must be objects.');
+    return record as Map<String, dynamic>;
+  }).toList();
+}
+
+void _expectStringList(Object? actual, List<String> expected, String label) {
+  _expectEqual(actual, expected, '$label must be complete and sorted.');
+}
+
+void _expect(bool condition, String message) {
+  if (!condition) {
+    throw TestFailure(message);
+  }
+}
+
+void _expectEqual(Object? actual, Object? expected, String message) {
+  if (!_deepEquals(actual, expected)) {
+    throw TestFailure('$message\nExpected: $expected\nActual:   $actual');
+  }
+}
+
+bool _deepEquals(Object? left, Object? right) {
+  if (left is List && right is List) {
+    if (left.length != right.length) return false;
+    for (var index = 0; index < left.length; index++) {
+      if (!_deepEquals(left[index], right[index])) return false;
+    }
+    return true;
+  }
+  if (left is Map && right is Map) {
+    if (left.length != right.length) return false;
+    for (final key in left.keys) {
+      if (!right.containsKey(key) || !_deepEquals(left[key], right[key])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return left == right;
+}
+
+String _relativePath(String root, String path) {
+  final prefix = root.endsWith(Platform.pathSeparator)
+      ? root
+      : '$root${Platform.pathSeparator}';
+  return path.substring(prefix.length).replaceAll(Platform.pathSeparator, '/');
+}
+
+final class _FileSnapshot {
+  const _FileSnapshot(this.bytes, this.modifiedMicros);
+
+  final List<int> bytes;
+  final int modifiedMicros;
+}
+
+final class TestFailure implements Exception {
+  const TestFailure(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
