@@ -104,6 +104,39 @@ batch must name:
 - relevant verification and changelog work;
 - dependencies on other proposed batches.
 
+Every proposed batch must contain every field below explicitly:
+
+```text
+Batch: <name>
+Findings and exact scope: <exact finding IDs and current-change or future-debt
+  scope>
+Files/boundaries: <exact list>
+Tests/characterization: <specific RED, characterization, or no-test predicate
+  and coverage>
+Separate decisions/approvals: <each dependency, migration, technology,
+  security or external action, design, package extraction, or exception
+  decision, or none>
+Verification: <applicable format, analysis, codegen, tests, coverage,
+  generated consistency, build, package, and direct-dependent gates>
+Changelog: <canonical path and planned entry/category, or the evidence-backed
+  reason no entry applies>
+Dependencies on batches: <named batches or none>
+```
+
+A batch is invalid if any field is omitted. Do not infer a field from another
+batch or from the general report. Do not combine unrelated future-debt
+findings merely because they share severity or lie outside the current change;
+keep persistence migration, observability or secret remediation, and
+environment configuration in separate approval boundaries unless one is an
+observed prerequisite of another.
+
+When a finding or batch addresses missing or unsafe environment configuration
+or a silent production fallback, its recommendation or output is incomplete
+unless it explicitly names `development`, `staging`, and `production`; typed
+configuration and selection; startup validation that fails actionably; and
+tests for missing, invalid, and valid values. This conditional completeness
+rule does not add environment fields to unrelated findings or batches.
+
 Order batches by blocking risk and dependency direction, then important work,
 then optional improvements. Do not combine unrelated current-change work and
 future debt to make approval all-or-nothing.

@@ -1,6 +1,6 @@
 ---
 name: enforcing-flutter-standards
-description: Use when auditing, creating, refactoring, debugging, or reviewing Flutter and Dart applications where architecture, Bloc or Cubit state, Freezed models, local packages, UI fidelity, dependencies, test-first fixes, or verification need consistent engineering standards.
+description: Use when auditing, creating, refactoring, debugging, or reviewing Flutter and Dart applications where architecture, Bloc or Cubit state, Freezed models, local packages, UI fidelity, dependencies, test-first fixes to legacy or untested code, or verification need consistent engineering standards.
 ---
 
 # Enforcing Flutter Standards
@@ -175,7 +175,7 @@ Each phrase below has exactly one correction:
 |---|---|
 | “The problems are obvious,” “refactor everything immediately,” or “a release slot in 40 minutes.” | Stop; return to the Audit and approval gates; obtain scoped evidence and explicit approval for named batches. |
 | “It works,” “Working,” “I manually verified it,” or manual inspection is enough under release pressure. | Stop; return to the RED and Verification gates; obtain the missing observed test and fresh command evidence. |
-| “Deleting working code is wasteful,” “keep it as reference,” or the existing effort is a sunk cost. | Stop; return to the RED gate; obtain the required observed RED, or passing characterization/no-test predicate evidence as applicable. |
+| “Deleting working code is wasteful,” “keep it as reference,” or the existing effort is a sunk cost. | Stop; remove the entire untested behavior implementation from the working tree and every deployable or repository path; do not retain, copy, stash, comment it out, or use it as an implementation reference. Then return to the RED gate and obtain the required observed RED, or passing characterization/no-test predicate evidence as applicable. |
 | “A senior developer mandates Cubit because Bloc is too verbose,” or senior approval makes the shortcut safe. | Stop; return to the evidence and approval gates; obtain observable state-semantics evidence and explicit approval for any expanded migration. |
 | “A visually similar Material icon exists” or use it “temporarily.” | Stop; return to the exact-asset gate; obtain the original custom SVG or explicit approval for a material design change. |
 | Import the vendor SDK from both Cubits because it is the “quickest change” or the manager wants the “fastest implementation.” | Stop; return to the architecture and approval gates; obtain evidence and approval for the owned adapter/package boundary and acyclic dependency direction. |

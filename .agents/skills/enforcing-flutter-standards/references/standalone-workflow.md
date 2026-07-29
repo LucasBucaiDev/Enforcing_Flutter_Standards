@@ -106,14 +106,16 @@ rather than removing the gate.
 
 - **Entry condition:** A named implementation batch is explicitly approved and
   its intended behavior or allowed no-test predicate is defined.
-- **Evidence/output:** For new or changed behavior, write one focused test and
-  run the exact command to observe failure for the expected missing-behavior
-  reason. Remove unapproved or untested behavior implementation from the
-  working path before claiming RED. Before an uncovered refactor, write and run
-  characterization tests that lock down existing behavior. For generated code,
-  documentation, configuration without logic, or a purely visual change
-  without testable behavior, record that exact exception predicate and the
-  applicable non-test validation.
+- **Evidence/output:** For new or changed behavior, remove the entire untested
+  behavior implementation from the working tree and every deployable or
+  repository path before RED; do not retain, copy, stash, comment it out, or
+  use it as an implementation reference. Then write one focused test and run
+  the exact command to observe failure for the expected missing-behavior
+  reason. Before an uncovered refactor, write and run characterization tests
+  that lock down existing behavior. For generated code, documentation,
+  configuration without logic, or a purely visual change without testable
+  behavior, record that exact exception predicate and the applicable non-test
+  validation.
 - **Stop condition:** Do not enter GREEN if the behavior test passes
   unexpectedly, fails for the wrong reason, was not run, or an uncovered
   refactor lacks passing characterization coverage.
