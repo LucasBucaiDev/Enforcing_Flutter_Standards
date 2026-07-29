@@ -180,6 +180,85 @@ Future<void> main() async {
     );
 
     passed += await _runTest(
+      'summary mode catches full inventories used for initial discovery',
+      () async {
+        final summary = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--root',
+          fixtureRoot.path,
+          '--format',
+          'summary',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(summary.exitCode, 0, 'Summary mode must succeed.');
+        final output = summary.stdout as String;
+        _expect(
+          output.startsWith('Flutter project inventory summary (schema 1)\n'),
+          'Summary header is missing.',
+        );
+        for (final section in const [
+          'flutterRoots',
+          'packageEdges',
+          'cycles',
+          'largeDartFiles',
+          'barrels',
+          'featureLayers',
+          'tests',
+          'changelogs',
+          'analysisOptions',
+          'projectCommands',
+        ]) {
+          _expect(
+            RegExp('^$section: [0-9]+\$', multiLine: true).hasMatch(output),
+            'Summary must report the count for $section.',
+          );
+        }
+        _expect(
+          output.contains('Expand: --format text --section <name>'),
+          'Summary must explain progressive expansion.',
+        );
+        _expect(
+          !output.contains('lib/at_threshold.dart'),
+          'Summary must not print inventory records.',
+        );
+      },
+    );
+
+    passed += await _runTest(
+      'section selection catches unrelated inventory emitted during expansion',
+      () async {
+        final result = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--root',
+          fixtureRoot.path,
+          '--format',
+          'json',
+          '--section',
+          'packageEdges',
+          '--section',
+          'cycles',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          result.exitCode,
+          0,
+          'Selected JSON sections must succeed.',
+        );
+        final inventory =
+            jsonDecode(result.stdout as String) as Map<String, dynamic>;
+        _expectEqual(
+          inventory.keys.toList(),
+          ['schemaVersion', 'root', 'packageEdges', 'cycles'],
+          'Projected JSON must contain metadata and requested sections only.',
+        );
+        _expect(
+          (inventory['packageEdges'] as List<dynamic>).isNotEmpty,
+          'Selected package edges must retain their records.',
+        );
+      },
+    );
+
+    passed += await _runTest(
       'cycle enumeration catches omitted or duplicate overlapping cycles',
       () async {
         final inventory = await _runJsonInspector(
@@ -319,6 +398,44 @@ Future<void> main() async {
           invalidFormat.exitCode,
           64,
           'Unsupported formats must use EX_USAGE (64).',
+        );
+
+        final invalidSection = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--section',
+          'unknown',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          invalidSection.exitCode,
+          64,
+          'Unknown sections must use EX_USAGE (64).',
+        );
+        _expect(
+          (invalidSection.stderr as String).contains(
+            'Unknown section: unknown',
+          ),
+          'Unknown sections must be actionable.',
+        );
+
+        final summarySection = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--format',
+          'summary',
+          '--section',
+          'tests',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          summarySection.exitCode,
+          64,
+          'Summary plus section must use EX_USAGE (64).',
+        );
+        _expect(
+          (summarySection.stderr as String).contains(
+            '--section cannot be combined with --format summary',
+          ),
+          'Invalid summary combinations must explain the correction.',
         );
       },
     );

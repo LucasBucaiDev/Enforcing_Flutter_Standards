@@ -1,9 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
+const _inventorySections = <String>[
+  'flutterRoots',
+  'packageEdges',
+  'cycles',
+  'largeDartFiles',
+  'barrels',
+  'featureLayers',
+  'tests',
+  'changelogs',
+  'analysisOptions',
+  'projectCommands',
+];
+
 const _usage =
     'Usage: dart run inspect_flutter_project.dart '
-    '--root DIRECTORY [--format json|text]';
+    '--root DIRECTORY [--format json|text|summary] [--section NAME]...';
 
 Future<void> main(List<String> arguments) {
   return _InspectorCli().run(arguments);
@@ -34,21 +47,27 @@ final class _InspectorCli {
     }
 
     final inventory = _Inspector(Directory(canonicalRoot)).inspect();
+    if (options.format == 'summary') {
+      _printSummary(inventory);
+      return;
+    }
+    final selected = _selectSections(inventory, options.sections);
     if (options.format == 'json') {
-      stdout.writeln(jsonEncode(inventory));
+      stdout.writeln(jsonEncode(selected));
     } else {
-      _printText(inventory);
+      _printText(selected);
     }
   }
 
   _Options? _parseArguments(List<String> arguments) {
     var root = '.';
     var format = 'text';
+    final sections = <String>[];
     var index = 0;
 
     while (index < arguments.length) {
       final argument = arguments[index];
-      if (argument != '--root' && argument != '--format') {
+      if (!const {'--root', '--format', '--section'}.contains(argument)) {
         _usageError('Unknown argument: $argument');
         return null;
       }
@@ -64,17 +83,27 @@ final class _InspectorCli {
           return null;
         }
         root = value;
-      } else {
-        if (value != 'json' && value != 'text') {
-          _usageError('Format must be "json" or "text".');
+      } else if (argument == '--format') {
+        if (!const {'json', 'text', 'summary'}.contains(value)) {
+          _usageError('Format must be "json", "text", or "summary".');
           return null;
         }
         format = value;
+      } else {
+        if (!_inventorySections.contains(value)) {
+          _usageError('Unknown section: $value');
+          return null;
+        }
+        if (!sections.contains(value)) sections.add(value);
       }
       index += 2;
     }
 
-    return _Options(root, format);
+    if (format == 'summary' && sections.isNotEmpty) {
+      _usageError('--section cannot be combined with --format summary.');
+      return null;
+    }
+    return _Options(root, format, List<String>.unmodifiable(sections));
   }
 
   void _usageError(String message) {
@@ -88,24 +117,40 @@ final class _InspectorCli {
     );
     stdout.writeln('Root: ${inventory['root']}');
 
-    for (final key in const [
-      'flutterRoots',
-      'packageEdges',
-      'cycles',
-      'largeDartFiles',
-      'barrels',
-      'featureLayers',
-      'tests',
-      'changelogs',
-      'analysisOptions',
-      'projectCommands',
-    ]) {
+    for (final key in _inventorySections.where(inventory.containsKey)) {
       final values = inventory[key]! as List<Object>;
       stdout.writeln('$key (${values.length}):');
       for (final value in values) {
         stdout.writeln('  ${value is String ? value : jsonEncode(value)}');
       }
     }
+  }
+
+  Map<String, Object> _selectSections(
+    Map<String, Object> inventory,
+    List<String> sections,
+  ) {
+    if (sections.isEmpty) return inventory;
+    return <String, Object>{
+      'schemaVersion': inventory['schemaVersion']!,
+      'root': inventory['root']!,
+      for (final section in sections) section: inventory[section]!,
+    };
+  }
+
+  void _printSummary(Map<String, Object> inventory) {
+    stdout.writeln(
+      'Flutter project inventory summary '
+      '(schema ${inventory['schemaVersion']})',
+    );
+    stdout.writeln('Root: ${inventory['root']}');
+    for (final section in _inventorySections) {
+      stdout.writeln(
+        '$section: ${(inventory[section]! as List<Object>).length}',
+      );
+    }
+    stdout.writeln('Available sections: ${_inventorySections.join(', ')}');
+    stdout.writeln('Expand: --format text --section <name>');
   }
 }
 
@@ -676,10 +721,11 @@ int _compareRecordPaths(Map<String, Object> left, Map<String, Object> right) {
 }
 
 final class _Options {
-  const _Options(this.root, this.format);
+  const _Options(this.root, this.format, this.sections);
 
   final String root;
   final String format;
+  final List<String> sections;
 }
 
 final class _DartFile {
