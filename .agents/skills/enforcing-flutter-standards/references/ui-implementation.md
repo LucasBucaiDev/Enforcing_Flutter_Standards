@@ -129,6 +129,10 @@ desktop, web, foldable, landscape, or platform-specific behavior.
 - Do not modify a supplied SVG or other design asset without an explicit
   technical need and approval when the change alters the approved visual.
 
+A visually similar Material icon is still an invented substitution. Request
+the exact SVG, block only the affected fragment, and continue independent
+approved work.
+
 ## Widget and accessibility tests
 
 There is no golden-test requirement or mandate. Follow stronger existing
@@ -138,8 +142,7 @@ dependencies solely for this contract.
 Widget tests cover interactions, validation, state changes, and other
 observable behavior, plus useful built-in accessibility checks. Use Flutter's
 built-in checks when they add value for semantics labels, contrast,
-touch-target size, and related supported guidelines. Preserve observed RED
-before implementing new or changed behavior.
+touch-target size, and related supported guidelines.
 
 Static visual changes with no testable behavior do not require artificial
 widget tests. Record that no-behavior predicate and use the rendering and
@@ -166,20 +169,5 @@ remains unperformed.
 
 ## Completion claims
 
-Do not claim visual fidelity without rendering and comparing the implementation
-when the environment makes that possible. A code review, successful widget
-tests, or a single representative render does not substitute for the required
-target-platform and dimension comparisons.
-
-A completion report must identify:
-
-- the visual sources and readiness contract used;
-- resolved and unresolved gaps, with approvals for material design deviations;
-- target platforms and dimensions actually validated;
-- widget and accessibility tests run, or the recorded static-visual no-test
-  predicate;
-- renders and comparisons performed, including observed differences;
-- every skipped render, comparison, test, or target validation and its reason.
-
-If rendering or comparison was unavailable, state that limitation and do not
-claim visual fidelity.
+Do not claim visual fidelity beyond the compared viewports, states, platforms,
+and exact assets actually verified.

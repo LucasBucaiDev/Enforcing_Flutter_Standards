@@ -5,178 +5,142 @@ description: Use when auditing, creating, refactoring, debugging, or reviewing F
 
 # Enforcing Flutter Standards
 
-## Overview
+## Core contract
 
-Use this skill as the portable orchestrator for evidence-backed Flutter and
-Dart audits, proposals, implementations, refactors, debugging, and reviews.
-Apply project instructions and coherent existing conventions before these
-standards, keep detailed decisions in the bundled references, and respond in
-the user's language.
+Follow explicit user instructions. Repository and nested directory
+instructions, then coherent existing project conventions, outrank this skill.
+Inspect relevant evidence before proposing a solution.
 
-## Non-negotiable gates
-
-- Inspect the project and relevant scope before proposing any solution.
-- Audit mode is read-only: do not edit, generate, format, stage, commit,
-  install, migrate, rotate, revoke, or otherwise change project or external
+- Audit and Review modes are read-only: do not edit, generate, format, stage,
+  commit, install, migrate, rotate, revoke, or change project or external
   state.
-- Enter implementation mode only after explicit approval of the exact requested
-  scope or named proposal batches. Approval to audit or review is not approval
-  to implement.
-- For new or changed behavior, observe a focused test fail for the expected
-  missing-behavior reason (RED) before writing behavior implementation or
-  entering GREEN. For an uncovered refactor, establish passing
-  characterization tests first; do not call that RED unless changed behavior
-  actually failed. For generated code, documentation, configuration without
-  logic, or purely visual work without testable behavior, record the applicable
-  no-test predicate and its non-test validation before GREEN.
-- Never invent, draw, generate, approximate, or silently substitute a UI asset.
-  A missing exact custom asset blocks only its dependent fragment.
-- Never add or update a dependency without presenting a comparison required by
-  the engineering standards and obtaining explicit approval.
-- Never claim completion without fresh, applicable verification evidence.
-- For approved implementation, update the existing canonical changelog with one
-  concise entry following project convention. Do not create a missing changelog
-  unless explicitly approved or required by an applicable project rule.
-- Never expose, reproduce, transform, or partially reveal a detected secret
-  value; report only its kind, location, exposure path, and recommended action.
+- Implementation requires an explicitly requested concrete scope or explicit
+  approval of named proposal batches. Audit or review approval is not
+  implementation approval.
+- New or changed behavior requires an observed focused RED failure for the
+  expected missing-behavior reason. An uncovered refactor requires passing
+  characterization tests first. Allowed non-behavior work records its exact
+  predicate and applicable non-test validation.
+- Never invent, draw, generate, approximate, or silently substitute a custom
+  asset. A missing exact asset blocks only its dependent fragment.
+- Adding or updating a dependency, or performing a technology or data
+  migration, requires an evidence-backed comparison and explicit approval.
+- Never reveal, reproduce, transform, or partially expose a secret value.
+  Report only its kind, location, exposure path, and recommended action.
+- Completion requires fresh applicable verification and one concise entry in
+  the existing canonical changelog. Do not create a missing changelog or bump
+  a version without explicit approval.
+- Every exception record names the rule, observation, technical reason, impact,
+  and explicit approval.
 
-## Discover the project
+## Discover and select a mode
 
-Before scoping or proposing, inspect applicable instructions, repository root,
-Git status and relevant diff or commits, `pubspec.yaml` files and lockfiles,
-`analysis_options.yaml`, architecture documentation, `lib/`, `test/`,
-`packages/`, CI and project command sources, generated-file policy, assets,
-flavors, changelogs, validation commands, and established conventions.
+Before scoping, inspect applicable instructions, repository root, Git state and
+relevant diff, package manifests and lockfiles, analysis configuration,
+architecture documentation, source, tests, local packages, CI and project
+commands, generated-file policy, assets, flavors, changelogs, validation
+commands, and established conventions.
 
-When filesystem and Dart access are available, run the bundled read-only
+When filesystem and Dart access are available, start with the bundled read-only
 inspector:
 
 ```text
-dart run <skill-directory>/scripts/inspect_flutter_project.dart --root <project-directory> --format json
+dart run <skill-directory>/scripts/inspect_flutter_project.dart \
+  --root <project-directory> --format summary
 ```
 
-Treat its deterministic inventory as mechanical evidence, not an architectural
-verdict. Confirm relevant observations in source. When filesystem or Dart
-access is unavailable, perform the same discovery manually and read-only from
-the evidence available; record what could not be inspected. Stop before a
-proposal when the root, governing instructions, material scope, or required
-evidence remains unresolved.
+Summary counts are mechanical evidence, not architectural findings. Confirm
+relevant observations in source and expand only evidence-supported sections;
+section arguments are repeatable:
 
-Default an audit to changed files and their direct dependencies. A repository-
-wide audit requires an explicit request.
+```text
+dart run <skill-directory>/scripts/inspect_flutter_project.dart \
+  --root <project-directory> --format json \
+  --section packageEdges --section cycles
+```
 
-## Select the operating mode
+When filesystem or Dart access is absent, perform the same discovery manually
+and read-only from available evidence, and record what could not be inspected.
 
-- **Audit:** Use for audits, assessments, and refactor proposals. Inspect and
-  report only; never mutate. End with independently approvable named batches
-  and wait for explicit approval.
-- **Implementation:** Use only when the user explicitly requests a concrete
-  implementation scope or approves named batches. Restrict changes to that
-  approved boundary and return to approval if new scope, a dependency,
-  migration, design deviation, exception, destructive action, or external
-  action becomes necessary.
-- **Review:** Use for diffs, commits, pull requests, or review feedback. Inspect
-  and report only; never mutate. If the user asks to apply feedback, first
-  establish explicit implementation approval and switch to Implementation
-  mode.
+Select exactly one mode:
 
-Ambiguous requests remain read-only until the mode and approval boundary are
-explicit. Audit or Review mode cannot transition itself into mutation.
+- **Audit:** assess or propose refactors; report only and wait for approval.
+- **Review:** inspect a diff, commit, pull request, or feedback; report only.
+- **Implementation:** change only the explicitly requested scope or approved
+  named batches.
 
-## Load references
+Ambiguous requests remain read-only. Default Audit and Review to changed files
+and their direct dependencies; inspect the whole repository only when
+explicitly requested.
 
-Load only the detailed guidance needed for the current request:
+## Compose one workflow
 
-1. Always read `references/engineering-standards.md`.
-2. For an audit, refactor proposal, or review, also read
-   `references/audit-contract.md`.
-3. For any UI or design task, also read
-   `references/ui-implementation.md`.
-4. Discover whether Superpowers is actually available. When it is discoverable,
-   read `references/superpowers-integration.md` and use only the mapped skills
-   confirmed available. If Superpowers is absent, or an applicable mapped skill
-   is missing, read and follow `references/standalone-workflow.md` for the whole
-   request.
+Discover the available Superpowers skills without assuming them. If every
+skill required by the applicable scenario is available, load
+`references/superpowers-integration.md` and follow only that composition. If
+any required skill is absent, load `references/standalone-workflow.md` for the
+whole request. Never combine the standalone workflow with a partial
+Superpowers route.
 
-The Flutter gates in this skill and `references/engineering-standards.md`
-remain binding in either process.
+## Route Flutter references
 
-## Audit mode
+Load every row supported by observable task or project evidence, and load none
+merely because it exists. References are independent and one level deep.
 
-Keep every inspection action read-only and distinguish inspector inventory from
-architectural judgment. Use `references/audit-contract.md` exactly: classify
-scope as current change or future debt, use its severities, and include every
-required finding field with reproducible evidence. For a suspected secret,
-never include its value.
-
-End with small named batches that state findings addressed, boundaries or files,
-tests or characterization coverage, verification, changelog work, dependencies
-between batches, and every separate decision or approval needed. Do not turn
-future debt into scope. Stop and wait for explicit approval of named batches.
-
-## Implementation mode
-
-Restate the explicitly approved boundary and preserve coherent project
-architecture. Diagnose before changing a bug; define the smallest compliant
-design before editing. Resolve applicable Flutter outputs explicitly, including
-owned vendor boundaries, exact design-asset disposition, retained primary
-persistence and migration approval, state semantics, lifecycle ownership, and
-acyclic dependency direction.
-
-Follow the discovered Superpowers composition or the full gate sequence in
-`references/standalone-workflow.md`. For behavior, observe RED, implement the
-minimum GREEN change, then REFACTOR while green. For uncovered refactors, keep
-characterization tests passing before and after. For an allowed no-test
-predicate, record it and perform the applicable non-test validation. Review the
-complete diff and status before verification; stop if any change is unexplained,
-unsafe, unrelated, or unapproved.
-
-If implementation reveals missing evidence or an approval boundary, stop,
-report it, and return to the relevant earlier gate instead of expanding scope.
-
-## Review mode
-
-Apply `references/audit-contract.md` to the requested diff, commit, pull
-request, or feedback and its direct dependencies. Report actionable findings
-first with exact locations, observed evidence, impact, smallest correction, and
-current-change or future-debt classification. Verify claims with available
-read-only commands and identify missing evidence.
-
-Do not edit while reviewing. If a correction is requested, present or confirm
-the named implementation boundary, obtain explicit approval, then switch to
-Implementation mode and apply its RED/characterization/no-test and verification
-gates.
-
-## Verification and reporting
-
-Run fresh project-defined gates applicable to the approved scope: format,
-analysis or lint, code generation, affected tests, full suite, coverage,
-generated-file consistency, and relevant builds. Repeat applicable gates in
-every modified local package and affected direct dependent. A partial check is
-not evidence that an unrun gate passed; state every skipped validation and its
-reason. Any later implementation change invalidates earlier verification.
-
-After fresh verification, update the existing canonical changelog concisely as
-required by project convention. If none exists, report that fact and obtain
-explicit approval before creating one; never bump versions automatically.
-
-Report in the user's language with the applicable contract from
-`references/audit-contract.md` or `references/standalone-workflow.md`. Include
-approved scope, tests and observed RED or the precise characterization/no-test
-predicate, exact commands and actual results, changelog disposition, skipped
-validations with reasons, exceptions with approval, and remaining approved work
-versus future debt. Do not overstate visual fidelity or completion.
-
-## Red flags
-
-Each phrase below has exactly one correction:
-
-| Pressure or rationalization from the baseline | Correction |
+| Observable task or evidence | Load |
 |---|---|
-| “The problems are obvious,” “refactor everything immediately,” or “a release slot in 40 minutes.” | Stop; return to the Audit and approval gates; obtain scoped evidence and explicit approval for named batches. |
-| “It works,” “Working,” “I manually verified it,” or manual inspection is enough under release pressure. | Stop; return to the RED and Verification gates; obtain the missing observed test and fresh command evidence. |
-| “Deleting working code is wasteful,” “keep it as reference,” or the existing effort is a sunk cost. | Stop; remove the entire untested behavior implementation from the working tree and every deployable or repository path; do not retain, copy, stash, comment it out, or use it as an implementation reference. Then return to the RED gate and obtain the required observed RED, or passing characterization/no-test predicate evidence as applicable. |
-| “A senior developer mandates Cubit because Bloc is too verbose,” or senior approval makes the shortcut safe. | Stop; return to the evidence and approval gates; obtain observable state-semantics evidence and explicit approval for any expanded migration. |
-| “A visually similar Material icon exists” or use it “temporarily.” | Stop; return to the exact-asset gate; obtain the original custom SVG or explicit approval for a material design change. |
-| Import the vendor SDK from both Cubits because it is the “quickest change” or the manager wants the “fastest implementation.” | Stop; return to the architecture and approval gates; obtain evidence and approval for the owned adapter/package boundary and acyclic dependency direction. |
-| Add Drift “only for this feature,” follow another team's preference, or take another unreviewed dependency or persistence shortcut. | Stop; return to the dependency and persistence approval gates; obtain the full comparison and explicit technology or migration approval. |
+| audit, assessment, refactor proposal, diff/commit/PR review | `references/audit-contract.md`; defer `references/audit-report-template.md` until formatting |
+| architecture, domain, Cubit/Bloc, Freezed, barrels, imports, large files | `references/architecture-and-state.md` |
+| packages, dependency graph, SDK/plugin, lifecycle, dependency proposal | `references/packages-and-integrations.md` |
+| HTTP, API, DTO mapping, exceptions, failures, typed results | `references/networking-and-errors.md` |
+| preferences, secure local values, Hive, Drift, ObjectBox, migration | `references/persistence.md` |
+| Navigator, routes, deep links, URL state, redirects | `references/navigation.md` |
+| logging, crash reporting, secrets, flavors, configuration | `references/security-and-environments.md` |
+| implementation, refactor, tests, coverage, verification, delivery | `references/quality-and-delivery.md` |
+| screen, widget, screenshot, Figma, responsive, accessibility, asset | `references/ui-implementation.md` |
+
+## Audit and review
+
+Apply `references/audit-contract.md` and all evidence-supported thematic
+references without mutation. Distinguish mechanical inventory from
+architectural judgment, classify current change versus future debt, and use
+the required finding fields and secret-safe reporting.
+
+End an Audit with small independently approvable named batches and wait for
+explicit approval. Review actionable findings first with exact locations,
+evidence, impact, and the smallest correction. Applying a correction requires
+an explicit Implementation boundary before any mutation. Load
+`references/audit-report-template.md` only when the evidence and
+classifications are complete and the report is ready to format.
+
+## Approved implementation
+
+Restate the explicit boundary and preserve coherent project architecture.
+Diagnose bugs before changing them; define the smallest compliant design before
+editing. Resolve applicable Flutter decisions through the routed references,
+including state semantics, owned integration boundaries and lifecycle,
+acyclic dependency direction, exact assets, and retained persistence or
+approved migration.
+
+Follow only the selected workflow. For behavior, observe RED, implement the
+minimum GREEN change, and refactor while green. Keep characterization tests
+passing before and after uncovered refactors. For an allowed no-test predicate,
+record it and run its non-test validation. Review the complete diff and status
+before verification. If evidence or approval is missing, stop and return to
+the relevant gate instead of expanding scope.
+
+## Completion
+
+Run fresh project-defined gates applicable to the approved scope, including
+format, analysis or lint, code generation, affected tests, full suite,
+coverage, generated consistency, and relevant builds. Repeat applicable gates
+in every modified local package and each affected direct dependent. State every
+unrun validation and its reason; later implementation changes invalidate prior
+verification.
+
+After verification, update the existing canonical changelog following project
+convention. Report in the user's language with approved scope, RED,
+characterization, or exact no-test evidence; exact commands and actual results;
+changelog disposition; skipped validations; approved exceptions; and remaining
+approved work versus future debt. Do not overstate visual fidelity or
+completion.

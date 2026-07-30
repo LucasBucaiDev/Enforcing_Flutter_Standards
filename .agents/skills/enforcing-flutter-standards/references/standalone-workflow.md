@@ -18,6 +18,9 @@ the user explicitly approves named implementation batches. For an allowed
 no-test exception, keep the `RED` gate and record the applicable predicate
 rather than removing the gate.
 
+Use `audit-contract.md` while collecting and classifying evidence. Load
+`audit-report-template.md` only when the audit report is ready to format.
+
 ## Gate contracts
 
 ### discover
@@ -82,11 +85,11 @@ rather than removing the gate.
 ### propose
 
 - **Entry condition:** A bounded design and its evidence are available.
-- **Evidence/output:** Present findings using `audit-contract.md`, then create
-  small named batches that are independently approvable. Each batch names its
-  scope, files or boundaries, tests, verification, changelog impact,
-  dependencies on other batches, and any separate approval or external action.
-  Keep future debt separate.
+- **Evidence/output:** Present the classified findings, then create small named
+  batches that are independently approvable. Each batch names its scope, files
+  or boundaries, tests, verification, changelog impact, dependencies on other
+  batches, and any separate approval or external action. Keep future debt
+  separate.
 - **Stop condition:** Stop and refine a proposal that is unbounded, combines
   unrelated work, lacks evidence, or cannot be approved independently.
 
