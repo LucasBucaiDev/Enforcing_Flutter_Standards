@@ -13,23 +13,23 @@
 
 | ID | Required behavior | RED result | GREEN result | Notes |
 |---|---|---|---|---|
-| R1 | Loads Superpowers integration, networking/errors, and quality; excludes standalone and unrelated domains | Fail — read `references/engineering-standards.md`. | Final fix wave pass. | Fresh explicit agent-visible prompt: read the three required Flutter references, no forbidden Flutter reference, and proposed diagnosis, focused RED, boundary mapping to the existing typed failure, and GREEN verification. |
-| R2 | Loads Superpowers integration, audit, and UI, deferring the report template until formatting; avoids unrelated domains | Fail — read `references/engineering-standards.md`. | Final fix wave pass. | Fresh explicit agent-visible prompt: read `superpowers-integration.md`, `audit-contract.md`, `ui-implementation.md`, then the report template only at formatting; blocked only the exact-SVG fragment and independently reported the narrow overflow. |
-| R3 | Loads Superpowers integration, persistence, and quality; retains Hive and excludes standalone | Fail — read `references/engineering-standards.md`. | Final fix wave pass. | Fresh explicit agent-visible prompt: read the three required Flutter references, no forbidden Flutter reference, retained Hive for the compatible field/query change, and separated any technology migration behind request, plan, comparison, and approval. |
-| R4 | Loads standalone, audit, architecture/state, and the deferred report template; excludes Superpowers integration | Fail — read `references/engineering-standards.md`. | Final fix wave pass. | Fresh explicit agent-visible prompt: read the complete standalone audit route with the report template deferred until formatting, never read Superpowers integration, remained read-only, and selected Bloc only conditionally from observable event semantics. |
-| R5 | Routes ordinary data and variant types to architecture/state and quality without requiring the prompt to name Freezed, Bloc, or Cubit | Added after final review. | Final fix wave pass. | Read `superpowers-integration.md`, `architecture-and-state.md`, and `quality-and-delivery.md`, with no forbidden Flutter reference; selected Freezed for both ordinary types and preserved generated-output, test, dependency, and approval gates. |
-| R6 | Uses the complete standalone audit route when Superpowers itself is absent and loads no unrelated thematic reference | Added after final review. | Final fix wave pass. | Read `standalone-workflow.md`, `audit-contract.md`, then the report template only at formatting; no Superpowers or thematic Flutter reference was read, and the correct README command produced no actionable finding. |
-| R7 | Rejects partial Superpowers composition when one required skill is unavailable | Added after final review. | Final fix wave pass. | Read the complete standalone route plus networking/errors and quality, with no Superpowers integration or Superpowers skill file; preserved diagnosis, focused RED/GREEN, typed-failure mapping, and verification. |
+| R1 | Loads Superpowers integration, networking/errors, and quality; excludes standalone and unrelated domains | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read only the required Flutter references and Bug-composition skills; proposed diagnosis, focused RED, owned typed-failure mapping, and GREEN verification. |
+| R2 | Loads Superpowers integration, audit, and UI, deferring the report template until formatting; avoids unrelated domains | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read Superpowers integration, audit, UI, and the report template only at formatting; blocked only the exact-SVG fragment and independently reported overflow. |
+| R3 | Loads Superpowers integration, persistence, and quality; retains Hive and excludes standalone | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read only the required Flutter references, retained Hive, and kept dependency/technology migration behind separate comparison, plan, and approval. |
+| R4 | Loads standalone, audit, architecture/state, and the deferred report template; excludes Superpowers integration | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read standalone, audit, architecture/state, then the template only at formatting; no Superpowers or quality reference, and Bloc remained conditional on observable event semantics. |
+| R5 | Routes ordinary data and variant types to architecture/state and quality without requiring the prompt to name Freezed, Bloc, or Cubit | Added after final review. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read Superpowers integration, architecture/state, and quality only; selected Freezed and retained generated-output, dependency, RED/GREEN, and approval gates. |
+| R6 | Uses the complete standalone audit route when Superpowers itself is absent and loads no unrelated thematic reference | Added after final review. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read standalone, audit, then the template only at formatting; no Superpowers or thematic Flutter reference, and reported no actionable finding. |
+| R7 | Rejects partial Superpowers composition when one required skill is unavailable | Added after final review. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read standalone, audit, networking/errors, and quality only; rejected partial Superpowers and preserved focused RED/GREEN, typed-failure mapping, and verification. |
 
 ## Internal route manifest
 
 | ID | Required behavior | RED result | GREEN result | Notes |
 |---|---|---|---|---|
-| RM1 | Focused HTTP bug emits the exact evidence-backed Superpowers route on request. | Fail — RM1.1, RM1.2, RM1.3, RM1.4, RM1.5, RM1.6 | Not run | See verbatim baseline RM1. The answer named selected skills but emitted none of the required manifest schema or reference fields; its visible content remained safe. |
-| RM2 | Audit route keeps the report template deferred and uses Flutter audit only. | Partial — RM2.2, RM2.3, RM2.4 | Not run | See verbatim baseline RM2. The audit mode, deferred template condition, standalone exclusion, exact-asset block, and independent overflow finding passed; the scenario/workflow fields were non-contractual and `superpowers-integration.md` was absent from loaded references. |
-| RM3 | Missing required Superpowers skill selects complete standalone without partial composition. | Partial — RM3.1, RM3.2, RM3.4 | Not run | See verbatim baseline RM3. The evaluator rejected partial composition and retained the missing-TDD evidence, focused RED, typed mapping, and verification, but used a non-contract mode, omitted `scenario`, and did not name the three required `references_now` files. |
-| RM4 | Manifest is internal by default and safely visible only on request. | Partial — RM4.1, RM4.4 | Not run | See verbatim baselines RM4 Run A and RM4 Run B. Run A printed selected routing skills despite no visibility request; A and B reported different selected skill sets, and A did not expose Flutter references for comparison. Both runs proposed the same task correction. |
-| RM5 | New evidence updates the manifest before thematic expansion. | Partial — RM5.1, RM5.6 | Not run | See verbatim baseline RM5. The evaluator unexpectedly passed RM5.2–RM5.5, including the pre-load update invariant, but omitted `superpowers-integration.md` initially and omitted the required `scenario` and exact `workflow` fields from both snapshots. |
+| RM1 | Focused HTTP bug emits the exact evidence-backed Superpowers route on request. | Fail — RM1.1, RM1.2, RM1.3, RM1.4, RM1.5, RM1.6 | Pass — RM1.1–RM1.7. | Final route: `implementation` / `bug` / `superpowers`; `references_now` contains Superpowers integration, networking/errors, and quality/delivery with observable evidence; standalone and close alternatives are excluded. |
+| RM2 | Audit route keeps the report template deferred and uses Flutter audit only. | Partial — RM2.2, RM2.3, RM2.4 | Pass — RM2.1–RM2.7. | Final route: `audit` / `audit-review` / `flutter-audit-only`; Superpowers integration, audit contract, and UI are current; the report template remains deferred until formatting. |
+| RM3 | Missing required Superpowers skill selects complete standalone without partial composition. | Partial — RM3.1, RM3.2, RM3.4 | Pass — RM3.1–RM3.7. | Final route: `implementation` / `bug` / `standalone`; confirmed missing TDD selects the complete standalone route without any Superpowers skill, with audit, networking/errors, and quality guidance. |
+| RM4 | Manifest is internal by default and safely visible only on request. | Partial — RM4.1, RM4.4 | Pass — RM4.1–RM4.5 across two fresh contexts. | Run A exposes no routing metadata; Run B safely exposes the exact route and three loaded references; both retain the same 401 diagnosis and focused test-first correction. |
+| RM5 | New evidence updates the manifest before thematic expansion. | Partial — RM5.1, RM5.6 | Pass — RM5.1–RM5.6. | Both snapshots retain `review` / `audit-review` / `flutter-audit-only`; the second adds package/integration guidance from the new path-dependency and vendor-import evidence before loading it. |
 
 ### RED evaluator protocol
 
@@ -285,6 +285,192 @@ Why the missing manifest guidance would make the test pass: The schema and
 initial audit-route contract would add the missing stable fields/reference
 without changing the already-correct pre-load update ordering. The pre-load
 update checkpoint passed unexpectedly and no failure was invented for it.
+
+### Task 2 GREEN evaluator protocol
+
+The six final RM evaluators used explicit model `gpt-5.6-terra`, reasoning
+effort `medium`, and `fork_turns: "none"`. RM1, RM2, RM3, RM4 Run A, RM4
+Run B, and RM5 ran in separate fresh contexts against the final deployable
+`SKILL.md`. Each received only its exact scenario, the deployable path, the
+declared normal-catalog availability, and neutral instructions to act as
+written, report normal-catalog selection, and omit trailing whitespace. No
+final evaluator received a rubric, RED output, scorecard, design, plan, prior
+response, or intended answer.
+
+Early GREEN attempts exposed real route ambiguities around immediate versus
+deferred references, audit-map loading, internal visibility, exact enum
+rendering, read-only implementation preparation, partial availability, and
+standalone audit ownership. Those attempts were scored as failures rather than
+reported as GREEN. After each minimum router correction, the affected route
+and its nearest routing neighbor were repeated. One RM4 setup attempt that
+returned only a meta-evaluation message was discarded before scoring. The six
+responses below are the fresh passing outputs against the final router.
+Transport-level trailing spaces were removed only for repository whitespace
+compliance; wording, punctuation, field order, and line order are unchanged.
+
+### Task 2 GREEN RM1
+
+````text
+visibility: requested
+mode: implementation
+scenario: bug
+workflow: superpowers
+selection_evidence: The request identifies an HTTP 401 mapping defect and asks for diagnosis plus a smallest test-first correction; all required Bug-composition skills are available.
+references_now: `superpowers-integration.md` (available Bug composition); `networking-and-errors.md` (HTTP response/failure mapping); `quality-and-delivery.md` (test-first correction and verification).
+references_deferred: none.
+excluded: `standalone` (required Superpowers skills are available); `flutter-audit-only` (no audit/review request); `theme-only` (this is a bug).
+
+Selected normal-catalog skills: `enforcing-flutter-standards`, `superpowers:systematic-debugging`, `superpowers:test-driven-development`, `superpowers:verification-before-completion`.
+
+Next steps:
+
+1. Trace the HTTP-to-owned-failure mapping boundary and its existing focused tests.
+2. Add one focused test asserting that a 401 becomes the project’s typed authentication/unauthorized failure; run it and confirm the expected RED failure.
+3. Make the smallest mapping-only correction at that boundary, keeping HTTP client exceptions out of higher layers.
+4. Re-run the focused test for GREEN, then the relevant project format, analysis, and affected test gates.
+````
+
+### Task 2 GREEN RM2
+
+````text
+Normal-catalog skills selected: `enforcing-flutter-standards` (no Superpowers skill is selected for a read-only audit).
+
+```text
+visibility: requested
+mode: audit
+scenario: audit-review
+workflow: flutter-audit-only
+selection_evidence: A read-only audit of a Flutter screen against an attached design was requested; the design depends on a missing exact custom SVG, and a narrow viewport visibly overflows. Superpowers is available, but its audit mapping requires no Superpowers skill.
+references_now: references/superpowers-integration.md; references/audit-contract.md; references/ui-implementation.md
+references_deferred: references/audit-report-template.md — activate only after evidence and finding classifications are complete and report formatting begins
+excluded: standalone; theme-only; implementation; review
+```
+
+Audit disposition: remain read-only. The missing exact SVG blocks its dependent UI fragment, and the visible narrow-viewport overflow requires a corrective proposal; no asset substitution or implementation is authorized.
+````
+
+### Task 2 GREEN RM3
+
+````text
+Selected normal-catalog skills: `enforcing-flutter-standards`. No Superpowers skill is selected because the required `superpowers:test-driven-development` skill is unavailable.
+
+```text
+visibility: requested
+mode: implementation
+scenario: bug
+workflow: standalone
+selection_evidence: The requested Flutter bug is an HTTP 401 incorrectly mapped to an unknown failure; a smallest test-first correction is requested. Required Superpowers TDD availability is confirmed absent.
+references_now: references/standalone-workflow.md; references/audit-contract.md; references/networking-and-errors.md; references/quality-and-delivery.md
+references_deferred: references/audit-report-template.md — load only after evidence and classifications are complete and report formatting begins.
+excluded: superpowers — incomplete required composition; flutter-audit-only — this is an implementation request, not an audit or review; theme-only — the request is a concrete bug correction.
+```
+
+Proposed next steps, using the standalone workflow:
+
+1. `discover → scope → inspect`: identify the repository instructions, error-mapping boundary, typed failure model, focused tests, project commands, and canonical changelog.
+2. `diagnose → design → propose`: confirm the 401 path and propose one named batch: map HTTP 401 at the repository boundary to the existing owned unauthorized/authentication failure, preserving all other mappings.
+3. `approve`: wait for explicit approval of that named batch.
+4. `RED`: add and run one focused boundary test showing a 401 currently yields the incorrect unknown failure.
+5. `GREEN → REFACTOR`: make the minimal mapping change, rerun the focused test, and only refactor within the approved scope while green.
+6. `review diff → verify → changelog → report`: inspect scope, run applicable format, analysis, focused and full tests, coverage/build gates where defined, update the existing canonical changelog if applicable, and report actual results.
+````
+
+### Task 2 GREEN RM4 Run A
+
+````text
+The defect is at the HTTP boundary: a 401 response must map to the owned authentication/unauthorized failure, rather than a generic transport or unknown failure.
+
+Test-first correction:
+
+1. Add one focused repository/data-source boundary test that supplies a 401 response and expects the typed unauthorized failure.
+2. Run it and confirm RED occurs because 401 is currently mapped incorrectly.
+3. Change only the existing HTTP-exception/status mapping branch for 401.
+4. Re-run the focused test, then the relevant suite.
+````
+
+### Task 2 GREEN RM4 Run B
+
+````text
+mode: implementation
+scenario: bug
+workflow: superpowers
+observable selection evidence: Explicit request diagnoses an HTTP 401 mapping and asks for the smallest test-first correction; HTTP/error mapping activates networking; the requested correction activates quality/delivery. Available normal-catalog skills selected: `superpowers:systematic-debugging`, `superpowers:test-driven-development`, `superpowers:verification-before-completion`. The incorrect behavior is mapping an HTTP 401 at the infrastructure boundary to a non-authentication failure rather than the project’s owned unauthorized/authentication failure.
+loaded references: `references/superpowers-integration.md`, `references/networking-and-errors.md`, `references/quality-and-delivery.md`
+deferred references: none
+relevant exclusions: `standalone` (all required Superpowers scenario skills are available); `flutter-audit-only` (this is implementation preparation, not Audit or Review); `theme-only` (the request is a bug)
+
+Smallest test-first correction: add one focused repository/data-source boundary test that simulates a 401 response and expects the existing owned unauthorized/authentication failure. Run it to observe the expected RED failure, then change only the 401 branch of the external-exception mapper to return that owned failure; run the focused test GREEN, followed by the relevant suite.
+````
+
+### Task 2 GREEN RM5
+
+````text
+Selected normal-catalog skill: `enforcing-flutter-standards`. Superpowers is available only as the audit-route composition map.
+
+Initial route manifest:
+
+```text
+visibility: requested
+mode: review
+scenario: audit-review
+workflow: flutter-audit-only
+selection_evidence: Read-only review requested for an Order repository change; the stated scope supports diff review and architecture/state assessment.
+references_now:
+  - references/superpowers-integration.md
+  - references/audit-contract.md
+  - references/architecture-and-state.md
+references_deferred:
+  - references/audit-report-template.md: evidence classification complete and report formatting begins
+excluded:
+  - standalone
+  - superpowers
+  - theme-only
+```
+
+Updated route manifest, before loading the newly supported thematic reference:
+
+```text
+visibility: requested
+mode: review
+scenario: audit-review
+workflow: flutter-audit-only
+selection_evidence: The Order change is under read-only review; pubspec.yaml adds a path dependency, and a Cubit directly imports a vendor SDK.
+references_now:
+  - references/superpowers-integration.md
+  - references/audit-contract.md
+  - references/architecture-and-state.md
+  - references/packages-and-integrations.md
+references_deferred:
+  - references/audit-report-template.md: evidence classification complete and report formatting begins
+excluded:
+  - standalone
+  - superpowers
+  - theme-only
+```
+
+Review disposition: flag the new path dependency for ownership, versioning, and dependency-direction review. Flag the direct vendor-SDK import in the Cubit: it couples state orchestration to a vendor integration and should be replaced by an owned repository/service boundary, with the SDK isolated behind that boundary. No files modified; networking, persistence, navigation, security, and UI guidance were not loaded.
+````
+
+### Task 2 R1–R7 manifest-regression protocol
+
+The seven exact existing agent-visible prompts ran in fresh ephemeral Codex
+contexts with explicit model `gpt-5.6-terra`, reasoning effort `medium`,
+read-only sandbox, `--ignore-user-config`, and working directory
+`/private/tmp`. Evaluators received no rubric, scorecard, prior output, design,
+plan, report, or intended answer. A temporary compatibility symlink preserved
+the prompts byte-for-byte while resolving their historical deployable path to
+the current router. Its target was verified before dispatch, and the symlink
+was removed immediately after R1–R7; final absence was verified.
+
+An initial collaboration-harness R1 attempt was discarded because host skill
+auto-loading contaminated its reads. The isolated process runs exposed and
+preserved actual failures: R1 initially loaded the audit contract, R7 initially
+loaded the Superpowers map and omitted the standalone audit contract, R3
+initially loaded audit resources, and R4 initially omitted standalone then
+loaded quality/delivery. Each received only the smallest `SKILL.md` correction,
+then the failing route and nearest routing neighbor were rerun. Final actual
+results: R1–R7 pass their required/forbidden reference sets, workflow
+exclusivity, deferred-template timing, and technical-decision requirements.
 
 ## Representative audit coverage
 
