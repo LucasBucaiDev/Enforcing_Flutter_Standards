@@ -69,6 +69,20 @@ Select exactly one mode:
 - **Implementation:** change only the explicitly requested scope or approved
   named batches.
 
+Concrete implementation preparation takes precedence over generic assessment
+phrasing. A request naming a new or changed field, query, behavior, or focused
+bug boundary remains Implementation preparation even when it asks only for a
+direction, smallest-fix proposal, or approval boundary. Its proposal stage
+remains read-only; follow the applicable Bug or New feature composition and
+load `references/quality-and-delivery.md` plus only evidence-supported
+thematic references. Formal Audit routing requires an explicit audit, broad
+assessment, refactor proposal, or review request.
+
+Treat a focused technical or architecture choice as read-only Implementation
+preparation when the user does not request inspection or assessment of
+existing code, a diff, or a refactor. Load only the thematic references
+directly supported by that decision.
+
 Ambiguous requests remain read-only. Default Audit and Review to changed files
 and their direct dependencies; inspect the whole repository only when
 explicitly requested.

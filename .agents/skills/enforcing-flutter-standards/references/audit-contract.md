@@ -51,6 +51,11 @@ Severity and scope classification are independent. For example, an important
 finding may be either `current change` or `future debt`. Do not label
 speculative risks as findings; state what additional evidence is needed.
 
+Any observed logging or reporting path that exposes sensitive data is
+`blocking`, regardless of whether its scope classification is `current change`
+or `future debt`. Report `blocking — future debt` when that exposure is
+outside the current change.
+
 ## Required finding shape
 
 Every finding must contain all of these fields:
