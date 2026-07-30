@@ -27,39 +27,33 @@
 |---|---|---|---|---|
 | RM1 | Focused HTTP bug emits the exact evidence-backed Superpowers route on request. | Fail — RM1.1, RM1.2, RM1.3, RM1.4, RM1.5, RM1.6 | Not run | See verbatim baseline RM1. The answer named selected skills but emitted none of the required manifest schema or reference fields; its visible content remained safe. |
 | RM2 | Audit route keeps the report template deferred and uses Flutter audit only. | Partial — RM2.2, RM2.3, RM2.4 | Not run | See verbatim baseline RM2. The audit mode, deferred template condition, standalone exclusion, exact-asset block, and independent overflow finding passed; the scenario/workflow fields were non-contractual and `superpowers-integration.md` was absent from loaded references. |
-| RM3 | Missing required Superpowers skill selects complete standalone without partial composition. | Partial — RM3.1, RM3.2 | Not run | See verbatim baseline RM3. Complete standalone selection, exclusions, missing-TDD evidence, focused RED, typed-failure mapping, and verification passed, but the manifest omitted `mode` and `scenario`. |
-| RM4 | Manifest is internal by default and safely visible only on request. | Partial — RM4.1, RM4.4 | Not run | See verbatim baselines RM4 Run A and RM4 Run B. Run A printed selected routing skills despite no visibility request, and its output cannot prove identical Flutter references; Run B used safe fields/content and both runs proposed the same task correction. |
-| RM5 | New evidence updates the manifest before thematic expansion. | Partial — RM5.1, RM5.6 | Not run | See verbatim baseline RM5. The evaluator unexpectedly passed RM5.2–RM5.5, including the pre-load update invariant, but omitted `superpowers-integration.md` initially and omitted the required `scenario` and `workflow` fields from both snapshots. |
+| RM3 | Missing required Superpowers skill selects complete standalone without partial composition. | Partial — RM3.1, RM3.2, RM3.4 | Not run | See verbatim baseline RM3. The evaluator rejected partial composition and retained the missing-TDD evidence, focused RED, typed mapping, and verification, but used a non-contract mode, omitted `scenario`, and did not name the three required `references_now` files. |
+| RM4 | Manifest is internal by default and safely visible only on request. | Partial — RM4.1, RM4.4 | Not run | See verbatim baselines RM4 Run A and RM4 Run B. Run A printed selected routing skills despite no visibility request; A and B reported different selected skill sets, and A did not expose Flutter references for comparison. Both runs proposed the same task correction. |
+| RM5 | New evidence updates the manifest before thematic expansion. | Partial — RM5.1, RM5.6 | Not run | See verbatim baseline RM5. The evaluator unexpectedly passed RM5.2–RM5.5, including the pre-load update invariant, but omitted `superpowers-integration.md` initially and omitted the required `scenario` and exact `workflow` fields from both snapshots. |
 
 ### RED evaluator protocol
 
-All six evaluators used explicit model `gpt-5.6-terra`, reasoning effort
-`medium`, and `fork_turns: "none"`. RM1, RM2, RM3, RM5, RM4 Run A, and RM4
-Run B ran in separate fresh contexts. Each received only its exact scenario
+All six recorded evaluators used explicit model `gpt-5.6-terra`, reasoning
+effort `medium`, and `fork_turns: "none"`. RM1, RM2, RM3, RM5, RM4 Run A, and
+RM4 Run B ran in separate fresh contexts. Each received only its exact scenario
 prompt, the deployable skill path, its declared normal-catalog availability,
-and an instruction to act as written and report selected normal-catalog
-skills. No evaluator received the design, implementation plan, checkpoints,
-scorecard, prior output, or intended patch. Transport-level trailing spaces
-were removed only for repository whitespace compliance; wording, punctuation,
-line order, metadata, and results are otherwise unchanged.
+and an instruction to act as written, report selected normal-catalog skills,
+and emit no trailing whitespace. No evaluator received the design,
+implementation plan, checkpoints, scorecard, prior output, or intended patch.
+The responses below are the fresh outputs exactly as received, with no
+normalization or other edits.
 
 ### Verbatim baseline RM1
 
 ````text
-Manifiesto de ruta seleccionado (catálogo normal):
+Route manifest
 
-- `enforcing-flutter-standards` — dominio Flutter/Dart y convenciones del repositorio.
-- `superpowers:systematic-debugging` — aislar el mapeo incorrecto de HTTP 401.
-- `superpowers:test-driven-development` — reproducir primero el contrato esperado con un test fallido.
-- `superpowers:verification-before-completion` — confirmar formato, análisis y tests antes de cerrar.
+- `superpowers:systematic-debugging` — diagnose why HTTP 401 falls through to unknown failure.
+- `superpowers:test-driven-development` — add a failing 401-to-authentication-failure test before changing production code.
+- `enforcing-flutter-standards` — apply the focused Flutter/Dart correction consistently with project conventions.
+- `superpowers:verification-before-completion` — run the relevant targeted validation before reporting completion.
 
-Próximos pasos mínimos:
-
-1. Cargar solo la guía de mapeo HTTP/errores pertinente.
-2. Añadir un test que espere que una respuesta `401` se traduzca al fallo de autenticación autorizado por el dominio, no a “unknown”.
-3. Ejecutarlo para confirmar el fallo actual.
-4. Corregir exclusivamente la rama o conversión de estado `401`.
-5. Ejecutar el test afectado y las validaciones Flutter/Dart relevantes, informando resultados reales.
+Proposed next steps: reproduce the mapping with a focused test, identify the response-status mapping branch, add explicit handling for `401`, implement the smallest correction, then run the targeted test and applicable analysis.
 ````
 
 Observed omission or unsafe output: The response called a selected-skill list
@@ -80,30 +74,26 @@ decision record without exposing private reasoning or instruction contents.
 ### Verbatim baseline RM2
 
 ````text
-Selected normal-catalog skills: `enforcing-flutter-standards` only. The Superpowers audit route requires no Superpowers skill.
+Safe route manifest (post-evidence, pre-report formatting)
 
-Safe route manifest (after evidence collection; before report formatting):
+- Mode: Audit (read-only)
+- Workflow: Flutter audit contract; no Superpowers workflow applies to an audit
+- Loaded Flutter references:
+  - `audit-contract.md`
+  - `ui-implementation.md`
+- Deferred: `audit-report-template.md` (formatting has not begun)
+- Excluded: architecture, state, packages, networking, persistence, navigation, security, quality/delivery, and implementation workflows—no evidence supports them.
+- Evidence recorded:
+  - Custom icon’s exact SVG is unavailable.
+  - A narrow viewport visibly overflows.
+- Required handling:
+  - Record the missing SVG as a five-line UI gap; request the original SVG. Block only the icon-dependent fragment—no approximation or substitute.
+  - Record the narrow-viewport overflow as an evidence-backed current-change finding and propose a separately approvable responsive-layout correction.
+- State: no files changed; no asset generated; no formatting, implementation, or validation initiated.
 
-```text
-Mode: Audit (read-only)
-Workflow: Flutter audit contract; Superpowers integration available, with no
-  Superpowers skill selected for this scenario.
-Evidence: Flutter screen and attached design inspected; a custom-icon fragment
-  lacks its exact SVG; narrow viewport has observed layout overflow.
-Loaded references:
-  - audit-contract.md
-  - ui-implementation.md
-Deferred:
-  - audit-report-template.md (load only when formatting the completed audit)
-Not loaded:
-  - architecture/state, packages, networking, persistence, navigation,
-    security/environments, quality/delivery
-Mutation authority: none
-Asset rule: do not create, approximate, or substitute the missing custom icon.
-Scope: screen under audit and its direct UI dependencies only.
-```
+Audit disposition: Read-only audit remains pending report formatting and explicit approval of named remediation batches. The icon-dependent fragment is blocked by the missing exact asset; the observed overflow requires a corrective proposal before any implementation.
 
-Audit disposition: remain read-only and await the formatted findings/proposal batches plus explicit implementation approval. The missing exact SVG blocks only its dependent UI fragment; the observed narrow-viewport overflow is an evidence-backed responsive-layout finding requiring a smallest-fix proposal.
+Selected normal-catalog skills: enforcing-flutter-standards
 ````
 
 Observed omission or unsafe output: The manifest omitted the required
@@ -125,100 +115,105 @@ deferred template and disposition while emitting the exact required route.
 ### Verbatim baseline RM3
 
 ````text
+Selected normal-catalog skills: enforcing-flutter-standards
+
 Safe route manifest:
 
-- Selected normal-catalog skill: `enforcing-flutter-standards`.
-- Superpowers route: **not selected**. The required `superpowers:test-driven-development` skill is unavailable; therefore the available `superpowers:systematic-debugging` and `superpowers:verification-before-completion` must not be composed partially.
-- Complete workflow: `standalone-workflow.md`.
-- Flutter references selected from the stated evidence only:
-  - `networking-and-errors.md` — HTTP 401 mapping at the external/repository boundary.
-  - `quality-and-delivery.md` — test-first correction and verification.
-- Not selected: architecture/state, persistence, navigation, UI, packages, security, and audit-report formatting.
+```text
+workflow: standalone Flutter workflow
+reason: superpowers:test-driven-development is required for the Superpowers route but unavailable
+do not compose: systematic-debugging + verification-before-completion
+mode: read-only implementation preparation
+themes: networking-and-errors, quality-and-delivery
+mutation: prohibited pending explicit approval
+```
 
-Proposed next steps, following the standalone workflow exactly:
+Proposed next steps:
 
-`discover → scope → inspect → diagnose → design → propose → approve → RED → GREEN → REFACTOR → review diff → verify → changelog → report`
-
-1. Discover the repository conventions, affected HTTP/error-mapping boundary, existing failure types, tests, commands, Git state, and changelog.
-2. Scope one named batch: map HTTP 401 to the project’s owned authentication/unauthorized typed failure; exclude client migration, UI copy, and unrelated error handling.
-3. Inspect and diagnose why 401 currently reaches the unknown-failure fallback.
-4. Propose the smallest batch and wait for explicit approval before edits.
-5. After approval, write a focused boundary test for 401 → typed unauthorized failure and run it to observe the expected RED failure.
-6. Implement the minimal mapping, rerun the focused test GREEN, review the scoped diff, then run applicable formatter, analysis, affected tests, full suite/coverage/build gates as defined by the repository.
-7. Update an existing canonical changelog only after fresh verification; if none exists, request a decision rather than creating one.
+1. Discover and scope the existing HTTP-error mapping and its focused tests.
+2. Inspect and diagnose why HTTP 401 becomes an unknown failure.
+3. Propose one named batch: add a focused boundary test proving `401 → owned unauthorized failure`, then make the minimum repository/error-mapping change.
+4. Await explicit approval of that batch.
+5. On approval, follow the standalone sequence exactly: `RED → GREEN → REFACTOR → review diff → verify → changelog → report`.
 ````
 
-Observed omission or unsafe output: The safe manifest selected the correct
-complete standalone route and exclusions but omitted the required `mode` and
-`scenario` fields. No unsafe content was exposed.
+Observed omission or unsafe output: The safe manifest selected standalone and
+rejected partial Superpowers composition but used
+`mode: read-only implementation preparation`, omitted `scenario`, and named
+themes rather than the required three `references_now` files. No unsafe
+content was exposed.
 
-Expected manifest behavior: The same correct standalone decision record also
-states `mode = implementation` and `scenario = bug` in the stable schema.
+Expected manifest behavior: The same standalone decision record states
+`mode = implementation` and `scenario = bug`, and includes
+`standalone-workflow.md`, `networking-and-errors.md`, and
+`quality-and-delivery.md` in `references_now`.
 
 Failure classification: routing-contract
 
 Why the missing manifest guidance would make the test pass: The schema would
-require the two omitted fields while retaining the evaluator's correct
-all-or-nothing workflow, typed mapping, RED, and verification behavior.
+require the exact mode, scenario, and loaded-reference records while retaining
+the evaluator's all-or-nothing workflow, typed mapping, RED, and verification
+behavior.
 
 ### Verbatim baseline RM4 Run A
 
 ````text
-Diagnóstico: el mapper de la frontera HTTP clasifica el `401` en la rama genérica, por lo que pierde el significado de autenticación y devuelve `UnknownFailure`.
+Selected normal-catalog skills: enforcing-flutter-standards, superpowers:systematic-debugging, superpowers:test-driven-development
 
-Corrección mínima propuesta, sin cambios realizados:
+Diagnosis: the mapper is treating an HTTP 401 as a generic transport/API failure (or allowing the vendor exception to escape), instead of converting it at the infrastructure boundary into the project’s existing authentication/unauthorized typed failure. No source implementation was provided, so the concrete failure type name must follow the project’s existing hierarchy.
 
-1. Añadir un test de repositorio/mapper: una excepción HTTP con estado `401` debe producir el failure tipado de no autorizado ya existente (y nunca `UnknownFailure`).
-2. Ejecutarlo y confirmar RED por la clasificación actual.
-3. En el `catch` de la frontera externa, añadir únicamente la rama explícita para `401` antes del fallback genérico; conservar el resto del mapeo.
-4. Ejecutar el test focalizado en GREEN y después la suite relevante.
+Smallest test-first correction:
 
-No hay evidencia de los nombres concretos del proyecto, así que el test y la rama deben reutilizar el failure tipado existente para autenticación/no autorizado, sin introducir tipos, dependencias ni cambios de UI.
+1. Add one focused mapper test: a vendor HTTP exception with `statusCode: 401` returns the existing typed unauthorized/authentication failure, not a thrown vendor exception or generic failure.
+2. Run that test and confirm RED for the incorrect current mapping.
+3. In the existing exception-to-failure mapping branch only, catch the vendor HTTP exception and map status `401` to that existing typed failure; preserve all other mappings.
+4. Re-run the focused test for GREEN, then the relevant mapper suite.
 
-Skills de catálogo normal seleccionados: `enforcing-flutter-standards`, `superpowers:systematic-debugging`, `superpowers:test-driven-development`, `superpowers:verification-before-completion`.
+No files were modified. The normal project inspector could not run because the local Flutter SDK attempted to write its cache outside the permitted workspace.
 ````
 
 ### Verbatim baseline RM4 Run B
 
 ````text
-Mode: Implementation
-Scenario: Bug
-Workflow: Superpowers
+Selected normal-catalog skills: `enforcing-flutter-standards`, `superpowers:systematic-debugging`, `superpowers:test-driven-development`, `superpowers:verification-before-completion`
 
-Observable selection evidence:
-- HTTP 401 is mapped to an unknown failure.
-- The requested correction changes observable error behavior and requires a focused test-first fix.
-- All required Bug-workflow skills are available.
+Route manifest:
+- Mode: Implementation preparation, read-only
+- Scenario: Bug
+- Workflow: Superpowers — systematic debugging → TDD → verification-before-completion
+- Observable selection evidence:
+  - The symptom is an HTTP 401 being mapped to an incorrect typed failure.
+  - The request asks for diagnosis and the smallest test-first correction.
+  - All three scenario-required Superpowers skills are declared available.
+  - File modification is explicitly excluded.
+- Loaded:
+  - `SKILL.md`
+  - `references/superpowers-integration.md`
+  - `references/networking-and-errors.md`
+  - `references/quality-and-delivery.md`
+  - `superpowers:systematic-debugging`
+  - `superpowers:test-driven-development`
+  - `superpowers:verification-before-completion`
+- Deferred: none
+- Relevant exclusions:
+  - `references/standalone-workflow.md`: excluded because the complete Superpowers route is available.
+  - Audit references: excluded because this is focused bug preparation, not an audit or review.
+  - Architecture/state, packages, persistence, navigation, security, and UI references: excluded; no observable evidence invokes them.
 
-Selected normal-catalog skills:
-- `enforcing-flutter-standards`
-- `superpowers:systematic-debugging`
-- `superpowers:test-driven-development`
-- `superpowers:verification-before-completion`
+Diagnosis: the infrastructure mapper classifies the known 401 response as the generic unknown failure rather than the project’s existing typed unauthorized/authentication failure. The error must be translated at the HTTP/infrastructure boundary, before a typed result reaches higher layers.
 
-Diagnosis and smallest test-first correction:
-- Root cause: the HTTP-error mapper routes status `401` through its unknown/default path instead of its owned unauthorized failure.
-- RED: add one boundary test that supplies a 401 response and expects the owned unauthorized failure; verify it fails specifically because the mapper returns unknown.
-- GREEN: add the minimal explicit `401 → UnauthorizedFailure` mapping before the default/unknown branch; rerun the focused test, then applicable verification.
-
-Loaded references:
-- `superpowers-integration.md`
-- `networking-and-errors.md`
-- `quality-and-delivery.md`
-
-Deferred references:
-- None.
-
-Relevant exclusions:
-- `standalone-workflow.md` — complete Superpowers Bug composition is available.
-- `audit-contract.md` and `audit-report-template.md` — this is not an audit/review.
-- Architecture/state, packages/integrations, persistence, navigation, security/environments, and UI references — unsupported by the focused HTTP-mapping scope.
+Smallest test-first correction:
+1. Add one focused mapper boundary test using the existing HTTP exception fixture/fake with status 401; assert the returned typed result contains the existing unauthorized failure.
+2. Run that test and confirm RED specifically reports the current unknown failure, rather than a setup error.
+3. Change only the 401 mapping branch to return that existing typed failure.
+4. Re-run the focused test for GREEN, then run the repository’s applicable analysis and affected suite gates. No verification was run here because no files were changed.
 ````
 
 Observed omission or unsafe output: Run A disclosed selected routing skills
-despite the no-visibility request, and its answer does not expose enough
-information to prove that both runs selected identical Flutter references.
-Run B exposed only safe route fields/content and no private material.
+despite the no-visibility request. Run A omitted
+`superpowers:verification-before-completion` from its selected skills while Run
+B included it, and Run A did not expose Flutter references for comparison. Run
+B exposed safe route fields/content and no private material.
 
 Expected manifest behavior: Run A keeps all routing metadata internal; Run B
 shows only the safe schema; both retain identical effective routing and task
@@ -228,58 +223,56 @@ Failure classification: visibility
 
 Why the missing manifest guidance would make the test pass: An internal-by-
 default visibility rule would suppress Run A's selected-skill disclosure while
-retaining a comparable internal route record, and a safe-on-request projection
-would preserve Run B's useful output.
+retaining a comparable internal route record, enforce a stable effective
+workflow across both runs, and preserve Run B's safe-on-request projection.
 
 ### Verbatim baseline RM5
 
 ````text
-Selected normal-catalog skill: `enforcing-flutter-standards`.
-Superpowers selection: none—the applicable read-only-review route uses the Flutter audit contract directly.
+Selected normal-catalog skills: enforcing-flutter-standards
 
-**Initial route manifest**
+Initial route manifest (before scoped evidence)
 
 ```text
 Mode: Review (read-only)
-Scope: Order repository change and direct dependencies
-Loaded:
-- audit contract
-- architecture and state
+Scope: Order repository change and its direct dependencies
+Workflow: Flutter audit contract; no Superpowers skill applies to an audit/read-only review
+Loaded thematic references:
+- audit-contract
+- architecture-and-state
 Deferred:
-- packages and integrations (no supporting evidence yet)
+- audit-report-template, until evidence and classifications are complete
 Excluded:
-- networking/errors, persistence, navigation, security/environments, UI,
-  quality/delivery
+- networking/errors, packages/integrations, persistence, navigation,
+  security/environments, quality/delivery, UI
 ```
 
-**Updated route manifest — recorded before thematic expansion**
+Updated route manifest (after `pubspec.yaml` shows a new path dependency and a Cubit directly imports a vendor SDK; before loading newly supported guidance)
 
 ```text
 Mode: Review (read-only)
-New scoped evidence:
-- pubspec.yaml declares a new path dependency
-- a Cubit directly imports a vendor SDK
-
-Already loaded:
-- audit contract
-- architecture and state
-Newly supported, pending load:
-- packages and integrations
+Scope: Order repository change, the new path dependency, and direct consumers
+Workflow: Flutter audit contract; no Superpowers skill applies to an audit/read-only review
+Already loaded thematic references:
+- audit-contract
+- architecture-and-state
+Newly supported thematic reference to load next:
+- packages-and-integrations
+Deferred:
+- audit-report-template, until evidence and classifications are complete
 Still excluded:
-- networking/errors, persistence, navigation, security/environments, UI,
-  quality/delivery
+- networking/errors, persistence, navigation, security/environments,
+  quality/delivery, UI
 ```
 
-Only after recording that second manifest should `packages and integrations` be loaded.
-
-Disposition: continue the scoped review read-only. The path dependency warrants package-boundary and dependency-direction inspection; by itself it is not necessarily a finding. The direct vendor-SDK import in the Cubit is an actionable current-change architecture/integration breach: vendor types must be isolated behind an owned adapter/service and exposed through owned types. Report it with exact observed location and evidence; do not implement, alter dependencies, or expand into the excluded themes.
+Read-only review disposition: expand only into `packages-and-integrations`, then report the direct vendor-SDK import in the Cubit as a blocking current-change boundary violation: vendor types must be contained behind an owned adapter/service and owned types. The new path dependency also requires evidence of an approved dependency decision and an acyclic, constructor-injected boundary; absent that evidence, it is blocking for delivery. Do not modify code, dependencies, or configuration; await explicit approval of a named implementation batch.
 ````
 
 Observed omission or unsafe output: The initial snapshot omitted
 `superpowers-integration.md`, and both snapshots omitted the required
-`scenario = audit-review` and `workflow = flutter-audit-only`. The evaluator
-did safely record the new dependency/import evidence and the pending package
-reference before loading it.
+`scenario = audit-review` and exact `workflow = flutter-audit-only`. The
+evaluator did safely record the new dependency/import evidence and the pending
+package reference before loading it.
 
 Expected manifest behavior: Both snapshots preserve the complete stable
 review/audit-review/flutter-audit-only route, with Superpowers integration,
