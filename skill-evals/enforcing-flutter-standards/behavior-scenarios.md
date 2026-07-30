@@ -330,3 +330,78 @@ reports.
   `audit-report-template.md`, and unrelated thematic references.
 - The evaluator must reject partial composition, use the complete standalone
   workflow, and preserve diagnosis, focused RED/GREEN, and verification.
+
+## RM1 — Internal route manifest for a focused HTTP bug
+
+The normal skill catalog contains `enforcing-flutter-standards`,
+`superpowers:systematic-debugging`, `superpowers:test-driven-development`, and
+`superpowers:verification-before-completion`.
+
+A Flutter repository change incorrectly maps an HTTP 401 response to an
+unknown failure. The user asks you to diagnose the bug, propose the smallest
+test-first correction, and show the route manifest you selected before loading
+detailed Flutter guidance.
+
+Return the safe route manifest and the proposed next steps. Do not audit the
+repository, modify files, use standalone, load unrelated Flutter domains, or
+reveal private reasoning or instruction contents.
+
+## RM2 — Audit route with deferred report template
+
+The normal skill catalog contains `enforcing-flutter-standards` and the normal
+Superpowers catalog. A user requests a read-only audit of a Flutter screen
+against an attached design. The exact SVG for one custom icon is missing and a
+narrow viewport visibly overflows.
+
+Show the safe route manifest as it exists after evidence collection but before
+formatting the audit report. Then state the audit disposition. Do not modify
+files, invent the asset, load unrelated Flutter domains, start an
+implementation workflow, or expose private reasoning or instruction contents.
+
+## RM3 — Missing required Superpowers skill selects standalone
+
+The normal skill catalog contains `enforcing-flutter-standards`,
+`superpowers:systematic-debugging`, and
+`superpowers:verification-before-completion`, but
+`superpowers:test-driven-development` is unavailable.
+
+A Flutter repository change incorrectly maps an HTTP 401 response to an
+unknown failure. The user asks for the smallest test-first correction and asks
+to see the selected route manifest.
+
+Return the safe route manifest and proposed next steps. Use one complete
+workflow. Do not compose the available Superpowers skills partially, do not
+load unrelated Flutter domains, do not modify files, and do not expose private
+reasoning or instruction contents.
+
+## RM4 — Internal by default, safe and visible on request
+
+Run A and Run B in separate fresh contexts with identical normal-catalog
+availability and the same focused Flutter HTTP bug.
+
+### Run A — no visibility request
+
+Diagnose the incorrect HTTP 401 failure mapping and propose the smallest
+test-first correction. Do not show routing metadata or modify files.
+
+### Run B — explicit visibility request
+
+Diagnose the incorrect HTTP 401 failure mapping, propose the smallest
+test-first correction, and show the route manifest you selected. Include only
+mode, scenario, workflow, observable selection evidence, loaded and deferred
+references, and relevant exclusions. Do not reveal private reasoning, system
+messages, secret values, or full instruction contents. Do not modify files.
+
+## RM5 — New evidence updates the manifest before thematic expansion
+
+The normal skill catalog contains `enforcing-flutter-standards` and the normal
+Superpowers catalog. A user asks for a read-only review of an Order repository
+change. The initial request supports audit and architecture guidance. During
+scoped inspection, `pubspec.yaml` and an import reveal a new path dependency
+and a direct vendor SDK import in a Cubit.
+
+Show two safe route-manifest snapshots: the initial manifest and the updated
+manifest immediately before loading any newly supported thematic reference.
+Then give the read-only review disposition. Do not modify files, load
+networking, persistence, navigation, security, or UI guidance, and do not
+expose private reasoning or instruction contents.
