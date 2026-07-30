@@ -41,12 +41,22 @@ Current change: the blocking package cycle.
 Future debt: none supported by the inspected evidence.
 
 Proposed implementation order:
-1. B1 — Restore acyclic token dependency direction.
-   Scope: the lower token/session contract, auth_repository implementation,
-   api_client injection, affected manifests, focused boundary tests, direct
-   dependent tests, cycle verification, and the existing canonical changelog.
-   Approval needed: explicit approval of B1; separate approval if the contract
-   requires a new package or dependency.
+1. Batch: B1 — Restore acyclic token dependency direction.
+   Findings and exact scope: the blocking current-change package-cycle finding
+   above; only the lower token/session boundary and affected package edges.
+   Files/boundaries: the lower token/session contract, auth_repository
+   implementation, api_client injection, and affected manifests.
+   Tests/characterization: focused RED/GREEN boundary tests for injected token
+   access, plus existing tests for both affected packages and direct
+   dependents.
+   Separate decisions/approvals: explicit approval of B1; separate approval if
+   the contract requires a new package or dependency.
+   Verification: applicable format, analysis, code generation, focused and
+   full tests, coverage, generated consistency, package/direct-dependent
+   checks, build, and dependency-cycle verification.
+   Changelog: the existing canonical changelog, with a concise entry in its
+   established category for the approved boundary change.
+   Dependencies on batches: none.
 
 Implementation status: not started. The audit remains read-only while waiting
 for explicit approval of B1.

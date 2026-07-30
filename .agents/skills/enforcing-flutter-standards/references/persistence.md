@@ -20,10 +20,12 @@ preference.
 | An app already has one coherent primary structured store. | Reuse it for new features. Keep Shared Preferences for simple preferences and secure storage for secrets; these are not competing domain databases. | Changing the primary store requires an explicit architectural reason, migration request, and approval. | Name the established store and whether it was retained. |
 | A storage migration is explicitly requested and approved. | Define source and destination schemas; versioned idempotent execution; conversion validation; partial-failure behavior; backup and recovery/rollback; representative-data tests; the source of truth at every phase; temporary encapsulated coexistence only; no permanent dual writes; and removal of the old store. | Approve the technology choice and migration plan before implementation. Any destructive cutover or external action needs its own explicit authorization. | Report every migration contract item, versions, test fixtures/results, source-of-truth transitions, old-store removal, and any unexecuted recovery action. |
 
-When a serialized collection is stored in Shared Preferences and Hive is the
-established structured store, the required output states unconditionally that
-the collection moves from Shared Preferences to Hive through an approved
-migration. Name both stores; do not leave the correction conditional.
+When a non-secret serialized collection meets the structured-data predicate
+above because it acts as a database or offline dataset, is stored in Shared
+Preferences, and Hive is the established structured store, the required output
+states unconditionally that the collection moves from Shared Preferences to
+Hive through an approved migration. Name both stores; do not leave the
+correction conditional.
 
 Features depend on owned persistence contracts rather than concrete storage
 types. Package extraction is outside this reference's decision scope.

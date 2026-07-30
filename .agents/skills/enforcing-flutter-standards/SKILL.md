@@ -87,12 +87,11 @@ explicitly requested.
 
 ## Compose one workflow
 
-Discover the available Superpowers skills without assuming them. If every
-skill required by the applicable scenario is available, load
-`references/superpowers-integration.md` and follow only that composition. If
-any required skill is absent, load `references/standalone-workflow.md` for the
-whole request. Never combine the standalone workflow with a partial
-Superpowers route.
+Discover Superpowers itself and the applicable scenario's required skills
+without assuming availability. Only if Superpowers is discoverable and every
+required skill is available, load `references/superpowers-integration.md` and
+follow it. Otherwise load `references/standalone-workflow.md` for the request.
+Never combine the standalone workflow with a partial Superpowers route.
 
 ## Route Flutter references
 
@@ -102,7 +101,7 @@ merely because it exists. References are independent and one level deep.
 | Observable task or evidence | Load |
 |---|---|
 | audit, assessment, refactor proposal, diff/commit/PR review | `references/audit-contract.md`; defer `references/audit-report-template.md` until formatting |
-| architecture, domain, Cubit/Bloc, Freezed, barrels, imports, large files | `references/architecture-and-state.md` |
+| architecture, domain, models, data/variant types, state, Cubit/Bloc, Freezed, barrels, imports, large files | `references/architecture-and-state.md` |
 | packages, dependency graph, SDK/plugin, lifecycle, dependency proposal | `references/packages-and-integrations.md` |
 | HTTP, API, DTO mapping, exceptions, failures, typed results | `references/networking-and-errors.md` |
 | preferences, secure local values, Hive, Drift, ObjectBox, migration | `references/persistence.md` |

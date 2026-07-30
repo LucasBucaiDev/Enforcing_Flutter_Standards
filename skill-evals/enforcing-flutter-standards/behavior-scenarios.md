@@ -90,98 +90,243 @@ for explicit approval.
 
 ## Selective-reference routing
 
-Run each route in a fresh context. Give the evaluator access to the current
-deployable skill and the stated Superpowers availability. Capture every skill
-or reference file it reads before answering. A route fails when it reads a
-forbidden reference, skips a required reference, loads both general workflows,
-or weakens the requested decision.
+### Evaluator-only protocol
+
+Run each route in a fresh context with no prior conversation. Send only the
+scenario's agent-visible prompt block verbatim. Do not send this protocol, any
+evaluator-only rubric, the scorecard, prior results, or optimization documents.
+Capture the evaluator's complete answer and independently score its actual
+file reads and technical decision against the separate rubric.
 
 ### R1 — Focused networking bug with Superpowers
 
-Superpowers systematic debugging, TDD, and verification skills are available.
-An existing Flutter repository has a focused bug: one API mapper lets a vendor
-HTTP exception escape instead of returning the project's typed failure. Inspect
-and propose the smallest test-first fix. Before the proposal, list every
-enforcing-flutter-standards reference loaded.
+#### Agent-visible prompt
 
-Required Flutter references after optimization:
-- `superpowers-integration.md`
-- `networking-and-errors.md`
-- `quality-and-delivery.md`
+```text
+Work read-only. Evaluate the deployable skill at
+/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+Superpowers itself is discoverable, and its systematic-debugging,
+test-driven-development, and verification-before-completion skills are
+available.
 
-Forbidden Flutter references:
-- `architecture-and-state.md`
-- `packages-and-integrations.md`
-- `persistence.md`
-- `navigation.md`
-- `security-and-environments.md`
-- `ui-implementation.md`
-- `standalone-workflow.md`
+Treat the following facts as the complete synthetic project evidence; do not
+search for a project implementation. One API mapper lets a vendor HTTP
+exception escape instead of returning the project's typed failure. Propose the
+smallest test-first fix. Before the proposal, list in read order every
+enforcing-flutter-standards skill or reference file and every Superpowers skill
+file you actually read. Read only that deployable skill and files it directs
+you to. Do not inspect evaluation scenarios, rubrics, scorecards, plans, or
+reports.
+```
+
+#### Evaluator-only rubric
+
+- Required Flutter references:
+  `superpowers-integration.md`, `networking-and-errors.md`, and
+  `quality-and-delivery.md`.
+- Forbidden Flutter references: `audit-contract.md`,
+  `audit-report-template.md`, `architecture-and-state.md`,
+  `packages-and-integrations.md`, `persistence.md`, `navigation.md`,
+  `security-and-environments.md`, `ui-implementation.md`, and
+  `standalone-workflow.md`.
+- The decision must diagnose first, reproduce the escape with a focused RED
+  test, map the vendor exception at the infrastructure boundary to the
+  existing typed failure, and verify GREEN.
 
 ### R2 — Focused UI audit with Superpowers
 
-Superpowers is available. Audit only a changed Flutter screen against a
+#### Agent-visible prompt
+
+```text
+Work read-only. Evaluate the deployable skill at
+/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+Superpowers itself and its normal skill catalog are discoverable.
+
+Treat the following facts as the complete synthetic project evidence; do not
+search for project files. Audit only a changed Flutter screen against a
 screenshot. The screen has a missing exact custom SVG and a responsive overflow
 at narrow width; no data, networking, persistence, navigation, package,
-environment, or logging change is present. Before reporting, list every
-enforcing-flutter-standards reference loaded.
+environment, or logging change is present. Before reporting, list in read order
+every enforcing-flutter-standards skill or reference file and every Superpowers
+skill file you actually read. Read only that deployable skill and files it
+directs you to. If you read a formatting resource, state when you read it. Do
+not inspect evaluation scenarios, rubrics, scorecards, plans, or reports.
+```
 
-Required Flutter references after optimization:
-- `superpowers-integration.md`
-- `audit-contract.md`
-- `ui-implementation.md`
-- `audit-report-template.md`, loaded only when formatting the report
+#### Evaluator-only rubric
 
-Forbidden Flutter references:
-- `architecture-and-state.md`
-- `packages-and-integrations.md`
-- `networking-and-errors.md`
-- `persistence.md`
-- `navigation.md`
-- `security-and-environments.md`
-- `standalone-workflow.md`
+- Required Flutter references: `superpowers-integration.md`,
+  `audit-contract.md`, `ui-implementation.md`, then
+  `audit-report-template.md` only when formatting.
+- Forbidden Flutter references: `architecture-and-state.md`,
+  `packages-and-integrations.md`, `networking-and-errors.md`,
+  `persistence.md`, `navigation.md`, `security-and-environments.md`,
+  `quality-and-delivery.md`, and `standalone-workflow.md`.
+- The report must block only the fragment that needs the exact SVG, never
+  substitute or generate it, and independently report the narrow overflow.
 
 ### R3 — Persistence feature with Superpowers
 
-Superpowers brainstorming, planning, TDD, and verification skills are
-available. A touched feature in an existing app needs one new Hive field and
-query. No other architecture, networking, navigation, UI, environment,
-observability, or package change is requested. Decide the storage direction
-and approval boundary. Before answering, list every
-enforcing-flutter-standards reference loaded.
+#### Agent-visible prompt
 
-Required Flutter references after optimization:
-- `superpowers-integration.md`
-- `persistence.md`
-- `quality-and-delivery.md`
+```text
+Work read-only. Evaluate the deployable skill at
+/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+Superpowers itself is discoverable, and its brainstorming, writing-plans,
+test-driven-development, and verification-before-completion skills are
+available.
 
-Forbidden Flutter references:
-- `architecture-and-state.md`
-- `packages-and-integrations.md`
-- `networking-and-errors.md`
-- `navigation.md`
-- `security-and-environments.md`
-- `ui-implementation.md`
-- `standalone-workflow.md`
+Treat the following facts as the complete synthetic project evidence; do not
+search for a project implementation. A touched feature in an existing app needs
+one new Hive field and query. No other architecture, networking, navigation,
+UI, environment, observability, or package change is requested. Decide the
+storage direction and approval boundary. Before answering, list in read order
+every enforcing-flutter-standards skill or reference file and every Superpowers
+skill file you actually read. Read only that deployable skill and files it
+directs you to. Do not inspect evaluation scenarios, rubrics, scorecards,
+plans, or reports.
+```
+
+#### Evaluator-only rubric
+
+- Required Flutter references: `superpowers-integration.md`,
+  `persistence.md`, and `quality-and-delivery.md`.
+- Forbidden Flutter references: `audit-contract.md`,
+  `audit-report-template.md`, `architecture-and-state.md`,
+  `packages-and-integrations.md`, `networking-and-errors.md`,
+  `navigation.md`, `security-and-environments.md`, `ui-implementation.md`, and
+  `standalone-workflow.md`.
+- The decision must retain Hive, scope the compatible schema/query change and
+  tests, and require a separate explicit migration request, plan, comparison,
+  and approval before introducing Drift or ObjectBox.
 
 ### R4 — Standalone architecture review
 
-No Superpowers skill is discoverable. Review a changed Freezed state and Cubit
-whose event semantics may require Bloc. No networking, persistence, navigation,
-UI, package, environment, or logging concern is present. Before reporting,
-list every enforcing-flutter-standards reference loaded.
+#### Agent-visible prompt
 
-Required Flutter references after optimization:
-- `standalone-workflow.md`
-- `audit-contract.md`
-- `architecture-and-state.md`
-- `audit-report-template.md`, loaded only when formatting the report
+```text
+Work read-only. Evaluate the deployable skill at
+/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+Neither Superpowers itself nor any Superpowers skill is discoverable.
 
-Forbidden Flutter references:
-- `superpowers-integration.md`
-- `packages-and-integrations.md`
-- `networking-and-errors.md`
-- `persistence.md`
-- `navigation.md`
-- `security-and-environments.md`
-- `ui-implementation.md`
+Treat the following facts as the complete synthetic project evidence; do not
+search for project files. Review a changed Freezed state and Cubit whose event
+semantics may require Bloc. No networking, persistence, navigation, UI,
+package, environment, or logging concern is present. Before reporting, list in
+read order every enforcing-flutter-standards skill or reference file you
+actually read. Read only that deployable skill and files it directs you to. If
+you read a formatting resource, state when you read it. Do not inspect
+evaluation scenarios, rubrics, scorecards, plans, or reports.
+```
+
+#### Evaluator-only rubric
+
+- Required Flutter references: `standalone-workflow.md`,
+  `audit-contract.md`, `architecture-and-state.md`, then
+  `audit-report-template.md` only when formatting.
+- Forbidden Flutter references: `superpowers-integration.md`,
+  `packages-and-integrations.md`, `networking-and-errors.md`,
+  `persistence.md`, `navigation.md`, `security-and-environments.md`,
+  `quality-and-delivery.md`, and `ui-implementation.md`.
+- The report must keep review read-only and choose Bloc only when observable
+  event identity, ordering, cancellation, concurrency, or auditability
+  semantics require it.
+
+### R5 — Ordinary model and non-Bloc state routing
+
+#### Agent-visible prompt
+
+```text
+Work read-only. Evaluate the deployable skill at
+/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+Superpowers itself is discoverable, and its brainstorming, writing-plans,
+test-driven-development, and verification-before-completion skills are
+available.
+
+Treat the following facts as the complete synthetic project evidence; do not
+search for project files. A focused implementation-preparation request adds two
+ordinary Dart types: DeliveryWindow stores start and end values, while
+LoadState represents loading, loaded data, and failure variants. The request
+does not mention Freezed, Bloc, Cubit, networking, persistence, navigation, UI,
+packages, environments, or logging. Decide the representation and test/approval
+boundary. Before answering, list in read order every
+enforcing-flutter-standards skill or reference file and every Superpowers skill
+file you actually read. Read only that deployable skill and files it directs
+you to. Do not inspect evaluation scenarios, rubrics, scorecards, plans, or
+reports.
+```
+
+#### Evaluator-only rubric
+
+- Required Flutter references: `superpowers-integration.md`,
+  `architecture-and-state.md`, and `quality-and-delivery.md`.
+- Forbidden Flutter references: `audit-contract.md`,
+  `audit-report-template.md`, `packages-and-integrations.md`,
+  `networking-and-errors.md`, `persistence.md`, `navigation.md`,
+  `security-and-environments.md`, `ui-implementation.md`, and
+  `standalone-workflow.md`.
+- The decision must apply the data/variant predicate and require Freezed plus
+  applicable generated outputs, subject to existing dependency and
+  generated-file policy/approval.
+
+### R6 — Superpowers absent for read-only review
+
+#### Agent-visible prompt
+
+```text
+Work read-only. Evaluate the deployable skill at
+/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+Neither Superpowers itself nor any Superpowers skill is discoverable.
+
+Treat the following facts as the complete synthetic project evidence; do not
+search for project files. Review only a changed README command for the bundled
+Flutter inspector. The command is syntactically correct and matches the
+inspector's documented interface. No architecture, model, state, package,
+networking, persistence, navigation, UI, environment, logging, implementation,
+test, dependency, or migration concern is present. Before reporting, list in
+read order every enforcing-flutter-standards skill or reference file you
+actually read. Read only that deployable skill and files it directs you to. If
+you read a formatting resource, state when you read it. Do not inspect
+evaluation scenarios, rubrics, scorecards, plans, or reports.
+```
+
+#### Evaluator-only rubric
+
+- Required Flutter references: `standalone-workflow.md`,
+  `audit-contract.md`, then `audit-report-template.md` only when formatting.
+- Forbidden Flutter references: `superpowers-integration.md` and every
+  thematic Flutter reference.
+- The review must remain read-only and use the complete finding/batch shape
+  only if the stated command supplies an actionable finding.
+
+### R7 — Partial Superpowers availability
+
+#### Agent-visible prompt
+
+```text
+Work read-only. Evaluate the deployable skill at
+/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+Superpowers itself is discoverable. Its systematic-debugging and
+test-driven-development skills are available, but its
+verification-before-completion skill is unavailable.
+
+Treat the following facts as the complete synthetic project evidence; do not
+search for a project implementation. One API mapper lets a vendor HTTP
+exception escape instead of returning the project's typed failure. Propose the
+smallest test-first fix. Before the proposal, list in read order every
+enforcing-flutter-standards skill or reference file and every Superpowers skill
+file you actually read. Read only that deployable skill and files it directs
+you to. Do not inspect evaluation scenarios, rubrics, scorecards, plans, or
+reports.
+```
+
+#### Evaluator-only rubric
+
+- Required Flutter references: `standalone-workflow.md`,
+  `audit-contract.md`, `networking-and-errors.md`, and
+  `quality-and-delivery.md`; the complete standalone workflow uses the audit
+  contract while collecting and classifying evidence.
+- Forbidden Flutter references: `superpowers-integration.md`,
+  `audit-report-template.md`, and unrelated thematic references.
+- The evaluator must reject partial composition, use the complete standalone
+  workflow, and preserve diagnosis, focused RED/GREEN, and verification.

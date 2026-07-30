@@ -1,8 +1,8 @@
 # Flutter architecture and state
 
-Load this reference for architecture, domain boundaries, Cubit or Bloc,
-Freezed, barrels, imports, or file-responsibility decisions supported by
-observable project evidence.
+Load this reference for architecture, domain boundaries, models, data or
+variant types, state, Cubit or Bloc, Freezed, barrels, imports, or
+file-responsibility decisions supported by observable project evidence.
 
 ## Architecture and domain purity
 

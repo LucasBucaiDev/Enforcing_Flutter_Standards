@@ -225,7 +225,7 @@ Future<void> main() async {
     );
 
     passed += await _runTest(
-      'section selection catches unrelated inventory emitted during expansion',
+      'section selection catches text divergence or unrelated inventory',
       () async {
         final result = await Process.run(Platform.resolvedExecutable, [
           'run',
@@ -255,6 +255,45 @@ Future<void> main() async {
           (inventory['packageEdges'] as List<dynamic>).isNotEmpty,
           'Selected package edges must retain their records.',
         );
+
+        final textResult = await Process.run(Platform.resolvedExecutable, [
+          'run',
+          inspector.path,
+          '--root',
+          fixtureRoot.path,
+          '--format',
+          'text',
+          '--section',
+          'packageEdges',
+          '--section',
+          'cycles',
+        ], workingDirectory: repositoryRoot.path);
+        _expectEqual(
+          textResult.exitCode,
+          0,
+          'Selected text sections must succeed.',
+        );
+        final textOutput = textResult.stdout as String;
+        _expectEqual(
+          _parseTextInventory(textOutput),
+          inventory,
+          'Selected text and JSON must carry the same projected inventory.',
+        );
+        for (final unrelated in const [
+          'flutterRoots',
+          'largeDartFiles',
+          'barrels',
+          'featureLayers',
+          'tests',
+          'changelogs',
+          'analysisOptions',
+          'projectCommands',
+        ]) {
+          _expect(
+            !RegExp('^$unrelated \\(', multiLine: true).hasMatch(textOutput),
+            'Selected text must exclude the unrelated $unrelated heading.',
+          );
+        }
       },
     );
 

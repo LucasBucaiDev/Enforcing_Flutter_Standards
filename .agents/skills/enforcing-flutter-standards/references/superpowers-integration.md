@@ -2,12 +2,12 @@
 
 ## Availability rule
 
-Discover the Superpowers skills actually available for the current request;
-never infer availability from this reference or a runtime catalog. Use this
-composition only when every skill required by the applicable scenario is
-available. If any is absent, use `references/standalone-workflow.md` for the
-whole request. Never combine a partial Superpowers route with the standalone
-workflow.
+Discover whether Superpowers itself and the skills required for the current
+request are actually available; never infer either from this reference or a
+runtime catalog. Use this composition only when Superpowers is discoverable
+and every skill required by the applicable scenario is available. Otherwise
+use `references/standalone-workflow.md` for the whole request. Never combine a
+partial Superpowers route with the standalone workflow.
 
 ## Scenario mapping
 
@@ -18,7 +18,7 @@ Follow only the applicable row and the loaded skills' own instructions.
 | New feature or behavior | `superpowers:brainstorming` → `superpowers:writing-plans` → `superpowers:test-driven-development` → `superpowers:verification-before-completion` |
 | Refactor | `superpowers:brainstorming` when design changes → `superpowers:writing-plans` → `superpowers:test-driven-development` when behavior changes → `superpowers:verification-before-completion` |
 | Bug | `superpowers:systematic-debugging` → `superpowers:test-driven-development` → `superpowers:verification-before-completion` |
-| Audit only | No Superpowers skill; use the Flutter audit contract read-only |
+| Audit or read-only review | No Superpowers skill; use the Flutter audit contract read-only |
 | Incoming review feedback | `superpowers:receiving-code-review` → `superpowers:test-driven-development` and `superpowers:verification-before-completion` when implementation changes |
 | Important completion | `superpowers:requesting-code-review` → `superpowers:verification-before-completion` |
 
