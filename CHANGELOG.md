@@ -8,3 +8,4 @@
 - Added the portable Flutter engineering skill.
 - Added a public GitHub README for the Flutter engineering skill and its Dart inspector.
 - Optimized skill context loading with thematic references and progressive inspector output.
+- Added an internal, request-visible route manifest for evidence-backed workflow and reference selection.

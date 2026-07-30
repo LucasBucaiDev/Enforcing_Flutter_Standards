@@ -42,6 +42,12 @@ flowchart LR
     F --> G["📦 Reportar"]
 ```
 
+Antes de cargar workflows o referencias detalladas, la skill mantiene un
+manifiesto de ruta efímero con el modo, escenario, workflow, evidencia de
+selección, referencias inmediatas, referencias diferidas y exclusiones
+relevantes. Es interno por defecto; si el usuario pide verlo, muestra solo ese
+registro seguro y nunca razonamiento privado ni contenido de instrucciones.
+
 | Modo | Qué hace | Límite |
 |---|---|---|
 | 🔎 **Auditoría** | Reúne evidencia, clasifica hallazgos y propone batches pequeños e independientes. | Es completamente read-only: no modifica el proyecto antes de una aprobación explícita. |
@@ -93,6 +99,11 @@ Superpowers es una integración opcional, no una dependencia. Si el entorno no
 lo ofrece, el workflow standalone conserva los gates de auditoría, aprobación,
 TDD, seguridad y verificación. Para cada solicitud se usa Superpowers o el
 workflow standalone completo: ambos son mutuamente excluyentes.
+
+El próximo cambio planificado es diseñar la extracción del workflow standalone
+como una Agent Skill independiente, de modo que esta skill conserve un foco
+exclusivamente Flutter. Esa extracción no forma parte del manifiesto actual y
+requiere su propia especificación, aprobación y pruebas de equivalencia.
 
 ## 🔍 Dart bajo el capó
 
@@ -197,6 +208,9 @@ El resumen informa conteos y expansiones disponibles sin imprimir registros.
 Para ampliar solo la evidencia necesaria, repetí `--section`; la salida incluye
 únicamente las secciones solicitadas junto con los metadatos `schemaVersion` y
 `root`:
+
+Cuando la inspección descubre evidencia para otro dominio, la skill actualiza y
+valida el manifiesto antes de leer la nueva referencia.
 
 ```bash
 dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_project.dart \
