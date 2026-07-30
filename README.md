@@ -76,15 +76,23 @@ La fuente desplegable vive completa en
 |---|---|
 | [`SKILL.md`](.agents/skills/enforcing-flutter-standards/SKILL.md) | Orquesta el descubrimiento, selecciona el modo de trabajo, carga las referencias necesarias y mantiene los gates no negociables. |
 | [`agents/openai.yaml`](.agents/skills/enforcing-flutter-standards/agents/openai.yaml) | Aporta metadata opcional de interfaz para Codex; el núcleo no depende de ella. |
-| [`engineering-standards.md`](.agents/skills/enforcing-flutter-standards/references/engineering-standards.md) | Define arquitectura, estado, Freezed, paquetes, dependencias, datos, networking, persistencia, testing y verificación. |
+| [`architecture-and-state.md`](.agents/skills/enforcing-flutter-standards/references/architecture-and-state.md) | Define arquitectura, dominio, Cubit/Bloc, Freezed, barrels y responsabilidad de archivos. |
+| [`packages-and-integrations.md`](.agents/skills/enforcing-flutter-standards/references/packages-and-integrations.md) | Cubre paquetes locales, dirección de dependencias, SDKs, lifecycle y aprobación de dependencias. |
+| [`networking-and-errors.md`](.agents/skills/enforcing-flutter-standards/references/networking-and-errors.md) | Cubre clientes HTTP, DTOs, excepciones, failures y resultados tipados. |
+| [`persistence.md`](.agents/skills/enforcing-flutter-standards/references/persistence.md) | Cubre preferencias, secretos locales, Hive, Drift y ObjectBox. |
+| [`navigation.md`](.agents/skills/enforcing-flutter-standards/references/navigation.md) | Cubre Navigator, routing, deep links y redirects. |
+| [`security-and-environments.md`](.agents/skills/enforcing-flutter-standards/references/security-and-environments.md) | Cubre observabilidad, redacción, secretos, flavors y configuración. |
+| [`quality-and-delivery.md`](.agents/skills/enforcing-flutter-standards/references/quality-and-delivery.md) | Cubre TDD Flutter específico, cobertura, changelog y matriz de verificación. |
 | [`audit-contract.md`](.agents/skills/enforcing-flutter-standards/references/audit-contract.md) | Establece alcance, severidades, evidencia obligatoria, tratamiento seguro de secretos y forma de las propuestas. |
+| [`audit-report-template.md`](.agents/skills/enforcing-flutter-standards/references/audit-report-template.md) | Aporta la plantilla de informe y se carga únicamente al formatear un reporte. |
 | [`ui-implementation.md`](.agents/skills/enforcing-flutter-standards/references/ui-implementation.md) | Cubre preparación del diseño, gaps, assets exactos, responsive, accesibilidad y comparación visual. |
 | [`standalone-workflow.md`](.agents/skills/enforcing-flutter-standards/references/standalone-workflow.md) | Proporciona el flujo completo cuando Superpowers no está disponible. |
 | [`superpowers-integration.md`](.agents/skills/enforcing-flutter-standards/references/superpowers-integration.md) | Compone los procesos generales de Superpowers con las decisiones específicas de Flutter cuando esas skills existen. |
 
 Superpowers es una integración opcional, no una dependencia. Si el entorno no
 lo ofrece, el workflow standalone conserva los gates de auditoría, aprobación,
-TDD, seguridad y verificación.
+TDD, seguridad y verificación. Para cada solicitud se usa Superpowers o el
+workflow standalone completo: ambos son mutuamente excluyentes.
 
 ## 🔍 Dart bajo el capó
 
@@ -177,6 +185,27 @@ dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_proj
   --format json
 ```
 
+Resumen progresivo:
+
+```bash
+dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_project.dart \
+  --root /ruta/a/tu/proyecto \
+  --format summary
+```
+
+El resumen informa conteos y expansiones disponibles sin imprimir registros.
+Para ampliar solo la evidencia necesaria, repetí `--section`; la salida incluye
+únicamente las secciones solicitadas junto con los metadatos `schemaVersion` y
+`root`:
+
+```bash
+dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_project.dart \
+  --root /ruta/a/tu/proyecto \
+  --format json \
+  --section packageEdges \
+  --section cycles
+```
+
 ### Ejecutar las pruebas
 
 Desde la raíz de este repositorio:
@@ -217,6 +246,18 @@ evidencia de comportamiento, no como una insignia de perfección.
 │       ├── SKILL.md
 │       ├── agents/openai.yaml
 │       ├── references/
+│       │   ├── architecture-and-state.md
+│       │   ├── audit-contract.md
+│       │   ├── audit-report-template.md
+│       │   ├── navigation.md
+│       │   ├── networking-and-errors.md
+│       │   ├── packages-and-integrations.md
+│       │   ├── persistence.md
+│       │   ├── quality-and-delivery.md
+│       │   ├── security-and-environments.md
+│       │   ├── standalone-workflow.md
+│       │   ├── superpowers-integration.md
+│       │   └── ui-implementation.md
 │       └── scripts/inspect_flutter_project.dart
 ├── docs/
 │   ├── design.md

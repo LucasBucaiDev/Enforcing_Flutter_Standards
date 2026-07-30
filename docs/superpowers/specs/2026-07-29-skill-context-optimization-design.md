@@ -1,7 +1,6 @@
 # Diseño de optimización de contexto de la skill
 
-**Estado:** aprobado conceptualmente y pendiente de revisión escrita el 29 de
-julio de 2026.
+**Estado:** aprobado para implementación el 29 de julio de 2026.
 
 ## Objetivo
 
