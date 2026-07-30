@@ -13,13 +13,13 @@
 
 | ID | Required behavior | RED result | GREEN result | Notes |
 |---|---|---|---|---|
-| R1 | Loads Superpowers integration, networking/errors, and quality; excludes standalone and unrelated domains | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read only the required Flutter references and Bug-composition skills; proposed diagnosis, focused RED, owned typed-failure mapping, and GREEN verification. |
-| R2 | Loads Superpowers integration, audit, and UI, deferring the report template until formatting; avoids unrelated domains | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read Superpowers integration, audit, UI, and the report template only at formatting; blocked only the exact-SVG fragment and independently reported overflow. |
+| R1 | Loads Superpowers integration, networking/errors, and quality; excludes standalone and unrelated domains | Fail — read `references/engineering-standards.md`. | Fail — strict diagnosis ordering. | Final raw/trace evidence has the correct reference set, focused RED, owned typed-failure mapping, and GREEN verification, but states the explicit root cause only after proposing four correction steps. |
+| R2 | Loads Superpowers integration, audit, and UI, deferring the report template until formatting; avoids unrelated domains | Fail — read `references/engineering-standards.md`. | Fail — no admissible raw capture. | Multiple fresh runs met the technical oracle, but every such final response contained trailing-space Markdown hard breaks; a separate whitespace-invalid attempt also loaded standalone. No output was normalized or accepted as verbatim GREEN evidence. |
 | R3 | Loads Superpowers integration, persistence, and quality; retains Hive and excludes standalone | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read only the required Flutter references, retained Hive, and kept dependency/technology migration behind separate comparison, plan, and approval. |
 | R4 | Loads standalone, audit, architecture/state, and the deferred report template; excludes Superpowers integration | Fail — read `references/engineering-standards.md`. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read standalone, audit, architecture/state, then the template only at formatting; no Superpowers or quality reference, and Bloc remained conditional on observable event semantics. |
-| R5 | Routes ordinary data and variant types to architecture/state and quality without requiring the prompt to name Freezed, Bloc, or Cubit | Added after final review. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read Superpowers integration, architecture/state, and quality only; selected Freezed and retained generated-output, dependency, RED/GREEN, and approval gates. |
+| R5 | Routes ordinary data and variant types to architecture/state and quality without requiring the prompt to name Freezed, Bloc, or Cubit | Added after final review. | Fail — incomplete declared composition. | The response selected Freezed and retained the generated-output, dependency, RED/GREEN, and approval gates, but also reported that no required Superpowers skill file was readable despite the scenario declaring the complete feature composition available. |
 | R6 | Uses the complete standalone audit route when Superpowers itself is absent and loads no unrelated thematic reference | Added after final review. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read standalone, audit, then the template only at formatting; no Superpowers or thematic Flutter reference, and reported no actionable finding. |
-| R7 | Rejects partial Superpowers composition when one required skill is unavailable | Added after final review. | Final fix wave pass; Task 2 manifest regression pass. | Fresh Task 2 rerun read standalone, audit, networking/errors, and quality only; rejected partial Superpowers and preserved focused RED/GREEN, typed-failure mapping, and verification. |
+| R7 | Rejects partial Superpowers composition when one required skill is unavailable | Added after final review. | Fail — workflow exclusivity. | Fresh raw/trace evidence reads the Superpowers integration, networking/errors, and quality references before switching to standalone/audit after confirmed missing verification; the technical proposal is otherwise correct. |
 
 ## Internal route manifest
 
@@ -304,9 +304,9 @@ standalone audit ownership. Those attempts were scored as failures rather than
 reported as GREEN. After each minimum router correction, the affected route
 and its nearest routing neighbor were repeated. One RM4 setup attempt that
 returned only a meta-evaluation message was discarded before scoring. The six
-responses below are the fresh passing outputs against the final router.
-Transport-level trailing spaces were removed only for repository whitespace
-compliance; wording, punctuation, field order, and line order are unchanged.
+responses below are the historical Task 2 outputs. They were normalized by
+removing transport-level trailing spaces, so they are not verbatim evidence
+and are superseded by the exact final-review captures recorded below.
 
 ### Task 2 GREEN RM1
 
@@ -468,9 +468,416 @@ preserved actual failures: R1 initially loaded the audit contract, R7 initially
 loaded the Superpowers map and omitted the standalone audit contract, R3
 initially loaded audit resources, and R4 initially omitted standalone then
 loaded quality/delivery. Each received only the smallest `SKILL.md` correction,
-then the failing route and nearest routing neighbor were rerun. Final actual
-results: R1–R7 pass their required/forbidden reference sets, workflow
-exclusivity, deferred-template timing, and technical-decision requirements.
+then the failing route and nearest routing neighbor were rerun. This historical
+aggregate pass claim had no appended raw responses or chronological traces and
+is therefore unverified and superseded by the final-review evidence below.
+
+## Final-review route-manifest evidence
+
+### Harness and acceptance protocol
+
+The final-review runs used `codex-cli 0.146.0-alpha.3.1`, explicit model
+`gpt-5.6-terra`, reasoning effort `medium`, no reasoning summary, ephemeral
+execution, ignored user configuration and repository rules, strict
+configuration, an empty working directory, and a read-only sandbox:
+
+```text
+codex -a never exec --ephemeral --ignore-user-config --ignore-rules --skip-git-repo-check --strict-config --sandbox read-only --model gpt-5.6-terra -c 'model_reasoning_effort="medium"' -c 'model_reasoning_summary="none"' --cd <empty-directory> --json --output-last-message <raw-path> -
+```
+
+The exact prompt bytes came from the agent-visible scenario blocks. The
+evaluators received no rubric, scorecard, design, plan, findings, prior output,
+or intended answer. RM1–RM4 and R1–R7 used one fresh thread per accepted
+capture; RM5 intentionally used one persistent three-turn thread. The evaluated
+router SHA-256 was
+`71700cba3643c3e6f1f2a547b8fd6114132a29b9f484a1b3065d838fcb80bdd3`.
+
+Every accepted capture below satisfies all of these transport checks:
+
+- exactly one `thread.started`, one `turn.started`, and one `turn.completed`
+  event per trace, with no `error` or `turn.failed` event;
+- the raw file is byte-identical to the final completed `agent_message`
+  reconstructed from its JSONL trace;
+- `rg -n '[[:blank:]]+$' <raw>` finds no trailing whitespace.
+
+Rejected attempts were preserved outside the repository and were not
+normalized. They include pre-final-router runs, setup-contaminated runs, route
+oracle failures, and whitespace-invalid raw responses. In particular, six
+fresh R2 responses were rejected for trailing-space Markdown hard breaks; the
+technical oracle passed in multiple runs, while one rejected run also loaded
+the forbidden standalone workflow. Their SHA-256 values are:
+`c6c1284e4b4aa4744ac10735198f33e5a4c0c7f83a5f577b7e830535caea1077`,
+`3873676531a445113b32a2e5132b7fbef3420f494387111708301cb67148dc9f`,
+`d20e52557e7deaf0834a043609fca9260c3878ff0d2d7227dcbb71a464f36306`,
+`e53605aa62cac4afd0733700e8f14e659dc9317830880e0020546389f11defe3`,
+`6c6c60e97499549a6bd6d5d874e1e03c825e00ee8eb58994c19ff90a043519e6`,
+and
+`27930e63c9b7f8df360dbbbcbc2f028b767fe7be7f45b716dbcf53f988b42391`.
+No R2 response is presented as accepted verbatim GREEN evidence.
+
+### Final dispositions
+
+| ID | Result | Final-review disposition |
+|---|---|---|
+| RM1 | Pass — RM1.1–RM1.7 | Requested manifest exposes `implementation` / `bug` / `superpowers`, the exact three supported references, selected Bug skills, exclusions, RED, owned mapping, and verification. |
+| RM2 | Pass — RM2.1–RM2.7 | Requested manifest exposes `audit` / `audit-review` / `flutter-audit-only`, the three immediate references, and the report template deferred until formatting. |
+| RM3 | Pass — RM3.1–RM3.7 | Confirmed missing TDD selects complete standalone, the four required references, and no partial Superpowers composition. |
+| RM4 | Pass — RM4.1–RM4.5 | Run A remains metadata-free; Run B safely exposes the requested route. Independent traces prove the same effective route, Flutter references, Bug skills, diagnosis, and correction. |
+| RM5 | Pass — RM5.1–RM5.6 | One persistent thread emits the initial manifest, updates it from new package/vendor evidence in a turn with zero file reads, then reads only package guidance and reports the dependency disposition. |
+| R1 | Fail | Reference selection and technical correction pass, but the explicit root-cause statement follows four proposed steps instead of diagnosing first. |
+| R2 | Fail — evidence protocol | Several runs pass the technical oracle, but no final response is both verbatim and repository-whitespace compliant; no raw output was normalized or accepted. |
+| R3 | Pass | Retains Hive; scopes the new field/query; preserves the feature, TDD, dependency, comparison, migration-plan, and approval gates. |
+| R4 | Pass | Complete standalone audit route reads standalone, audit, architecture, then the report template at formatting; Bloc remains conditional on observable event semantics. |
+| R5 | Fail — setup/workflow evidence | Architecture/state and quality support the correct Freezed decision and gates, but the raw response reports that no required feature-composition skill was readable despite declared availability; it cannot prove a complete Superpowers route. |
+| R6 | Pass | Complete standalone audit route reads no unrelated thematic reference and reports no actionable finding from insufficient evidence. |
+| R7 | Fail | The response eventually uses standalone and returns a sound correction, but first reads the forbidden partial Superpowers composition after confirmed missing verification. |
+
+R1, R5, and R7 are retained as non-load-bearing, Superpowers-specific
+regression or setup failures under the approved direction to finish the current
+router rather than redesign it for a workflow that will be replaced by local
+skills. R2 is an evidence-capture failure, not a normalized pass.
+
+### Chronological trace evidence
+
+- RM1 reads the deployable skill, Superpowers integration, networking/errors,
+  quality/delivery, and the three Bug skills; RM2 reads the deployable skill,
+  Superpowers integration, audit, and UI; RM3 reads the deployable skill,
+  standalone, audit, networking/errors, and quality/delivery.
+- RM4 Run A thread `019fb507-f702-7591-b4e1-ee6f30cad98d` and Run B thread
+  `019fb507-ed37-75d1-acbe-50f73b0b7c21` both read the Superpowers map,
+  networking/errors, quality/delivery, and the same Bug composition. Run A
+  emits no routing metadata; Run B emits only the requested safe metadata.
+- RM5 stages 1–3 share thread
+  `019fb509-5937-7de2-ab0a-d45071439711`. Stage 1 reads the Superpowers map,
+  audit, and architecture references. Stage 2 emits the updated manifest with
+  package/integration added and has zero command/file-read events. Stage 3 then
+  reads only `packages-and-integrations.md` and emits the blocking dependency
+  disposition.
+- R1 reads Superpowers integration, networking/errors, quality/delivery, then
+  systematic debugging, TDD, and verification. R3 reads Superpowers
+  integration, the feature composition, persistence, then quality/delivery.
+  R4 reads standalone, audit, architecture, then the report template. R5 reads
+  Superpowers integration, architecture, and quality, but no required feature
+  skill file; that is the recorded R5 failure. R6 reads standalone, audit, then
+  the report template. R7 reads Superpowers integration, networking/errors, and
+  quality before standalone and audit, which is the recorded exclusivity
+  failure.
+
+### Accepted final RM1 raw
+
+````text
+visibility: requested
+mode: implementation
+scenario: bug
+workflow: superpowers
+selection_evidence: The request identifies a focused HTTP 401-to-unknown-failure mapping defect and asks for a smallest test-first correction; all required Bug-composition skills are declared available.
+selected_skills: systematic-debugging → test-driven-development → verification-before-completion
+references_now: references/superpowers-integration.md; references/networking-and-errors.md; references/quality-and-delivery.md
+references_deferred: none
+excluded: standalone; flutter-audit-only; theme-only
+
+Next steps:
+
+1. Trace the HTTP exception-to-owned-failure boundary to confirm where status 401 is classified as unknown.
+2. Add one focused boundary test: a 401 response must produce the existing typed unauthorized/authentication failure, and observe the expected RED result.
+3. Make the smallest mapper-only change so 401 maps to that typed failure; retain vendor HTTP types inside infrastructure.
+4. Run the focused test GREEN, then the applicable project test, analysis, formatting, and verification gates before claiming the bug is fixed.
+````
+
+### Accepted final RM2 raw
+
+````text
+visibility: requested
+mode: audit
+scenario: audit-review
+workflow: flutter-audit-only
+selection_evidence: Read-only audit of a Flutter screen against an attached design; the exact custom SVG is missing and a narrow viewport visibly overflows. Superpowers is available; this audit scenario requires no Superpowers skill.
+references_now:
+- references/superpowers-integration.md
+- references/audit-contract.md
+- references/ui-implementation.md
+references_deferred:
+- references/audit-report-template.md — defer until evidence classification is complete and audit-report formatting begins.
+excluded:
+- standalone
+- superpowers
+- theme-only
+
+Audit disposition: blocked. The missing exact custom SVG blocks its dependent UI fragment, and the observed narrow-viewport overflow blocks delivery until a responsive treatment is evidenced. No files should be modified without explicit approval.
+````
+
+### Accepted final RM3 raw
+
+````text
+## Route manifest
+
+```text
+visibility: requested
+mode: implementation
+scenario: bug
+workflow: standalone
+selection_evidence: HTTP 401 is incorrectly mapped to an unknown failure; test-first correction requested; required Superpowers test-driven-development skill is unavailable.
+references_now:
+  - references/standalone-workflow.md
+  - references/audit-contract.md
+  - references/networking-and-errors.md
+  - references/quality-and-delivery.md
+references_deferred:
+  - references/audit-report-template.md: load only after evidence classification is complete and report formatting begins.
+excluded:
+  - superpowers: required test-driven-development skill is unavailable.
+  - flutter-audit-only: request is a bug correction, not an audit or review.
+  - theme-only: HTTP failure mapping is behavior-changing bug work.
+```
+
+## Proposed next steps
+
+1. Discover and scope the affected HTTP/repository mapping boundary and its existing tests, without changing files.
+2. Diagnose where a 401 becomes `UnknownFailure`; confirm the intended owned typed failure and downstream state/message behavior.
+3. Propose an approval batch: “Map HTTP 401 to the existing authentication/unauthorized typed failure,” limited to the mapper and focused boundary test.
+4. After explicit approval, add a focused test that expects the typed 401 failure and run it to observe the expected RED failure.
+5. Implement the smallest mapping correction, rerun the focused test for GREEN, and refactor only if still green.
+6. Review the scoped diff, run applicable project format, analysis, affected tests, full suite, coverage, generated-file checks, and builds; then update the existing canonical changelog if one exists.
+````
+
+### Accepted final RM4 Run A raw
+
+````text
+The defect is at the HTTP error-mapping boundary: a 401 response is being converted to the wrong owned failure.
+
+Smallest test-first correction:
+
+1. Add one focused repository/data-source boundary test asserting that HTTP 401 maps to the existing unauthorized/authentication failure.
+2. Run it and confirm it fails because the current mapping returns the incorrect failure.
+3. Change only the 401 mapping branch to return that owned failure; keep transport/vendor exception types contained in infrastructure.
+4. Re-run the focused test, then the relevant error-mapping suite.
+
+No files were modified.
+````
+
+### Accepted final RM4 Run B raw
+
+````text
+Diagnosis: HTTP 401 is being mapped to the wrong owned failure. Map it at the HTTP/repository boundary to the existing authentication/unauthorized failure, rather than a generic transport, server, or permission failure.
+
+Smallest test-first correction:
+
+1. Add a focused boundary test: a 401 response maps to the owned unauthorized/authentication failure.
+2. Run it and confirm RED because the current mapper returns the incorrect failure.
+3. Change only the 401 branch in the existing error mapper.
+4. Re-run the focused test, then the relevant suite. No dependency or architectural change is needed.
+
+Route manifest:
+
+- mode: implementation
+- scenario: bug
+- workflow: superpowers
+- selection_evidence: Explicit request to diagnose an HTTP 401 failure-mapping bug and propose a smallest test-first correction; all required Bug workflow skills are available.
+- references_now: `references/superpowers-integration.md`, `references/networking-and-errors.md`, `references/quality-and-delivery.md`
+- references_deferred: none
+- excluded: standalone (required workflow skills are available); flutter-audit-only (not an audit or review); theme-only (the request is a bug fix)
+````
+
+### Accepted final RM5 stage 1 raw
+
+````text
+visibility: requested
+mode: review
+scenario: audit-review
+workflow: flutter-audit-only
+selection_evidence: Read-only review of an Order repository change; request supports audit and architecture guidance; Superpowers catalog is available.
+references_now:
+- references/superpowers-integration.md
+- references/audit-contract.md
+- references/architecture-and-state.md
+references_deferred:
+- references/audit-report-template.md — evidence and classifications complete and report formatting begins
+excluded:
+- standalone
+- superpowers
+- theme-only
+````
+
+### Accepted final RM5 stage 2 raw
+
+````text
+visibility: requested
+mode: review
+scenario: audit-review
+workflow: flutter-audit-only
+selection_evidence: Read-only review of an Order repository change; `pubspec.yaml` adds a path dependency; a Cubit directly imports a vendor SDK; Superpowers catalog is available.
+references_now:
+- references/superpowers-integration.md
+- references/audit-contract.md
+- references/architecture-and-state.md
+- references/packages-and-integrations.md
+references_deferred:
+- references/audit-report-template.md — evidence and classifications complete and report formatting begins
+excluded:
+- standalone
+- superpowers
+- theme-only
+````
+
+### Accepted final RM5 stage 3 raw
+
+````text
+Disposition: blocking — the added path dependency cannot proceed without its required dependency decision record and explicit approval.
+
+- Severity: blocking. Location: `pubspec.yaml` path-dependency declaration. Evidence: a new path dependency is part of the current change; no approved dependency decision is among the observed facts. Impact: the change introduces an unapproved dependency and may create an unsupported or cyclic package boundary. Recommendation: provide the need, maintenance, compatibility, cost, license, alternatives, lock-in, stable-boundary rationale, and dependency-direction evidence, then obtain explicit approval. Scope classification: current change.
+- The Cubit’s vendor-SDK import cannot yet be classified as a finding without the SDK identity or significance and the imported symbols’ role. If it is a significant integration or vendor types cross the state boundary, the smallest compliant correction is an owned service or adapter with owned types, keeping the Cubit vendor-free.
+````
+
+### Accepted final R1 raw — failing disposition
+
+````text
+Archivos leídos, en este orden:
+
+1. `enforcing-flutter-standards/SKILL.md`
+2. `enforcing-flutter-standards/references/superpowers-integration.md`
+3. `enforcing-flutter-standards/references/networking-and-errors.md`
+4. `enforcing-flutter-standards/references/quality-and-delivery.md`
+5. `superpowers/systematic-debugging/SKILL.md`
+6. `superpowers/test-driven-development/SKILL.md`
+7. `superpowers/verification-before-completion/SKILL.md`
+
+Propuesta mínima, test-first:
+
+1. Añadir un único test de límite para el mapper/repository: configurar su dependencia HTTP falsa para que lance la excepción HTTP del proveedor; al invocar el mapper, comprobar que devuelve el `typed failure` existente del proyecto y que la excepción del proveedor no escapa.
+2. Ejecutar ese test y observar RED por la razón esperada: actualmente la excepción se propaga en vez de producir el resultado tipado.
+3. Aplicar el cambio mínimo: envolver únicamente la llamada/transformación externa que puede lanzar en un `catch` específico para la excepción HTTP del proveedor y convertirla mediante el mapeo de fallos ya establecido. No capturar errores de programación ni ampliar la API.
+4. Volver a ejecutar el test para GREEN; después ejecutar los gates definidos por el proyecto (test focalizado, suite relevante, análisis/formato si se modifica código Dart).
+
+La causa ya queda acotada por la evidencia sintética: se está violando el límite de infraestructura al permitir que un tipo HTTP ajeno cruce hacia el dominio. El test debe fijar ese contrato sin depender de una llamada de red real.
+````
+
+### Accepted final R3 raw
+
+````text
+Archivos leídos, en este orden:
+
+1. `.../enforcing-flutter-standards/SKILL.md`
+2. `.../references/superpowers-integration.md`
+3. `.../superpowers/.../skills/brainstorming/SKILL.md`
+4. `.../superpowers/.../skills/writing-plans/SKILL.md`
+5. `.../superpowers/.../skills/test-driven-development/SKILL.md`
+6. `.../superpowers/.../skills/verification-before-completion/SKILL.md`
+7. `.../references/persistence.md`
+8. `.../references/quality-and-delivery.md`
+
+Dirección de almacenamiento: conservar Hive como almacenamiento estructurado primario y extenderlo según las convenciones existentes. El alcance es un cambio acotado de esquema: un campo nuevo en el tipo/adaptador Hive, con valor seguro para registros ya existentes según la convención de versionado/migración del proyecto, y una consulta Hive enfocada. No corresponde introducir Drift, ObjectBox, Shared Preferences ni otra arquitectura.
+
+Límite de aprobación: esta evaluación en modo lectura no autoriza implementación. Antes de modificar, hace falta una aprobación explícita de un lote de implementación nombrado que incluya exclusivamente el campo Hive, su compatibilidad/versionado, la consulta y pruebas TDD. Cualquier cambio de tecnología de almacenamiento o migración más amplia requiere una solicitud, comparación y plan de migración separados, con aprobación explícita.
+````
+
+### Accepted final R4 raw
+
+````text
+Read order:
+
+1. `SKILL.md`
+2. `references/standalone-workflow.md`
+3. `references/audit-contract.md`
+4. `references/architecture-and-state.md`
+5. `references/audit-report-template.md` — read only after evidence/classification, immediately before formatting this report.
+
+Review scope: the supplied synthetic facts only; no project files, diff, tests, or configuration were inspected.
+
+Findings: none supported by the available evidence.
+
+A changed Freezed state is not, by itself, a defect: no evidence shows missing generated outputs, an invalid variant/data model, or a violated generated-file policy. Likewise, Cubit must change to Bloc only when concrete evidence establishes meaningful event identity, multiple external sources, ordering/cancellation/debounce/concurrency needs, or material event auditability. “May require Bloc” is insufficient to assert a finding.
+
+No implementation batch is proposed. To make this review actionable, provide the changed state/Cubit and the event sources plus their ordering or cancellation requirements; for a behavior change, include the focused test evidence.
+````
+
+### Accepted final R5 raw — failing disposition
+
+````text
+Read order:
+
+1. `enforcing-flutter-standards/SKILL.md`
+2. `references/superpowers-integration.md`
+3. `references/architecture-and-state.md`
+4. `references/quality-and-delivery.md`
+
+No Superpowers skill file was readable in this environment, so none was read.
+
+Decision: this is a read-only new-feature preparation. The Flutter standard requires Freezed for both types: `DeliveryWindow` is data and `LoadState` is a variant/state type. Do not introduce Cubit/Bloc, networking, persistence, UI, logging, or other layers—none is supported by the supplied evidence.
+
+Use generic, immutable contracts unless the domain supplies concrete types:
+
+```dart
+DeliveryWindow<T>(start: T, end: T)
+LoadState<T>.loading()
+LoadState<T>.loaded(T data)
+LoadState<T>.failure()
+```
+
+Do not invent `DateTime`, an end-after-start rule, or an error payload/stack trace. Those are currently unspecified. A payload-less failure is the least-assumptive variant; adding failure details needs explicit product semantics.
+
+Approval and testing boundary:
+
+- This request authorizes no implementation; no tests or project validation were run.
+- Before implementation, confirm whether Freezed/code generation is already established. If not, adding it is a dependency change and needs a separate explicit request, evidence-backed comparison, complete plan, and approval. There is no compliant silent handwritten substitute under this skill.
+- Once a concrete implementation batch is approved, begin TDD with focused RED tests for stored `start`/`end`, value equality, and each `LoadState` variant/payload; then implement the minimum GREEN change and run the applicable project-defined checks.
+- Resolve the two semantic gaps before approving implementation if a concrete domain contract is intended: the type/order rule for the window, and whether failure carries an error value.
+````
+
+### Accepted final R6 raw
+
+````text
+Revisión: no se identificaron hallazgos en el alcance indicado.
+
+El comando modificado del README es sintácticamente válido y coincide con la interfaz documentada del inspector Flutter. No se justifican correcciones ni lotes de implementación.
+
+Archivos leídos, en este orden:
+
+1. `SKILL.md`
+2. `references/standalone-workflow.md`
+3. `references/audit-contract.md`
+4. `references/audit-report-template.md` — recurso de formato, leído al final, después de completar la clasificación de evidencia.
+
+Alcance revisado: únicamente el comando de README descrito en la evidencia sintética. No se inspeccionaron archivos del proyecto ni materiales de evaluación.
+````
+
+### Accepted final R7 raw — failing disposition
+
+````text
+Files read, in order:
+
+1. `enforcing-flutter-standards/SKILL.md`
+2. `references/superpowers-integration.md`
+3. `references/networking-and-errors.md`
+4. `references/quality-and-delivery.md`
+5. `references/standalone-workflow.md`
+6. `references/audit-contract.md`
+
+Superpowers skill files read: none.
+
+Evaluation: the correct route is `standalone`, not a partial Superpowers composition. The bug composition requires systematic debugging, TDD, and verification-before-completion; the last is unavailable. The available Superpowers skills therefore must not be used for this route.
+
+Finding:
+
+- Severity: blocking
+- Location: the API mapper’s external HTTP boundary
+- Evidence: the supplied fact says a vendor HTTP exception escapes instead of becoming the project’s typed failure.
+- Impact: vendor infrastructure types leak past the boundary, breaking the typed-result contract and forcing upstream consumers to handle unexpected exceptions.
+- Recommendation: catch the vendor HTTP exception in that mapper and return the existing project typed failure through its existing result type.
+- Scope classification: current change
+
+Smallest test-first proposal:
+
+- Batch: `Map vendor HTTP exception to typed failure`
+- Findings and exact scope: the one current-change blocking finding; only the affected API mapper’s vendor-exception path.
+- Files/boundaries: the mapper and its focused mapper test. Exact paths cannot be identified from the synthetic evidence.
+- Tests/characterization: add a focused test that configures the mapper’s existing HTTP dependency to throw the vendor HTTP exception, then asserts the mapper returns the existing typed failure branch—not a thrown exception. Run it first and observe RED for the current escaped exception. Then add the narrow catch at the external boundary, mapping that exception to the project’s existing network/API typed failure; rerun to GREEN.
+- Separate decisions/approvals: none, provided the existing result and failure types are reused and no dependency is added.
+- Verification: after approval and implementation, run the focused test, relevant package tests, formatter, analysis/lint, and any repository-defined full-suite/coverage gates. No commands were run here because the task is synthetic and read-only.
+- Changelog: determine whether an existing canonical changelog applies during implementation discovery; do not create one if absent.
+- Dependencies on batches: none.
+
+The fix should catch only the vendor HTTP exception family at the mapper boundary, leaving vendor types contained in infrastructure and returning the project’s already-established typed failure.
+````
 
 ## Representative audit coverage
 

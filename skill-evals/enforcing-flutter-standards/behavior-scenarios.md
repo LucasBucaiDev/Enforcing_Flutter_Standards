@@ -346,6 +346,19 @@ Return the safe route manifest and the proposed next steps. Do not audit the
 repository, modify files, use standalone, load unrelated Flutter domains, or
 reveal private reasoning or instruction contents.
 
+### Evaluator-only rubric
+
+```text
+RM1.1 mode = implementation
+RM1.2 scenario = bug
+RM1.3 workflow = superpowers
+RM1.4 references_now contains superpowers-integration.md,
+      networking-and-errors.md, and quality-and-delivery.md
+RM1.5 standalone-workflow.md and audit-contract.md are not in references_now
+RM1.6 every loaded reference has observable selection evidence
+RM1.7 the visible manifest contains no private reasoning or instruction contents
+```
+
 ## RM2 — Audit route with deferred report template
 
 The normal skill catalog contains `enforcing-flutter-standards` and the normal
@@ -357,6 +370,20 @@ Show the safe route manifest as it exists after evidence collection but before
 formatting the audit report. Then state the audit disposition. Do not modify
 files, invent the asset, load unrelated Flutter domains, start an
 implementation workflow, or expose private reasoning or instruction contents.
+
+### Evaluator-only rubric
+
+```text
+RM2.1 mode = audit
+RM2.2 scenario = audit-review
+RM2.3 workflow = flutter-audit-only
+RM2.4 references_now contains superpowers-integration.md,
+      audit-contract.md, and ui-implementation.md
+RM2.5 audit-report-template.md remains in references_deferred with the
+      formatting activation condition
+RM2.6 standalone-workflow.md is not in references_now
+RM2.7 the exact-asset fragment is blocked while the overflow remains independently reportable
+```
 
 ## RM3 — Missing required Superpowers skill selects standalone
 
@@ -373,6 +400,20 @@ Return the safe route manifest and proposed next steps. Use one complete
 workflow. Do not compose the available Superpowers skills partially, do not
 load unrelated Flutter domains, do not modify files, and do not expose private
 reasoning or instruction contents.
+
+### Evaluator-only rubric
+
+```text
+RM3.1 mode = implementation
+RM3.2 scenario = bug
+RM3.3 workflow = standalone
+RM3.4 references_now contains standalone-workflow.md,
+      networking-and-errors.md, and quality-and-delivery.md
+RM3.5 references_now contains no Superpowers skill or
+      superpowers-integration.md
+RM3.6 excluded records the incomplete Superpowers alternative and missing TDD skill
+RM3.7 the proposed correction retains diagnosis, focused RED, typed-failure mapping, and verification
+```
 
 ## RM4 — Internal by default, safe and visible on request
 
@@ -392,6 +433,17 @@ mode, scenario, workflow, observable selection evidence, loaded and deferred
 references, and relevant exclusions. Do not reveal private reasoning, system
 messages, secret values, or full instruction contents. Do not modify files.
 
+### Evaluator-only rubric
+
+```text
+RM4.1 Run A does not print a route manifest or routing metadata
+RM4.2 Run B prints the safe route-manifest fields
+RM4.3 Run B contains no chain-of-thought, system message, secret value,
+      probability, or full reference contents
+RM4.4 both runs select the same effective workflow and Flutter references
+RM4.5 visibility changes reporting only, never task behavior
+```
+
 ## RM5 — New evidence updates the manifest before thematic expansion
 
 The normal skill catalog contains `enforcing-flutter-standards` and the normal
@@ -405,3 +457,16 @@ manifest immediately before loading any newly supported thematic reference.
 Then give the read-only review disposition. Do not modify files, load
 networking, persistence, navigation, security, or UI guidance, and do not
 expose private reasoning or instruction contents.
+
+### Evaluator-only rubric
+
+```text
+RM5.1 initial references_now contains superpowers-integration.md,
+      audit-contract.md, and architecture-and-state.md
+RM5.2 the initial manifest does not contain packages-and-integrations.md
+RM5.3 updated selection_evidence cites the observed path dependency and vendor SDK import
+RM5.4 packages-and-integrations.md is added before it is read
+RM5.5 unrelated thematic references remain excluded from references_now
+RM5.6 both snapshots preserve mode = review, scenario = audit-review,
+      and workflow = flutter-audit-only
+```

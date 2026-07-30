@@ -92,13 +92,19 @@ La fuente desplegable vive completa en
 | [`audit-contract.md`](.agents/skills/enforcing-flutter-standards/references/audit-contract.md) | Establece alcance, severidades, evidencia obligatoria, tratamiento seguro de secretos y forma de las propuestas. |
 | [`audit-report-template.md`](.agents/skills/enforcing-flutter-standards/references/audit-report-template.md) | Aporta la plantilla de informe y se carga únicamente al formatear un reporte. |
 | [`ui-implementation.md`](.agents/skills/enforcing-flutter-standards/references/ui-implementation.md) | Cubre preparación del diseño, gaps, assets exactos, responsive, accesibilidad y comparación visual. |
-| [`standalone-workflow.md`](.agents/skills/enforcing-flutter-standards/references/standalone-workflow.md) | Proporciona el flujo completo cuando Superpowers no está disponible. |
+| [`standalone-workflow.md`](.agents/skills/enforcing-flutter-standards/references/standalone-workflow.md) | Proporciona el flujo completo cuando Superpowers o alguna skill requerida no está disponible. |
 | [`superpowers-integration.md`](.agents/skills/enforcing-flutter-standards/references/superpowers-integration.md) | Compone los procesos generales de Superpowers con las decisiones específicas de Flutter cuando esas skills existen. |
 
-Superpowers es una integración opcional, no una dependencia. Si el entorno no
-lo ofrece, el workflow standalone conserva los gates de auditoría, aprobación,
-TDD, seguridad y verificación. Para cada solicitud se usa Superpowers o el
-workflow standalone completo: ambos son mutuamente excluyentes.
+Superpowers es una integración opcional, no una dependencia. El manifiesto
+selecciona exactamente uno de cuatro workflows. Las auditorías y revisiones
+read-only usan `flutter-audit-only` cuando Superpowers está disponible como mapa
+de composición, o `standalone` cuando no lo está; las decisiones técnicas
+acotadas que solo necesitan referencias temáticas usan `theme-only`. Para los
+demás escenarios, usa `superpowers` solo si Superpowers y todas las skills
+requeridas están disponibles; ante cualquier ausencia, usa el workflow
+`standalone` completo, que conserva los gates de auditoría, aprobación, TDD,
+seguridad y verificación. `superpowers` y `standalone` son alternativas
+mutuamente excluyentes y nunca se combinan parcialmente.
 
 El próximo cambio planificado es diseñar la extracción del workflow standalone
 como una Agent Skill independiente, de modo que esta skill conserve un foco
