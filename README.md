@@ -106,7 +106,7 @@ es un CLI autocontenido que usa únicamente `dart:convert` y `dart:io`.
 
 ```text
 Usage: dart run inspect_flutter_project.dart \
-  --root DIRECTORY [--format json|text]
+  --root DIRECTORY [--format json|text|summary] [--section NAME]...
 ```
 
 Su trabajo es producir un inventario mecánico y determinista:
