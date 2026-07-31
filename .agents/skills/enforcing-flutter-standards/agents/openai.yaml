@@ -1,4 +1,4 @@
 interface:
   display_name: "Flutter Engineering Standards"
-  short_description: "Audit and implement robust Flutter changes"
-  default_prompt: "Use $enforcing-flutter-standards to audit this Flutter change and propose a compliant implementation."
+  short_description: "Flutter extension for evidence-led engineering"
+  default_prompt: "Use $evidence-driven-development with $enforcing-flutter-standards to plan and verify this Flutter change."

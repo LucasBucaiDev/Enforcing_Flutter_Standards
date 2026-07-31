@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evidence-Driven Development"
+  short_description: "Evidence-led engineering workflow gates"
+  default_prompt: "Use $evidence-driven-development to diagnose, plan, implement, and verify this repository change from observable evidence."
