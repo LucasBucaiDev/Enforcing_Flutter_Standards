@@ -34,6 +34,15 @@ Never infer full success from a partial command or stale result. Later
 implementation changes invalidate verification and require a new diff review
 and fresh affected gates.
 
+Independent non-mutating gates may run concurrently when their delegated evidence
+identifies the task, exact command, scope, result, conflicts, and
+missing evidence. The coordinator confirms critical results, resolves
+contradictions, and remains the final verification owner. Serialize formatting,
+code generation, dependency resolution, and all other mutation-capable gates.
+Review the aggregated diff after integration or any mutating gate before running
+dependent checks. A later integration or change invalidates affected gates and
+requires their fresh rerun; delegated success is never final by itself.
+
 ## Changelog and closure
 
 After fresh verification and no later implementation change, add one concise

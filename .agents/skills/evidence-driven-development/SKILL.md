@@ -74,6 +74,12 @@ only after entering its phase:
   applicable evidence, classifications, verification, and changelog
   disposition are complete: `references/report-contracts.md`.
 
+After selecting the route and loading any justified current-phase reference,
+load `references/delegation-and-concurrency.md` only when agent capacity and at
+least two independent lines make delegation beneficial. When no phase reference
+applies yet, delegation may be the first reference. It cannot authorize a future
+phase, wider scope, or mutation.
+
 Never load test-first before approval, verification during implementation, or
 report contracts merely to answer. Earlier-phase responses and concise audit
 dispositions use no report contract. Load it only for a formal audit/final

@@ -21,6 +21,7 @@ void main() {
     'test-first-change.md',
     'verify-and-complete.md',
     'report-contracts.md',
+    'delegation-and-concurrency.md',
   ];
 
   _expect(
@@ -65,6 +66,121 @@ void main() {
           maxWords: 800,
           maxBytes: 8 * 1024,
           failures: failures,
+        );
+      }
+    }
+
+    final designContract = File(
+      '${genericRoot.path}/references/design-and-approve.md',
+    );
+    final implementationContract = File(
+      '${genericRoot.path}/references/test-first-change.md',
+    );
+    final delegationContract = File(
+      '${genericRoot.path}/references/delegation-and-concurrency.md',
+    );
+    final verificationContract = File(
+      '${genericRoot.path}/references/verify-and-complete.md',
+    );
+    if (designContract.existsSync()) {
+      final content = designContract.readAsStringSync();
+      for (final field in const [
+        'Plan revision:',
+        'User-visible objective:',
+        'Observable acceptance criteria:',
+        'Implementation map:',
+        'Execution sequence:',
+        'Test matrix:',
+        'Risks and recovery:',
+      ]) {
+        _expect(
+          content.contains(field),
+          'Design contract is missing required field $field',
+          failures,
+        );
+      }
+      _expect(
+        content.contains('A material change modifies'),
+        'Design contract must define material plan changes.',
+        failures,
+      );
+    }
+    if (implementationContract.existsSync()) {
+      final content = implementationContract.readAsStringSync();
+      _expect(
+        content.contains('approved batch and plan revision'),
+        'Implementation must require an approved batch and plan revision.',
+        failures,
+      );
+      _expect(
+        content.contains('approved implementation map'),
+        'Implementation must enforce the approved implementation map.',
+        failures,
+      );
+    }
+    if (designContract.existsSync()) {
+      final content = designContract.readAsStringSync();
+      for (final field in const [
+        'Execution topology:',
+        'coordinator:',
+        'delegated tasks:',
+        'isolation:',
+        'integration order:',
+        'final verification owner:',
+      ]) {
+        _expect(
+          content.contains(field),
+          'Design contract is missing execution topology field $field',
+          failures,
+        );
+      }
+    }
+    if (delegationContract.existsSync()) {
+      final content = delegationContract.readAsStringSync();
+      for (final field in const [
+        'Task:',
+        'Phase:',
+        'Purpose:',
+        'Access:',
+        'Scope:',
+        'Required evidence:',
+        'Dependencies:',
+        'Prohibited actions:',
+        'Stop conditions:',
+        'Return:',
+      ]) {
+        _expect(
+          content.contains(field),
+          'Delegation contract is missing task field $field',
+          failures,
+        );
+      }
+      for (final clause in const [
+        'at least two independent lines',
+        'must not redelegate',
+        'shared lockfiles or generated outputs',
+        'contradictory results',
+        'delegated evidence',
+      ]) {
+        _expect(
+          content.contains(clause),
+          'Delegation contract is missing clause: $clause',
+          failures,
+        );
+      }
+    }
+    if (verificationContract.existsSync()) {
+      final content = verificationContract.readAsStringSync();
+      for (final clause in const [
+        'delegated evidence',
+        'mutation-capable gates',
+        'aggregated diff',
+        'invalidates affected gates',
+      ]) {
+        _expect(
+          content.contains(clause),
+          'Verification contract is missing clause: $clause',
+          failures,
         );
       }
     }

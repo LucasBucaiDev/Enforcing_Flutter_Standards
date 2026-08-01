@@ -7,9 +7,9 @@ Este repositorio contiene dos Agent Skills complementarias:
 - `enforcing-flutter-standards`: extensión de dominio para Flutter y Dart.
 
 La primera posee los modos, fases, diagnóstico, diseño, aprobación, auditoría,
-TDD, verificación, changelog y contratos de reporte. La segunda descubre
-evidencia Flutter y aporta decisiones temáticas, tipos de tests y comandos
-Dart/Flutter. Una regla general tiene un único dueño.
+TDD, delegación segura, verificación, changelog y contratos de reporte. La
+segunda descubre evidencia Flutter y aporta decisiones temáticas, tipos de
+tests y comandos Dart/Flutter. Una regla general tiene un único dueño.
 
 ## Cómo se componen
 
@@ -17,6 +17,7 @@ Dart/Flutter. Una regla general tiene un único dueño.
 flowchart LR
     U["Solicitud y evidencia"] --> E["evidence-driven-development"]
     E --> P["Una referencia de proceso para la fase actual"]
+    E --> D["Delegación opcional dentro de la fase"]
     E --> F["enforcing-flutter-standards"]
     F --> T["Referencias Flutter justificadas"]
     F --> C["Tests y comandos Dart/Flutter aplicables"]
@@ -36,9 +37,12 @@ La carga es progresiva por fase:
 | Implementar un batch aprobado | `test-first-change.md` |
 | Revisar diff y verificar | `verify-and-complete.md` |
 | Formatear el informe final | `report-contracts.md` |
+| Coordinar líneas independientes cuando aporte beneficio | `delegation-and-concurrency.md` |
 
 No se anticipan referencias de implementación, cierre o reporte. Una respuesta
-intermedia no activa por sí sola el contrato de reporte.
+intermedia no activa por sí sola el contrato de reporte. La delegación se carga
+sólo cuando hay capacidad y al menos dos líneas independientes; no cambia la
+fase, el alcance aprobado ni la propiedad final del coordinador.
 
 ## Dependencia obligatoria de Flutter
 
@@ -81,6 +85,7 @@ comparación, plan y aprobación separados.
 │   ├── agents/openai.yaml
 │   └── references/
 │       ├── audit-and-review.md
+│       ├── delegation-and-concurrency.md
 │       ├── design-and-approve.md
 │       ├── diagnose.md
 │       ├── report-contracts.md
@@ -145,7 +150,8 @@ dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_proj
 
 ## Evaluación y verificación
 
-- G1–G10 validan routing y comportamiento de la skill general.
+- G1–G13 validan routing, planificación, baseline TDD, delegación y
+  comportamiento de la skill general.
 - F1–F6 validan composición, dependencia faltante y referencias Flutter.
 - `context_budget_test.dart` valida budgets y ausencia de contratos legacy.
 - `inspect_flutter_project_test.dart` cubre las diez interfaces del inspector.

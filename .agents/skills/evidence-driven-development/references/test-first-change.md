@@ -4,20 +4,37 @@ Use this reference only for an explicitly approved implementation boundary.
 Preserve unrelated working-tree changes and implement the minimum approved
 change.
 
+Before mutation, confirm that approval names the approved batch and plan revision
+and that every intended edit fits the approved implementation map. The map is
+the mutation ceiling, not a starting point for adjacent work. If current
+evidence requires a material change to the objective, criteria, map, sequence,
+test strategy, dependencies, risks and recovery, or exclusions, stop and
+return to design; increment the revision and obtain new approval before RED.
+
 ## Choose the evidence gate
 
 For new or changed behavior:
 
-1. Remove the entire untested behavior implementation from every repository
-   and deployable path before RED. Do not retain, stash, comment, copy, or use
-   it as an implementation reference.
-2. Write one focused test for the desired behavior.
-3. Run it and observe failure for the expected missing-behavior reason.
-4. Implement the minimum GREEN change and rerun the focused test.
-5. Refactor only within scope while the test remains green.
+1. Inspect the current baseline and diff; identify which existing changes are
+   preexisting and which, if any, belong to the current agent and batch.
+2. Write one focused test before changing production behavior.
+3. Run it against the integrity-preserving baseline. For a bug, RED reproduces
+   the observed defect; for a feature, RED demonstrates the missing behavior.
+4. Enter GREEN only after that expected RED. Implement the minimum change,
+   rerun the focused test, and refactor only within scope while it stays green.
 
-Do not enter GREEN if RED passes unexpectedly, fails for another reason, or
-was not executed.
+Never delete, hide, overwrite, or seek permission to discard preexisting user
+or repository work merely to manufacture RED. If this agent added production
+behavior prematurely in the current batch, it may remove only its exact,
+bounded diff when ownership is identifiable and all preexisting work can be
+preserved. Use no destructive command, stash, or broad restoration.
+
+If the focused test passes initially, declare neither RED nor GREEN. Reevaluate
+whether the requirement already exists, the test is insufficient, or the
+design is stale. Also stop when RED fails for another reason, was not executed,
+ownership is ambiguous, or no integrity-preserving baseline can be established;
+request an approved exception with alternative validation instead of altering
+the baseline to force failure.
 
 For an uncovered behavior-preserving refactor, write and run characterization
 tests before restructuring. They must pass and lock down the behavior that the

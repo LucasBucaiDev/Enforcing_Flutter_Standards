@@ -12,3 +12,6 @@
 - Added the specification for extracting an evidence-driven, stack-agnostic workflow skill.
 - Added RED behavior, composition, and context-budget baselines for the workflow extraction.
 - Extracted the general engineering workflow into `evidence-driven-development` and made Flutter a focused domain extension.
+- Required revisioned, test-mapped implementation plans and invalidated approvals when material scope changes.
+- Preserved preexisting work during test-first changes and limited baseline recovery to safe, identifiable agent-owned diffs.
+- Added bounded subagent delegation with serialized unsafe mutations, delegated-evidence provenance, and coordinator-owned integration and verification.
