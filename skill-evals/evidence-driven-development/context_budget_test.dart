@@ -120,8 +120,9 @@ void main() {
       for (final clause in const [
         'inspect the current Git branch',
         'Never mutate on `main`',
-        '`bug/bug-1`',
-        '`feature/feature-1`',
+        '`bug/<task-description>`',
+        '`feature/<task-description>`',
+        'lowercase kebab-case',
         'explicit approval to create and switch',
       ]) {
         _expect(

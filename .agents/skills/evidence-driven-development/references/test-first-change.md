@@ -11,14 +11,18 @@ When the current branch is `main`, derive a task branch from `main` and request
 explicit approval to create and switch to it. Stop before editing until the
 approved branch is active.
 
-- For a bug, choose the first available `bug/bug-description`.
-- For a feature, choose the first available `feature/feature-description`.
+- For a bug, use `bug/<task-description>`.
+- For a feature, use `feature/<task-description>`.
+- Derive `<task-description>` from the user-visible task objective in concise,
+  lowercase kebab-case; for example, `bug/fix-login-timeout` or
+  `feature/add-profile-photo`.
 - For another mutating scenario, request the branch name instead of inventing a
   convention.
 
 Preserve preexisting changes while switching. Never stash, reset, clean, or
 discard work to create the branch. If branch creation, ancestry, naming, or
-ownership is ambiguous, stop and request direction.
+ownership is ambiguous, or the derived branch name already exists, stop and
+request direction instead of inventing a suffix.
 
 Before mutation, confirm that approval names the approved batch and plan revision
 and that every intended edit fits the approved implementation map. The map is
