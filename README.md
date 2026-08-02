@@ -108,15 +108,24 @@ comparación, plan y aprobación separados.
 
 ## Instalación
 
-Copiá ambas carpetas canónicas al catálogo de Agent Skills del proyecto o del
-agente. Para uso local en un repositorio:
+Las carpetas canónicas versionadas viven en el catálogo del repositorio y Codex
+las descubre automáticamente:
 
 ```text
 .agents/skills/evidence-driven-development/
 .agents/skills/enforcing-flutter-standards/
 ```
 
-Invocación explícita sugerida:
+Para usarlas en todos los repositorios, instalalas en `~/.agents/skills/`.
+Codex admite symlinks, por lo que se puede enlazar cada carpeta canónica y
+recibir sus cambios sin borrar ni volver a copiar. Evitá mantener otra copia con
+el mismo `name`, porque Codex no las fusiona y puede mostrar ambas. Consultá la
+[documentación oficial de skills](https://developers.openai.com/codex/skills).
+
+Codex detecta actualizaciones automáticamente; reinicialo si un cambio no
+aparece. La invocación implícita se activa cuando la solicitud coincide con el
+`description`. La invocación explícita sigue disponible cuando se quiere forzar
+el flujo:
 
 ```text
 Use $evidence-driven-development with $enforcing-flutter-standards to plan and
@@ -150,8 +159,8 @@ dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_proj
 
 ## Evaluación y verificación
 
-- G1–G13 validan routing, planificación, baseline TDD, delegación y
-  comportamiento de la skill general.
+- G1–G14 validan routing, planificación, baseline TDD, protección de `main`,
+  delegación y comportamiento de la skill general.
 - F1–F6 validan composición, dependencia faltante y referencias Flutter.
 - `context_budget_test.dart` valida budgets y ausencia de contratos legacy.
 - `inspect_flutter_project_test.dart` cubre las diez interfaces del inspector.

@@ -4,6 +4,22 @@ Use this reference only for an explicitly approved implementation boundary.
 Preserve unrelated working-tree changes and implement the minimum approved
 change.
 
+## Protect the main branch
+
+Before any repository mutation, inspect the current Git branch. Never mutate on `main`.
+When the current branch is `main`, derive a task branch from `main` and request
+explicit approval to create and switch to it. Stop before editing until the
+approved branch is active.
+
+- For a bug, choose the first available `bug/bug-description`.
+- For a feature, choose the first available `feature/feature-description`.
+- For another mutating scenario, request the branch name instead of inventing a
+  convention.
+
+Preserve preexisting changes while switching. Never stash, reset, clean, or
+discard work to create the branch. If branch creation, ancestry, naming, or
+ownership is ambiguous, stop and request direction.
+
 Before mutation, confirm that approval names the approved batch and plan revision
 and that every intended edit fits the approved implementation map. The map is
 the mutation ceiling, not a starting point for adjacent work. If current

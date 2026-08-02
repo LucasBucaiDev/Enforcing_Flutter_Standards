@@ -117,6 +117,19 @@ void main() {
         'Implementation must enforce the approved implementation map.',
         failures,
       );
+      for (final clause in const [
+        'inspect the current Git branch',
+        'Never mutate on `main`',
+        '`bug/bug-1`',
+        '`feature/feature-1`',
+        'explicit approval to create and switch',
+      ]) {
+        _expect(
+          content.contains(clause),
+          'Implementation branch gate is missing clause: $clause',
+          failures,
+        );
+      }
     }
     if (designContract.existsSync()) {
       final content = designContract.readAsStringSync();

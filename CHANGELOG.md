@@ -15,3 +15,4 @@
 - Required revisioned, test-mapped implementation plans and invalidated approvals when material scope changes.
 - Preserved preexisting work during test-first changes and limited baseline recovery to safe, identifiable agent-owned diffs.
 - Added bounded subagent delegation with serialized unsafe mutations, delegated-evidence provenance, and coordinator-owned integration and verification.
+- Required an approved task branch from `main`, using sequential `bug/bug-N` or `feature/feature-N` names, before repository mutation.
