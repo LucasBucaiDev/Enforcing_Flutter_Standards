@@ -69,8 +69,9 @@ order. Do not perform completion verification yet.
 ```
 
 Expected: `implementation` / `feature` / `implement`; generic
-`test-first-change.md`, Flutter `flutter-quality.md`, and
-`ui-implementation.md`; require focused widget RED before minimum GREEN.
+`test-first-change.md`, Flutter `widget-testing.md`, and
+`ui-implementation.md`; require focused widget RED before minimum GREEN and do
+not load the general quality or adjacent operational recipes.
 
 ## F6 — Flutter multipackage completion
 
@@ -150,6 +151,95 @@ Expected: generic `audit-and-review.md` plus only the Flutter references
 justified by the supplied facts. Do not report a finding merely because the
 widget uses Bloc/Cubit, callbacks, `LayoutBuilder`, native semantics, or no
 Freezed migration. Name the inspected facts when no defect is supported.
+
+## F10 — Widget interaction loads only its recipe
+
+```text
+An approved Flutter form has an existing widget-test harness and dependency
+wrappers. Add one interaction test proving that submitting invalid input shows
+the existing localized validation message. Do not verify completion yet. Both
+required skills are available. State the next gate and list every skill or
+reference file read, in order.
+```
+
+Expected: `implementation` / `feature` / `implement`; generic
+`test-first-change.md` plus only Flutter `widget-testing.md`. Reuse the harness,
+choose deliberate pump behavior, and require focused RED before GREEN. Do not
+load integration, layout, localization, preview, navigation, UI, or general
+quality merely because the harness contains those facilities.
+
+## F11 — Real plugin flow uses the supported integration target
+
+```text
+An approved Flutter change must prove a real plugin-backed flow on the Android
+emulator already configured by the repository. Existing widget tests cannot
+represent the plugin boundary, and the project already uses integration_test.
+Do not add dependencies. State the test-first gate and list every skill or
+reference file read, in order.
+```
+
+Expected: generic `test-first-change.md` plus only Flutter
+`integration-testing.md`; name the supported Android target, preserve the
+existing harness, derive its command from the repository, and do not impose
+`flutter_driver`, Patrol, or another dependency.
+
+## F12 — Concrete overflow uses layout diagnostics
+
+```text
+Diagnose only a RenderFlex overflow reproduced at the supported compact width,
+large text scale, and long localized copy. The exact widget and framework error
+are supplied. Both required skills are available. State the diagnostic route
+and list every skill or reference file read, in order.
+```
+
+Expected: `implementation` / `bug` / `diagnose`; generic `diagnose.md` plus
+only Flutter `layout-diagnostics.md`. Trace constraints from the nearest owner
+and withhold a whole-UI responsive claim. Do not prescribe Expanded, scrolling,
+or a redesign before inspecting the actual negotiation.
+
+## F13 — Existing localization configuration is preserved
+
+```text
+An approved Flutter feature adds one pluralized message to a project that
+already owns l10n.yaml, ARB files, a generation command, committed generated
+outputs, and localization widget tests. State the test-first gate and list every
+skill or reference file read, in order. Do not add packages.
+```
+
+Expected: generic `test-first-change.md` plus only Flutter `localization.md`;
+preserve the existing localization and generated-file policy, update the
+authoritative message and plural metadata, and derive generation and tests from
+the repository rather than replacing them with defaults.
+
+## F14 — Preview with a native plugin records the web limitation
+
+```text
+A Flutter 3.44.7 project asks for an @Preview of a widget whose production
+implementation calls a native plugin. The project has no preview convention.
+Design only the smallest safe direction, without adding dependencies. Both
+required skills are available. List every skill or reference file read, in
+order.
+```
+
+Expected: generic `design-and-approve.md` plus only Flutter
+`widget-previews.md`; identify the experimental version-scoped API, keep the
+preview deterministic, and state that Chrome cannot validate native plugin or
+platform fidelity. Do not call the preview a test.
+
+## F15 — Deep link validation is platform-specific
+
+```text
+An approved Flutter app with a coherent declarative router adds one canonical
+deep link that must work on Android, iOS, and web while retaining a nested
+navigation branch. No routing dependency change is requested. State the
+test-first gate and list every skill or reference file read, in order.
+```
+
+Expected: generic `test-first-change.md` plus only Flutter `navigation.md`;
+preserve the router, define URI parsing and nested-stack behavior, add focused
+route evidence, and name Android, iOS, DevTools, and direct web refresh/back
+validation. Do not impose `go_router` or infer cross-platform success from one
+target.
 
 Historical workflow-routing scenarios and results are non-executable archives
 under `docs/superpowers/evals/`.

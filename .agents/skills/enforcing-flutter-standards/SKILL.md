@@ -76,9 +76,14 @@ skill's `process_now`; update its route record before expanding domain context.
 | packages, dependency graph, SDK/plugin, lifecycle, dependency decision | `references/packages-and-integrations.md` |
 | HTTP, API, DTO mapping, exceptions, failures, typed results | `references/networking-and-errors.md` |
 | preferences, secure local values, Hive, Drift, ObjectBox, migration | `references/persistence.md` |
-| routes, Navigator, deep links, URL state, redirects | `references/navigation.md` |
+| routes, Navigator, deep links, nested navigation, URL state, redirects | `references/navigation.md` |
 | logging, crash reporting, secrets, flavors, configuration | `references/security-and-environments.md` |
-| approved implementation/completion, or explicit tests, codegen, coverage, Dart/Flutter gates | `references/flutter-quality.md` |
+| pure Dart tests, test-level selection, codegen, coverage, or general Dart/Flutter gates | `references/flutter-quality.md` |
+| widget interaction, `testWidgets`, `WidgetTester`, pump/settle, widget harness | `references/widget-testing.md` |
+| full-app flow, `integration_test`, device target, plugin/native test boundary | `references/integration-testing.md` |
+| overflow, constraints, `RenderFlex`, unbounded layout, inspector sizing | `references/layout-diagnostics.md` |
+| localization, locale, ARB, `l10n.yaml`, generated messages | `references/localization.md` |
+| Widget Previewer, `@Preview`, preview wrapper or preview failure | `references/widget-previews.md` |
 | screen, widget, responsive, accessibility, screenshot, exact asset | `references/ui-implementation.md` |
 
 References are independent and one level deep. Do not load one to decide
@@ -86,6 +91,11 @@ whether another applies. Preserve coherent architecture and keep unrelated
 debt outside the current approved boundary. During audit or diagnosis, the
 mere presence of Freezed, a widget, tests, or possible future code generation
 does not activate `flutter-quality.md`.
+
+Load a focused operational recipe instead of `flutter-quality.md` when its
+predicate is already known. Do not anticipate adjacent testing, layout,
+localization, preview, or navigation recipes merely because a Flutter widget or
+future verification exists.
 
 ## Contribute to the active process phase
 

@@ -4,12 +4,17 @@ import 'dart:io';
 const _referenceNames = <String>[
   'architecture-and-state.md',
   'flutter-quality.md',
+  'integration-testing.md',
+  'layout-diagnostics.md',
+  'localization.md',
   'navigation.md',
   'networking-and-errors.md',
   'packages-and-integrations.md',
   'persistence.md',
   'security-and-environments.md',
   'ui-implementation.md',
+  'widget-previews.md',
+  'widget-testing.md',
 ];
 
 void main() {
@@ -159,9 +164,13 @@ List<String> _validateCatalog(
 
   final usedIds = <String>{};
   for (final name in _referenceNames) {
-    final content =
-        referenceContents?[name] ??
-        File('${skillRoot.path}/references/$name').readAsStringSync();
+    final reference = File('${skillRoot.path}/references/$name');
+    final suppliedContent = referenceContents?[name];
+    if (suppliedContent == null && !reference.existsSync()) {
+      failures.add('$name is missing.');
+      continue;
+    }
+    final content = suppliedContent ?? reference.readAsStringSync();
     final match = RegExp(
       r'<!-- provenance: ([a-z0-9., -]+) -->',
     ).firstMatch(content);

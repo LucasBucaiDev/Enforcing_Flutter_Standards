@@ -8,7 +8,7 @@
 | F2 | Missing generic dependency blocks without fallback | Local fallback continued | Pass | Fresh catalog containing only Flutter read its core, reported the required dependency missing, read no reference, and stopped. |
 | F3 | Generic diagnosis plus Flutter networking only | Missing dependency and premature context | Pass after routing fix | Final isolated rerun showed `implementation` / `bug` / `diagnose` and read both cores, `diagnose.md`, then `networking-and-errors.md`; no quality, design, or completion reference. |
 | F4 | Generic audit plus Flutter architecture; report deferred | Local audit ownership and premature template | Pass after routing fix | Final isolated rerun showed `audit` / `audit-review` / `inspect` and read both cores, `audit-and-review.md`, then `architecture-and-state.md`; report and Flutter quality remained unloaded. |
-| F5 | Approved UI behavior uses test-first plus Flutter UI/quality | Local fallback composition | Pass | Fresh isolated run read both cores, `test-first-change.md`, `flutter-quality.md`, then `ui-implementation.md` and required focused widget RED before implementation. |
+| F5 | Approved UI behavior uses test-first plus focused widget/UI recipes | Local fallback composition | Pending P3 rerun | The pre-P3 run loaded `flutter-quality.md`; P3 changes the expected route to `widget-testing.md` plus `ui-implementation.md`, so fresh isolated evidence is required. |
 | F6 | Completion covers local package and direct dependent | Excessive local workflow context | Pass | Fresh isolated run read both cores, `verify-and-complete.md`, `packages-and-integrations.md`, then `flutter-quality.md`; it required fresh gates in both package and dependent. |
 | F7 | Organized features still expose deliberate barrels and consumers use them | Missing feature barrel; consumers retained per-file cross-feature imports | Pass | Fresh isolated run read both cores, `design-and-approve.md`, then `architecture-and-state.md`; it required one deliberate feature barrel, replaced cross-feature implementation imports, kept internal imports direct, and rejected layer barrels without an observed cross-layer consumer. |
 | F8 | Widget audit catches invalid states, layer leaks, recovery, interaction, adaptive, and semantics defects | Existing contracts omitted the focused clauses | Pass after evidence completion | The first isolated run reported six supported defects and correctly withheld three findings whose runtime and ownership evidence was absent. With that evidence supplied, the fresh rerun reported all nine supported findings and read only `audit-and-review.md` plus the three justified Flutter references. |
@@ -24,11 +24,24 @@ scenario was corrected to supply target dimensions, runtime overflow, component
 role, focus behavior, and Cubit overlap policy; no expected conclusion was
 presented as independently verified runtime evidence.
 
+## P3 operational recipe scenarios
+
+| ID | Required behavior | Static gate | Isolated result | Evidence status |
+|---|---|---|---|---|
+| F10 | Widget interaction loads only `widget-testing.md` | Pass | Pending | Routing and recipe clauses are validated; fresh isolated execution remains. |
+| F11 | Plugin flow preserves the integration harness and supported target | Pass | Pending | Routing, target, native-UI limitation, and `flutter_driver` guard are validated statically. |
+| F12 | Concrete overflow loads only layout diagnostics | Pass | Pending | Constraint, inspector, RenderFlex, and scoped verification clauses are validated statically. |
+| F13 | Localization preserves existing configuration and generation policy | Pass | Pending | Existing-localization, `l10n.yaml`, generator, and verification clauses are validated statically. |
+| F14 | Preview records experimental API and Chrome/native limitation | Pass | Pending | Command, annotation, version risk, Chrome, and native-plugin clauses are validated statically. |
+| F15 | Deep-link validation remains router- and platform-specific | Pass | Pending | Navigation contains nested, Android, iOS, DevTools, and web validation evidence. |
+
 ## Static and inspector gates
 
 | Gate | Result | Evidence |
 |---|---|---|
 | Context budgets, active-route cleanup, and widget contract clauses | Pass | `Context budget GREEN: all static gates passed.` |
+| P3 operational references and focused routing | Pass | Five bounded references, navigation workflow, and direct SKILL routes pass the context-budget gate. |
+| Source provenance and active-reference coverage | Pass | `Source catalog validation passed.` covers all thirteen active references. |
 | Inspector regression | Pass | `inspect_flutter_project_test.dart`: 10/10 tests. |
 
 Historical scorecards are non-executable evidence under

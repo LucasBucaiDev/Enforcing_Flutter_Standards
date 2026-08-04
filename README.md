@@ -67,7 +67,12 @@ La extensión aplica referencias temáticas sólo desde evidencia observable:
 | Preferencias, secretos locales y bases de datos | `persistence.md` |
 | Navigator, rutas, deep links y redirects | `navigation.md` |
 | Logging, observabilidad, flavors y configuración | `security-and-environments.md` |
-| Unit/widget/integration tests, codegen y cobertura | `flutter-quality.md` |
+| Selección del nivel de test, pruebas Dart, codegen y cobertura | `flutter-quality.md` |
+| Interacciones y harnesses de widget test | `widget-testing.md` |
+| Flujos reales, plugins y targets de integración | `integration-testing.md` |
+| Overflows, constraints e inspector de layout | `layout-diagnostics.md` |
+| ARB, locales y generación l10n | `localization.md` |
+| Widget Previewer y límites de Chrome/native | `widget-previews.md` |
 | UI, responsive, accesibilidad y assets exactos | `ui-implementation.md` |
 
 El proceso conserva la arquitectura coherente del proyecto, exige evidencia
@@ -100,13 +105,18 @@ plan y aprobación separados.
     ├── references/
     │   ├── architecture-and-state.md
     │   ├── flutter-quality.md
+    │   ├── integration-testing.md
+    │   ├── layout-diagnostics.md
+    │   ├── localization.md
     │   ├── navigation.md
     │   ├── networking-and-errors.md
     │   ├── packages-and-integrations.md
     │   ├── persistence.md
     │   ├── security-and-environments.md
     │   ├── source-catalog.json
-    │   └── ui-implementation.md
+    │   ├── ui-implementation.md
+    │   ├── widget-previews.md
+    │   └── widget-testing.md
     └── scripts/inspect_flutter_project.dart
 ```
 
@@ -184,13 +194,27 @@ dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_proj
   --section packageEdges --section cycles
 ```
 
+## Recetas operativas Flutter
+
+Las recetas de widget tests, integration tests, diagnóstico de layout,
+localización y previews se cargan de forma independiente cuando existe su
+predicado observable. Cada una comienza por preservar comandos, harnesses,
+configuración y dependencias del repositorio; luego aporta activación, pasos,
+errores frecuentes y verificación. Navegación añade deep links, stacks anidados
+y validación diferenciada para Android, iOS y web.
+
+Los comandos documentados son candidatos versionados, no defaults universales.
+La skill deriva primero los comandos reales del proyecto. No introduce
+`flutter_driver`, MVVM, `go_router`, paquetes de localización, herramientas de
+integración ni dependencias de previews sin evidencia, comparación y aprobación.
+
 ## Evaluación y verificación
 
 - G1–G14 validan routing, planificación, baseline TDD, protección de `main`,
   delegación y comportamiento de la skill general.
-- F1–F9 validan composición, dependencia faltante, referencias Flutter y
-  auditorías de estado, recuperación, responsive y accesibilidad sin
-  sobregeneralizar reglas.
+- F1–F15 validan composición, dependencia faltante, referencias Flutter,
+  auditorías de estado y las recetas focalizadas de testing, layout,
+  localización, previews y deep links sin sobregeneralizar reglas.
 - `context_budget_test.dart` valida budgets y ausencia de contratos legacy.
 - `inspect_flutter_project_test.dart` cubre las diez interfaces del inspector.
 

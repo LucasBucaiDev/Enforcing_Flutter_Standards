@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added focused Flutter recipes for widget and integration testing, layout
+  diagnostics, localization, widget previews, and platform-specific deep-link
+  validation with versioned provenance and repository-first commands.
 - Added source provenance, compatibility metadata, and deterministic catalog validation for Flutter guidance and repository policy.
 - Added evidence-driven Flutter widget audit rules for exhaustive rendering,
   presentation-owned failures and recovery actions, validated selections,

@@ -42,6 +42,42 @@
       "version": "not-version-bound: repository engineering policy"
     },
     {
+      "id": "flutter-widget-testing",
+      "topic": "WidgetTester, testWidgets, finders, matchers, interaction, and frame pumping",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/cookbook/testing/widget/introduction",
+      "verifiedOn": "2026-08-04",
+      "applicability": "widget-testing.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-widget-testing",
+      "topic": "Repository-first widget harnesses, focused behavioral assertions, and verification evidence",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "widget-testing.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-integration-testing",
+      "topic": "Flutter SDK integration_test setup, supported targets, commands, and native UI limitations",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/testing/integration-tests",
+      "verifiedOn": "2026-08-04",
+      "applicability": "integration-testing.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-integration-testing",
+      "topic": "Target-specific integration evidence, harness preservation, and dependency approval boundaries",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "integration-testing.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
       "id": "flutter-navigation",
       "topic": "Navigator, Router, deep links, and URL synchronization",
       "authority": "official",
@@ -58,6 +94,24 @@
       "verifiedOn": "2026-08-04",
       "applicability": "navigation.md",
       "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-deep-linking",
+      "topic": "Deep-link configuration and behavior across Android, iOS, and web",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/ui/navigation/deep-linking",
+      "verifiedOn": "2026-08-04",
+      "applicability": "navigation.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "flutter-deep-link-validation",
+      "topic": "DevTools deep-link validation for Android and iOS",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/tools/devtools/deep-links",
+      "verifiedOn": "2026-08-04",
+      "applicability": "navigation.md",
+      "version": "Flutter 3.44.7 documentation snapshot; validator supports Android and iOS from Flutter 3.27"
     },
     {
       "id": "flutter-networking",
@@ -174,6 +228,69 @@
       "url": null,
       "verifiedOn": "2026-08-04",
       "applicability": "ui-implementation.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-layout-constraints",
+      "topic": "Flutter constraint propagation, sizing, flex, and unbounded layout behavior",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/ui/layout/constraints",
+      "verifiedOn": "2026-08-04",
+      "applicability": "layout-diagnostics.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "flutter-inspector",
+      "topic": "Flutter inspector size, constraint, and visual layout diagnostics",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/tools/devtools/inspector",
+      "verifiedOn": "2026-08-04",
+      "applicability": "layout-diagnostics.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-layout-diagnostics",
+      "topic": "Evidence-first reproduction, minimum layout repair, and scoped responsive claims",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "layout-diagnostics.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-localization",
+      "topic": "Flutter localization configuration, ARB messages, gen-l10n, locales, and formatting",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/ui/internationalization",
+      "verifiedOn": "2026-08-04",
+      "applicability": "localization.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-localization",
+      "topic": "Preserving localization workflows, authorized copy, generated policy, and locale evidence",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "localization.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-widget-previewer",
+      "topic": "Experimental Flutter Widget Previewer command, annotations, wrappers, controls, and limitations",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/tools/widget-previewer",
+      "verifiedOn": "2026-08-04",
+      "applicability": "widget-previews.md",
+      "version": "Flutter 3.44.7 documentation snapshot; previewer requires Flutter 3.35 and IDE support requires 3.38"
+    },
+    {
+      "id": "project-policy-widget-previews",
+      "topic": "Version-gated deterministic previews and separation from behavioral or native-platform evidence",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "widget-previews.md",
       "version": "not-version-bound: repository engineering policy"
     }
   ]

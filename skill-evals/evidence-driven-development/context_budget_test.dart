@@ -228,6 +228,47 @@ void main() {
         'duplicate announcement',
         '`liveRegion`',
       ],
+      'widget-testing.md': [
+        '## Activate',
+        '## Steps',
+        '## Common failures',
+        '## Verify',
+        '`pumpAndSettle`',
+      ],
+      'integration-testing.md': [
+        'supported target',
+        'native platform UI',
+        '`flutter_driver`',
+        '## Common failures',
+      ],
+      'layout-diagnostics.md': [
+        'Constraints go down',
+        '`RenderFlex`',
+        'Flutter inspector',
+        '## Verify',
+      ],
+      'localization.md': [
+        'existing localization',
+        '`l10n.yaml`',
+        '`flutter gen-l10n`',
+        '## Verify',
+      ],
+      'widget-previews.md': [
+        '`flutter widget-preview start`',
+        '`@Preview`',
+        'experimental',
+        'native plugin',
+        'Chrome',
+      ],
+      'navigation.md': [
+        'deep link',
+        'nested navigation',
+        'Retain a coherent declarative router',
+        'DevTools',
+        'Android',
+        'iOS',
+        'web',
+      ],
     };
     for (final entry in flutterContracts.entries) {
       final reference = File('${flutterRoot.path}/references/${entry.key}');
@@ -238,6 +279,37 @@ void main() {
       );
       if (!reference.existsSync()) continue;
       final content = reference.readAsStringSync();
+      if (entry.key == 'widget-testing.md' ||
+          entry.key == 'integration-testing.md' ||
+          entry.key == 'layout-diagnostics.md' ||
+          entry.key == 'localization.md' ||
+          entry.key == 'widget-previews.md') {
+        _checkBudget(
+          'references/${entry.key}',
+          content,
+          maxLines: 100,
+          maxWords: 600,
+          maxBytes: 6 * 1024,
+          failures: failures,
+        );
+        _expect(
+          flutterSkill.readAsStringSync().contains('references/${entry.key}'),
+          'Flutter SKILL.md must route directly to references/${entry.key}.',
+          failures,
+        );
+        for (final heading in const [
+          '## Activate',
+          '## Steps',
+          '## Common failures',
+          '## Verify',
+        ]) {
+          _expect(
+            content.contains(heading),
+            '${entry.key} is missing operational heading: $heading',
+            failures,
+          );
+        }
+      }
       for (final clause in entry.value) {
         _expect(
           content.contains(clause),
