@@ -105,8 +105,32 @@ plan y aprobación separados.
     │   ├── packages-and-integrations.md
     │   ├── persistence.md
     │   ├── security-and-environments.md
+    │   ├── source-catalog.json
     │   └── ui-implementation.md
     └── scripts/inspect_flutter_project.dart
+```
+
+## Fuentes, políticas y compatibilidad
+
+`references/source-catalog.json` registra el tema, autoridad, URL, fecha de
+verificación, aplicabilidad y versión de cada fuente. Las entradas
+`official` enlazan documentación primaria de Flutter; las entradas
+`project-policy` identifican decisiones propias como Bloc/Cubit, Freezed, Dio,
+Drift o los contratos de aprobación. Una política no se presenta como
+recomendación oficial.
+
+Cada referencia activa contiene un marcador `provenance` cuyos IDs se aplican
+a todas sus decisiones normativas, salvo que una decisión declare un marcador
+más específico. `not-version-bound` sólo es válido con una justificación. La
+compatibilidad vigente se declara en el frontmatter de la skill y en el
+catálogo, sin fijar un modelo de IA concreto.
+
+Al cambiar una regla o cuando cambie la versión documentada de Flutter, la URL
+o la autoridad, revalidá las entradas afectadas, actualizá `verifiedOn` y
+ejecutá:
+
+```bash
+dart run skill-evals/enforcing-flutter-standards/source_catalog_test.dart
 ```
 
 ## Instalación
@@ -174,6 +198,7 @@ Comandos principales:
 
 ```bash
 dart run skill-evals/evidence-driven-development/context_budget_test.dart
+dart run skill-evals/enforcing-flutter-standards/source_catalog_test.dart
 dart run skill-evals/enforcing-flutter-standards/inspect_flutter_project_test.dart
 ```
 

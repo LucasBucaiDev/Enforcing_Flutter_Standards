@@ -1,5 +1,7 @@
 # Flutter quality
 
+<!-- provenance: flutter-testing, project-policy-flutter-quality -->
+
 Load this reference when observable Flutter or Dart evidence requires selecting
 tests, code generation, coverage, or repository-defined validation commands.
 The active process skill owns test-first ordering, diff review, completion,

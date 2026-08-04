@@ -1,5 +1,7 @@
 # Flutter architecture and state
 
+<!-- provenance: flutter-architecture, project-policy-architecture-state -->
+
 Load this reference for architecture, domain boundaries, models, data or
 variant types, state, Cubit or Bloc, Freezed, barrels, imports, or
 file-responsibility decisions supported by observable project evidence.

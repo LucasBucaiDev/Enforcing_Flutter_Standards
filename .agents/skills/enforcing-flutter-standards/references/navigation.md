@@ -1,5 +1,7 @@
 # Flutter navigation
 
+<!-- provenance: flutter-navigation, project-policy-navigation -->
+
 Load this reference for Navigator, declarative routing, deep links, URL state,
 authentication redirects, or route-migration decisions supported by observable
 project evidence.

@@ -1,5 +1,7 @@
 # Flutter persistence
 
+<!-- provenance: flutter-persistence, project-policy-persistence -->
+
 Load this reference for local storage, secure storage, structured persistence,
 Hive, Drift, ObjectBox, or migration decisions supported by observable project
 evidence.

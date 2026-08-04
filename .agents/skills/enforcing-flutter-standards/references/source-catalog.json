@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "compatibility": {
+    "flutter": "Validated against the Flutter 3.44.7 documentation snapshot; revalidate version-sensitive guidance for other releases",
+    "dart": "not-version-bound: this catalog introduces no Dart language or SDK API requirement; repository policies remain subject to project evidence"
+  },
+  "sources": [
+    {
+      "id": "flutter-architecture",
+      "topic": "Application architecture, separation of concerns, repositories, services, and UI state",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/app-architecture/guide",
+      "verifiedOn": "2026-08-04",
+      "applicability": "architecture-and-state.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-architecture-state",
+      "topic": "Feature-first structure, Bloc/Cubit selection, Freezed, barrels, and renderable state contracts",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "architecture-and-state.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-testing",
+      "topic": "Unit, widget, and integration test levels",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/testing/overview",
+      "verifiedOn": "2026-08-04",
+      "applicability": "flutter-quality.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-flutter-quality",
+      "topic": "Repository-specific test selection, code generation, coverage, and verification gates",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "flutter-quality.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-navigation",
+      "topic": "Navigator, Router, deep links, and URL synchronization",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/ui/navigation",
+      "verifiedOn": "2026-08-04",
+      "applicability": "navigation.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-navigation",
+      "topic": "Preserving coherent routing and approval boundaries for navigation changes",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "navigation.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-networking",
+      "topic": "Cross-platform networking and platform configuration",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/data-and-backend/networking",
+      "verifiedOn": "2026-08-04",
+      "applicability": "networking-and-errors.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-networking-errors",
+      "topic": "Dio preference, DTO mapping, typed failures, retryability, and presentation recovery",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "networking-and-errors.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-packages",
+      "topic": "Dart packages, Flutter packages, plugins, and path dependencies",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/packages-and-plugins/using-packages",
+      "verifiedOn": "2026-08-04",
+      "applicability": "packages-and-integrations.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-packages-integrations",
+      "topic": "Package boundaries, dependency direction, vendor adapters, lifecycle, and dependency approval",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "packages-and-integrations.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-persistence",
+      "topic": "Persistent key-value storage architecture",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/app-architecture/design-patterns/key-value-data",
+      "verifiedOn": "2026-08-04",
+      "applicability": "persistence.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-persistence",
+      "topic": "Shared Preferences, secure storage, Hive, Drift, ObjectBox, and migration policy",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "persistence.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-security",
+      "topic": "Flutter security practices and supported stable releases",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/security",
+      "verifiedOn": "2026-08-04",
+      "applicability": "security-and-environments.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "flutter-flavors-android",
+      "topic": "Android product flavors and Flutter flavor selection",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/deployment/flavors",
+      "verifiedOn": "2026-08-04",
+      "applicability": "security-and-environments.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "flutter-flavors-apple",
+      "topic": "iOS and macOS flavor schemes and configurations",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/deployment/flavors-ios",
+      "verifiedOn": "2026-08-04",
+      "applicability": "security-and-environments.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-security-environments",
+      "topic": "Observability adapters, redaction, typed environments, and three-environment policy",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "security-and-environments.md",
+      "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "flutter-adaptive-responsive",
+      "topic": "Adaptive and responsive layouts across sizes, platforms, and inputs",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/ui/adaptive-responsive",
+      "verifiedOn": "2026-08-04",
+      "applicability": "ui-implementation.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "flutter-accessibility",
+      "topic": "Accessibility support and release checklist",
+      "authority": "official",
+      "url": "https://docs.flutter.dev/ui/accessibility",
+      "verifiedOn": "2026-08-04",
+      "applicability": "ui-implementation.md",
+      "version": "Flutter 3.44.7 documentation snapshot"
+    },
+    {
+      "id": "project-policy-ui-implementation",
+      "topic": "Design readiness, exact assets, state-driven interaction, visual comparison, and completion claims",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "ui-implementation.md",
+      "version": "not-version-bound: repository engineering policy"
+    }
+  ]
+}

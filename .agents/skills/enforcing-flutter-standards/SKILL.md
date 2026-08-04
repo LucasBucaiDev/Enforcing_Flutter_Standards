@@ -1,6 +1,7 @@
 ---
 name: enforcing-flutter-standards
 description: Use when auditing, creating, refactoring, debugging, reviewing, or completing Flutter and Dart work where architecture, Bloc or Cubit state, Freezed models, packages, integrations, persistence, navigation, environments, UI fidelity, tests, code generation, or verification need domain-specific engineering standards.
+compatibility: Requires evidence-driven-development; sources are validated against the Flutter 3.44.7 documentation snapshot and version-scoped in the source catalog.
 ---
 
 # Enforcing Flutter Standards
@@ -24,6 +25,16 @@ Let the process skill own scope, mutation gates, findings, approvals,
 test-first sequencing, diff review, completion, changelog, and report forms.
 This skill owns only Flutter discovery, domain decisions, applicable test types,
 and Dart/Flutter commands.
+
+## Source and compatibility contract
+
+Use `references/source-catalog.json` to distinguish official Flutter guidance
+from repository-owned policy. Each active reference declares a provenance
+marker whose IDs apply to every normative decision in that file unless a
+narrower inline marker overrides it. Treat `not-version-bound` as an explicit
+classification that requires a justification in the catalog, not as missing
+version evidence. Revalidate affected entries when their documented Flutter
+version, URL, authority, or applicable policy changes.
 
 ## Discover Flutter evidence
 

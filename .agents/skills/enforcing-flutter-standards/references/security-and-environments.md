@@ -1,5 +1,7 @@
 # Flutter security and environments
 
+<!-- provenance: flutter-security, flutter-flavors-android, flutter-flavors-apple, project-policy-security-environments -->
+
 Load this reference for observability, logging, error reporting, secrets,
 redaction, environment configuration, flavors, or startup-validation decisions
 supported by observable project evidence.

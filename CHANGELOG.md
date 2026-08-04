@@ -4,6 +4,7 @@
 
 ### Added
 
+- Added source provenance, compatibility metadata, and deterministic catalog validation for Flutter guidance and repository policy.
 - Added evidence-driven Flutter widget audit rules for exhaustive rendering,
   presentation-owned failures and recovery actions, validated selections,
   coherent async interaction, adaptive control groups, and dynamic semantics.

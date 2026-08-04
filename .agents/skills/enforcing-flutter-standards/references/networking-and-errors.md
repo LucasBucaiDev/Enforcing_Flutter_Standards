@@ -1,5 +1,7 @@
 # Flutter networking and errors
 
+<!-- provenance: flutter-networking, project-policy-networking-errors -->
+
 Load this reference for HTTP clients, request cancellation, retries, transport
 boundaries, typed failures, result handling, or user-visible error decisions
 supported by observable project evidence.

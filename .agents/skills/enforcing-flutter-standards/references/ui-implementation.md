@@ -1,5 +1,7 @@
 # Flutter UI implementation contract
 
+<!-- provenance: flutter-adaptive-responsive, flutter-accessibility, project-policy-ui-implementation -->
+
 Apply repository and directory instructions first. Use this contract for any
 Flutter task that consumes Figma, screenshots, mockups, prototypes, implemented
 themes or components, or supplied assets.

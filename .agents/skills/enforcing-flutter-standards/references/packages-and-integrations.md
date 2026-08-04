@@ -1,5 +1,7 @@
 # Flutter packages and integrations
 
+<!-- provenance: flutter-packages, project-policy-packages-integrations -->
+
 Load this reference for local-package boundaries, dependency direction,
 external integrations, lifecycle ownership, composition roots, or dependency
 approval decisions supported by observable project evidence.
