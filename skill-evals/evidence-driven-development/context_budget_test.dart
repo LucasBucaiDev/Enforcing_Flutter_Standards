@@ -210,6 +210,42 @@ void main() {
       maxBytes: 7 * 1024,
       failures: failures,
     );
+
+    final flutterContracts = <String, List<String>>{
+      'architecture-and-state.md': [
+        'silent empty widget',
+        'presentation-owned failure',
+        'callback boundary',
+      ],
+      'networking-and-errors.md': [
+        'recovery action',
+        'retryability',
+        '`signIn`',
+      ],
+      'ui-implementation.md': [
+        'selection value belongs to the available options',
+        'operation is in flight',
+        'duplicate announcement',
+        '`liveRegion`',
+      ],
+    };
+    for (final entry in flutterContracts.entries) {
+      final reference = File('${flutterRoot.path}/references/${entry.key}');
+      _expect(
+        reference.existsSync(),
+        'Missing Flutter reference ${entry.key}.',
+        failures,
+      );
+      if (!reference.existsSync()) continue;
+      final content = reference.readAsStringSync();
+      for (final clause in entry.value) {
+        _expect(
+          content.contains(clause),
+          '${entry.key} is missing widget contract clause: $clause',
+          failures,
+        );
+      }
+    }
   }
 
   final activeSkillFiles = _filesBelow(
@@ -300,12 +336,13 @@ int _wordCount(String value) {
 
 List<File> _filesBelow(Directory directory, {required Set<String> extensions}) {
   if (!directory.existsSync()) return const [];
-  final files = directory
-      .listSync(recursive: true, followLinks: false)
-      .whereType<File>()
-      .where((file) => extensions.any(file.path.endsWith))
-      .toList()
-    ..sort((a, b) => a.path.compareTo(b.path));
+  final files =
+      directory
+          .listSync(recursive: true, followLinks: false)
+          .whereType<File>()
+          .where((file) => extensions.any(file.path.endsWith))
+          .toList()
+        ..sort((a, b) => a.path.compareTo(b.path));
   return files;
 }
 

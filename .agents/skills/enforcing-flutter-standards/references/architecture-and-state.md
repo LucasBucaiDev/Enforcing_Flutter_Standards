@@ -32,6 +32,14 @@ Authentication often satisfies the Bloc predicates when restoration, expiry,
 remote logout, login/logout, and refresh concurrency are distinct events.
 Authentication is not a blanket reason to use Bloc.
 
+## State representation and presentation boundaries
+
+| Observable predicate | Required decision | Approval boundary | Final-report evidence |
+|---|---|---|---|
+| A widget derives rendering from correlated fields such as status, nullable data, failure, cached-data flags, or availability booleans. | Define and enforce the valid combinations. Prefer exhaustive variants when they make invalid combinations unrepresentable. Render every representable state explicitly; never use a silent empty widget such as `SizedBox.shrink()` to hide an unexpected combination. | A broad state migration requires a bounded plan and approval. A touched state may receive the smallest correction that makes its changed behavior explicit. | List the valid combinations or variants, the exhaustive render site, and tests for every applicable state. |
+| Presentation imports a repository, transport, plugin, or infrastructure failure only to choose visible copy or behavior. | Map it before the UI boundary to an owned domain or presentation-owned failure, message key, and permitted recovery behavior. Presentation must not infer product behavior from an infrastructure type. | Do not migrate unrelated failures outside the touched flow. | Cite the former dependency, mapper or state transition, UI-owned value, and failure-path tests. |
+| A widget designed as a presentational component receives some commands as callbacks but discovers equivalent commands through `BuildContext`, a service locator, Bloc, or Cubit. | Establish one deliberate callback boundary for that component. Keep orchestration and state-owner lookup in its coordinating ancestor; allow direct lookup when the widget itself is the observed coordinator. | Reorganizing an unrelated widget tree requires separate approval. | Name the coordinator, presentational boundary, injected commands, and interaction tests. |
+
 ## Freezed
 
 | Observable predicate | Required decision | Approval boundary | Final-report evidence |

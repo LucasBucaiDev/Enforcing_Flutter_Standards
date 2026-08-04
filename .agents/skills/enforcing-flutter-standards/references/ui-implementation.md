@@ -4,6 +4,14 @@ Apply repository and directory instructions first. Use this contract for any
 Flutter task that consumes Figma, screenshots, mockups, prototypes, implemented
 themes or components, or supplied assets.
 
+## Contents
+
+- Visual sources and readiness
+- Design audit and gap protocol
+- Implementation and state-driven interaction
+- Responsive and adaptive behavior
+- Icons, accessibility, tests, and visual comparison
+
 ## Visual sources are not complete product specifications
 
 Inspect the available sources before writing UI code, in this order:
@@ -97,6 +105,14 @@ Material, or platform conflict, copy it blindly, or invent behavior.
   single-language project requires an explicit product requirement and
   approval; the UI must still tolerate long and variable text.
 
+## State-driven interaction
+
+| Observable predicate | Required decision | Validation evidence |
+|---|---|---|
+| A dropdown, segmented control, radio group, tab set, or equivalent receives its current value separately from its options. | Guarantee that the selection value belongs to the available options before building the control. Keep allowed values and normalization in one owned state or configuration boundary. | Test restored, remote, default, and changed values, including an unsupported input. |
+| Related controls trigger the same asynchronous flow but use different enablement predicates. | Define one coherent interaction policy while an operation is in flight. Prevent unintended overlap, duplicate submission, or navigation races in the state owner; do not rely only on the next rebuild disabling one control. | Test rapid repeated input and each loading, refreshing, success, and failure transition that changes availability. |
+| Visible error handling chooses both copy and an action. | Consume the explicit presentation state and recovery action. Do not switch on repository or vendor failures inside widgets, and do not show retry for every failure by default. | Test the visible message, available action, and absence of an action for non-recoverable outcomes. |
+
 ## Responsive and adaptive matrix
 
 Define a matrix before implementation for every target platform and
@@ -112,6 +128,13 @@ and target dimension represented by the contract. Include compact and expanded
 layouts, orientation, input method, system insets, text scaling, and variable
 content when they apply. A single phone render is not evidence for tablet,
 desktop, web, foldable, landscape, or platform-specific behavior.
+
+Treat a horizontal group containing variable or localized text plus multiple
+controls as an explicit reflow decision. Inspect it at compact width, large
+text scaling, and with representative long copy. Use `LayoutBuilder`, `Wrap`,
+multiple rows, overflow scrolling, or another project-consistent treatment
+only when its observed constraints justify that choice; no widget is mandatory.
+Apply the same check to transient banners whose text and actions share a row.
 
 ## Icons and assets
 
@@ -143,6 +166,14 @@ Widget tests cover interactions, validation, state changes, and other
 observable behavior, plus useful built-in accessibility checks. Use Flutter's
 built-in checks when they add value for semantics labels, contrast,
 touch-target size, and related supported guidelines.
+
+For content that appears or changes without moving focus, decide whether it
+must be announced and inspect the resulting semantics tree. Use `liveRegion`
+for a justified dynamic announcement, including an actionable refresh failure,
+not as decoration. When a semantics label repeats visible descendant text,
+merge or exclude descendants deliberately so assistive technology does not
+produce a duplicate announcement. Preserve native widget semantics when they
+already express the correct label, value, role, action, and enabled state.
 
 Static visual changes with no testable behavior do not require artificial
 widget tests. Record that no-behavior predicate and use the rendering and

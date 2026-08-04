@@ -30,11 +30,19 @@ Repositories map external exceptions to owned typed failures. Blocs and Cubits
 turn results into explicit states. UI consumes those states and never
 interprets exceptions or displays raw technical messages.
 
+Keep failure reason, visible message, and recovery action separate. Determine
+retryability at the use-case or state boundary from the operation, failure, and
+idempotence policy; the presence of an error does not imply that retry is safe
+or useful. Expose an explicit recovery action such as `retry`, `signIn`,
+`dismiss`, `goBack`, or none. The UI renders that action and does not derive it
+from repository or vendor failure types.
+
 | Observable predicate | Required decision | Approval boundary | Final-report evidence |
 |---|---|---|---|
 | An SDK or external source can throw. | Catch at the external boundary and map the exception to a typed failure before returning a result. `Either` does not remove this catch requirement. | Adding `fpdart` or another result dependency requires comparison and approval; retain coherent existing `dartz` or `fpdart` usage. | Name caught exception families, failure mapping, result type, and boundary tests. |
 | Code consumes a typed result. | Exhaustively consume both branches with `fold` or `match` and map them to explicit state or behavior. | None. | Cite the fold/match site and tests for success and failure. |
 | UI-visible failure handling is added. | Present a product-appropriate message/state; keep raw technical errors out of UI. | Product-copy ambiguity may require a user/product decision. | Record the typed failure-to-state/message mapping. |
+| A failure UI exposes retry or another recovery action. | Model the action explicitly and offer retry only when the failed operation is retryable under its idempotence and concurrency policy. Permission, authentication, invalid input, and not-found outcomes require their own product decision instead of a default retry. | A new retry policy or changed product journey requires approval. | Record failure reason, permitted action, retryability decision, and tests proving actionable and non-actionable outcomes. |
 
 Unsafe result access is prohibited:
 

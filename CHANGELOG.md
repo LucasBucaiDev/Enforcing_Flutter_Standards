@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added evidence-driven Flutter widget audit rules for exhaustive rendering,
+  presentation-owned failures and recovery actions, validated selections,
+  coherent async interaction, adaptive control groups, and dynamic semantics.
+- Added adversarial and sound-counterexample widget audit scenarios plus static
+  contract regression gates.
 - Added the approved design and implementation plan for the Flutter engineering skill.
 - Added the portable Flutter engineering skill.
 - Added a public GitHub README for the Flutter engineering skill and its Dart inspector.

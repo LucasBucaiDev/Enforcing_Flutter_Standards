@@ -73,8 +73,11 @@ La extensión aplica referencias temáticas sólo desde evidencia observable:
 El proceso conserva la arquitectura coherente del proyecto, exige evidencia
 para decisiones de Cubit/Bloc, usa Freezed para datos o variantes, evita ciclos
 entre paquetes, mantiene tipos de vendors fuera de features/estado y no inventa
-assets personalizados faltantes. Dependencias y migraciones requieren
-comparación, plan y aprobación separados.
+assets personalizados faltantes. En presentation exige estados renderizables
+exhaustivos, fallos y acciones de recuperación propios, valores seleccionables
+válidos, interacción asíncrona coherente, adaptación por restricciones y
+semántica dinámica verificada. Dependencias y migraciones requieren comparación,
+plan y aprobación separados.
 
 ## Fuente desplegable
 
@@ -161,7 +164,9 @@ dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_proj
 
 - G1–G14 validan routing, planificación, baseline TDD, protección de `main`,
   delegación y comportamiento de la skill general.
-- F1–F6 validan composición, dependencia faltante y referencias Flutter.
+- F1–F9 validan composición, dependencia faltante, referencias Flutter y
+  auditorías de estado, recuperación, responsive y accesibilidad sin
+  sobregeneralizar reglas.
 - `context_budget_test.dart` valida budgets y ausencia de contratos legacy.
 - `inspect_flutter_project_test.dart` cubre las diez interfaces del inspector.
 

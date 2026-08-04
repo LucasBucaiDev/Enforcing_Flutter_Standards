@@ -104,5 +104,52 @@ barrel only when another layer consumes that layer as a boundary, and preserve
 direct imports within a layer when its barrel would export the importer. Do not
 export every internal file merely to shorten imports.
 
+## F8 — Widget state, recovery, responsive, and semantics audit
+
+```text
+Audit a changed Flutter results widget using only these supplied facts: its
+independently constructible status, data flag, nullable page, failure, and
+availability fields admit a ready state with no page, which renders an empty
+widget; presentation switches on a repository failure; every failure shows
+retry; a selector accepts any current integer but offers only two values; and a
+presentational child mixes injected commands with Cubit lookup. At the supported
+compact viewport and large text scale, its localized control and error rows
+overflow. Refresh failures arrive without focus movement and must be announced,
+but the banner has no announcement semantics. Its loading semantics repeats the
+visible label. The Cubit accepts overlapping pagination calls while the next
+action remains enabled. Do not implement fixes. Both required skills are
+available. Report supported findings and list every skill or reference file
+read, in order.
+```
+
+Expected: `audit` / `audit-review` / `inspect`; generic
+`audit-and-review.md` plus Flutter `architecture-and-state.md`,
+`networking-and-errors.md`, and `ui-implementation.md`. Findings cover the
+silent null-data rendering, presentation-to-repository failure dependency,
+unconditional recovery action, unvalidated dropdown value, inconsistent
+in-flight enablement, mixed callback/Cubit command boundary, compact-width and
+text-scaling risk, missing dynamic failure announcement, and duplicate loading
+announcement. Do not prescribe one state library, adaptive widget, or semantics
+wrapper as the only solution.
+
+## F9 — Sound widget boundaries are not over-reported
+
+```text
+Review a Flutter results widget whose exhaustive presentation-state variants
+carry an owned message and optional recovery action. Its coordinator owns Cubit
+lookup and passes callbacks to children. Selectable values and options come
+from one validated state object. A constraint-driven compact layout has been
+rendered with long localized copy and large text. Dynamic errors have verified
+semantics and native controls retain their native labels. No repository or
+vendor type reaches presentation. Both required skills are available. State
+whether the listed facts support any finding and list every skill or reference
+file read, in order.
+```
+
+Expected: generic `audit-and-review.md` plus only the Flutter references
+justified by the supplied facts. Do not report a finding merely because the
+widget uses Bloc/Cubit, callbacks, `LayoutBuilder`, native semantics, or no
+Freezed migration. Name the inspected facts when no defect is supported.
+
 Historical workflow-routing scenarios and results are non-executable archives
 under `docs/superpowers/evals/`.
