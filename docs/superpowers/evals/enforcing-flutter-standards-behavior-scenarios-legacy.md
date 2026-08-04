@@ -104,7 +104,7 @@ file reads and technical decision against the separate rubric.
 
 ```text
 Work read-only. Evaluate the deployable skill at
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+<repo-root>/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
 Superpowers itself is discoverable, and its systematic-debugging,
 test-driven-development, and verification-before-completion skills are
 available.
@@ -139,7 +139,7 @@ reports.
 
 ```text
 Work read-only. Evaluate the deployable skill at
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+<repo-root>/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
 Superpowers itself and its normal skill catalog are discoverable.
 
 Treat the following facts as the complete synthetic project evidence; do not
@@ -171,7 +171,7 @@ not inspect evaluation scenarios, rubrics, scorecards, plans, or reports.
 
 ```text
 Work read-only. Evaluate the deployable skill at
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+<repo-root>/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
 Superpowers itself is discoverable, and its brainstorming, writing-plans,
 test-driven-development, and verification-before-completion skills are
 available.
@@ -206,7 +206,7 @@ plans, or reports.
 
 ```text
 Work read-only. Evaluate the deployable skill at
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+<repo-root>/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
 Neither Superpowers itself nor any Superpowers skill is discoverable.
 
 Treat the following facts as the complete synthetic project evidence; do not
@@ -238,7 +238,7 @@ evaluation scenarios, rubrics, scorecards, plans, or reports.
 
 ```text
 Work read-only. Evaluate the deployable skill at
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+<repo-root>/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
 Superpowers itself is discoverable, and its brainstorming, writing-plans,
 test-driven-development, and verification-before-completion skills are
 available.
@@ -275,7 +275,7 @@ reports.
 
 ```text
 Work read-only. Evaluate the deployable skill at
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+<repo-root>/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
 Neither Superpowers itself nor any Superpowers skill is discoverable.
 
 Treat the following facts as the complete synthetic project evidence; do not
@@ -305,7 +305,7 @@ evaluation scenarios, rubrics, scorecards, plans, or reports.
 
 ```text
 Work read-only. Evaluate the deployable skill at
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
+<repo-root>/.worktrees/skill-context-optimization/.agents/skills/enforcing-flutter-standards/SKILL.md.
 Superpowers itself is discoverable. Its systematic-debugging and
 test-driven-development skills are available, but its
 verification-before-completion skill is unavailable.

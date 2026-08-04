@@ -554,12 +554,12 @@ skills. R2 is an evidence-capture failure, not a normalized pass.
   quality/delivery, and the three Bug skills; RM2 reads the deployable skill,
   Superpowers integration, audit, and UI; RM3 reads the deployable skill,
   standalone, audit, networking/errors, and quality/delivery.
-- RM4 Run A thread `019fb507-f702-7591-b4e1-ee6f30cad98d` and Run B thread
-  `019fb507-ed37-75d1-acbe-50f73b0b7c21` both read the Superpowers map,
+- RM4 Run A thread `<thread-id-a>` and Run B thread
+  `<thread-id-b>` both read the Superpowers map,
   networking/errors, quality/delivery, and the same Bug composition. Run A
   emits no routing metadata; Run B emits only the requested safe metadata.
 - RM5 stages 1–3 share thread
-  `019fb509-5937-7de2-ab0a-d45071439711`. Stage 1 reads the Superpowers map,
+  `<thread-id-c>`. Stage 1 reads the Superpowers map,
   audit, and architecture references. Stage 2 emits the updated manifest with
   package/integration added and has zero command/file-read events. Stage 3 then
   reads only `packages-and-integrations.md` and emits the blocking dependency

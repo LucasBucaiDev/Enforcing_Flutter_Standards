@@ -641,7 +641,7 @@ remains present for the future extraction.
 Run:
 
 ```bash
-CI=true /Users/lucasbuc/development/flutter/bin/cache/dart-sdk/bin/dart \
+CI=true <dart-sdk>/bin/dart \
   skill-evals/enforcing-flutter-standards/inspect_flutter_project_test.dart
 ```
 
@@ -718,7 +718,7 @@ Expected: one documentation-only commit.
 Run again after the documentation commit:
 
 ```bash
-CI=true /Users/lucasbuc/development/flutter/bin/cache/dart-sdk/bin/dart \
+CI=true <dart-sdk>/bin/dart \
   skill-evals/enforcing-flutter-standards/inspect_flutter_project_test.dart
 git diff --check
 git status --short

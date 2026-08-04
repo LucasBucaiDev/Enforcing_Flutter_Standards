@@ -351,7 +351,7 @@ Expected: the commit contains only the two Markdown evaluation files.
 On this machine run:
 
 ```bash
-python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/init_skill.py \
+python3 <skill-creator-root>/scripts/init_skill.py \
   enforcing-flutter-standards \
   --path .agents/skills \
   --resources scripts,references \
@@ -1108,7 +1108,7 @@ If the Codex helper is available and PyYAML is installed in its interpreter,
 run:
 
 ```bash
-python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/enforcing-flutter-standards
+python3 <skill-creator-root>/scripts/quick_validate.py .agents/skills/enforcing-flutter-standards
 ```
 
 If that interpreter lacks PyYAML, do not install a dependency silently. Run the

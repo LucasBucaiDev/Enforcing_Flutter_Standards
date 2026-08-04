@@ -1,2 +1,16 @@
 .worktrees/
 .venv/
+
+# Local environments and credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+**/key.properties
+**/local.properties

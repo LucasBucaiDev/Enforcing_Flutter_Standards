@@ -21,7 +21,7 @@ Git.
 ## Global Constraints
 
 - Work from
-  `/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards`.
+  `<repo-root>`.
 - Preserve the unrelated untracked file
   `docs/superpowers/plans/2026-07-29-repository-health-audit-b1.md`; never stage,
   edit, delete, or include it in a commit.
@@ -277,7 +277,7 @@ Use four fresh agents or threads with no conversation history. Give each only
 its scenario and this skill path:
 
 ```text
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/.agents/skills/enforcing-flutter-standards
+<repo-root>/.agents/skills/enforcing-flutter-standards
 ```
 
 Expected RED: every route reads
@@ -1101,7 +1101,7 @@ git commit -m "refactor: route Flutter guidance progressively"
 Run:
 
 ```bash
-python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/quick_validate.py \
+python3 <skill-creator-root>/scripts/quick_validate.py \
   .agents/skills/enforcing-flutter-standards
 ```
 
@@ -1357,7 +1357,7 @@ progressive output, argument validation, and read-only snapshots.
 Run:
 
 ```bash
-python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/quick_validate.py \
+python3 <skill-creator-root>/scripts/quick_validate.py \
   .agents/skills/enforcing-flutter-standards
 ```
 

@@ -11,7 +11,7 @@
 
 ```text
 Implementá únicamente el Batch B, revisión 1, descripto en:
-/Users/lucasbuc/personal_app/Enforcing_Flutter_Standards/docs/plans/2026-07-31-edd-subagent-orchestration.md
+<repo-root>/docs/plans/2026-07-31-edd-subagent-orchestration.md
 
 Leé el plan completo antes de actuar. Usá $skill-creator y
 $evidence-driven-development. Confirmá primero que los Batches P y A ya están
@@ -178,7 +178,7 @@ referencia dentro de `design-and-approve.md`.
 
 ```bash
 dart run skill-evals/evidence-driven-development/context_budget_test.dart
-python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/evidence-driven-development
+python3 <skill-creator-root>/scripts/quick_validate.py .agents/skills/evidence-driven-development
 git diff --check
 ```
 

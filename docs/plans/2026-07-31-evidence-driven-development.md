@@ -148,7 +148,7 @@ aislados.
 - [ ] Ejecutar el inicializador de `skill-creator` desde su ubicación instalada:
 
   ```bash
-  python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/init_skill.py evidence-driven-development --path .agents/skills --resources references --interface 'display_name=Evidence-Driven Development' --interface 'short_description=Evidence-led engineering workflow gates' --interface 'default_prompt=Use $evidence-driven-development to diagnose, plan, implement, and verify this repository change from observable evidence.'
+  python3 <skill-creator-root>/scripts/init_skill.py evidence-driven-development --path .agents/skills --resources references --interface 'display_name=Evidence-Driven Development' --interface 'short_description=Evidence-led engineering workflow gates' --interface 'default_prompt=Use $evidence-driven-development to diagnose, plan, implement, and verify this repository change from observable evidence.'
   ```
 
 - [ ] Mantener en el frontmatter únicamente `name` y `description`.
@@ -235,7 +235,7 @@ aislados.
 - [ ] Ejecutar el validador estructural:
 
   ```bash
-  python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/evidence-driven-development
+  python3 <skill-creator-root>/scripts/quick_validate.py .agents/skills/evidence-driven-development
   ```
 
 - [ ] Ejecutar el budget test. En B2 todavía puede fallar únicamente por el
@@ -416,8 +416,8 @@ aislados.
   dart format --output=none --set-exit-if-changed skill-evals/evidence-driven-development/context_budget_test.dart
   dart run skill-evals/evidence-driven-development/context_budget_test.dart
   dart run skill-evals/enforcing-flutter-standards/inspect_flutter_project_test.dart
-  python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/evidence-driven-development
-  python3 /Users/lucasbuc/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/enforcing-flutter-standards
+  python3 <skill-creator-root>/scripts/quick_validate.py .agents/skills/evidence-driven-development
+  python3 <skill-creator-root>/scripts/quick_validate.py .agents/skills/enforcing-flutter-standards
   git diff --check
   ```
 

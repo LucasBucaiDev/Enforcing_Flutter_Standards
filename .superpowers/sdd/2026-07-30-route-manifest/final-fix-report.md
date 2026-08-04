@@ -77,7 +77,7 @@ codex -a never exec --ephemeral --ignore-user-config --ignore-rules --skip-git-r
 ```
 
 RM1–RM4 and each accepted R capture used a fresh thread. RM5 used persistent
-thread `019fb509-5937-7de2-ab0a-d45071439711` for its three required stages.
+thread `<thread-id>` for its three required stages.
 The exact historical R prompts were preserved byte-for-byte by a temporary
 compatibility symlink. It was removed with `unlink`; both `test ! -e` and
 `test ! -L` passed afterward.
