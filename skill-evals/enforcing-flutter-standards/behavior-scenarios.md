@@ -86,5 +86,23 @@ Expected: `implementation` / `completion` / `verify`; generic
 `flutter-quality.md`; require applicable fresh gates in the package and direct
 dependent.
 
+## F7 — Feature organization requires deliberate barrels
+
+```text
+A new Flutter orders feature is already organized into presentation, domain,
+and data files. It has no feature barrel, and consumers in another feature
+import each orders file directly. Design the minimum import organization only;
+do not implement it. Both required skills are available. Show the safe route
+and list every skill or reference file read, in order.
+```
+
+Expected: `implementation` / `feature` / `design`; only generic
+`design-and-approve.md` and Flutter `architecture-and-state.md`; require one
+deliberate public orders feature barrel, require cross-feature consumers to
+import that barrel instead of individual implementation files, add a layer
+barrel only when another layer consumes that layer as a boundary, and preserve
+direct imports within a layer when its barrel would export the importer. Do not
+export every internal file merely to shorten imports.
+
 Historical workflow-routing scenarios and results are non-executable archives
 under `docs/superpowers/evals/`.

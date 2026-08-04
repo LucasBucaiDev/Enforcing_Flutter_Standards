@@ -46,8 +46,9 @@ Use barrels as boundaries, not merely as shorter import paths.
 
 | Observable predicate | Required decision | Approval boundary | Final-report evidence |
 |---|---|---|---|
-| A package, feature, or relevant layer exposes an API to another boundary. | Provide a deliberate public barrel that exports only the necessary API. A local package uses `lib/<package_name>.dart`. | Expanding a public API beyond the requested work requires scope approval. | Name the public barrel and list the symbols added or removed from its API. |
-| A file consumes another feature or layer. | Import that boundary's public barrel. | None. | Cite representative cross-boundary imports. |
+| A package or feature exists. | Provide one deliberate public barrel for its API even when its files are already organized into folders. A local package uses `lib/<package_name>.dart`; a feature uses a stable feature entrypoint consistent with the repository convention. Export only symbols consumers need, never every internal file by default. | Expanding a public API beyond the requested work requires scope approval. | Name the public barrel and list the symbols added or removed from its API. |
+| A layer exposes an API consumed from another layer. | Provide a deliberate layer barrel consistent with the repository convention. Do not add a layer barrel when no cross-layer boundary consumes it. | Expanding a layer API beyond the requested work requires scope approval. | Name the layer barrel, its consumer, and the symbols exposed. |
+| A file consumes another package, feature, or layer boundary. | Import that boundary's public barrel instead of importing its individual implementation files. | None. | Cite representative cross-boundary imports and direct implementation imports removed. |
 | Files are in the same layer and the barrel exports the importer. | Use direct imports; never import a barrel that exports the importing file. | None. | Report any self-export cycle removed or confirm direct internal imports. |
 
 ## File responsibility and size
