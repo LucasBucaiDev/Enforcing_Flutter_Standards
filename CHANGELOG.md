@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added automated skills quality gates for Dart formatting, metadata and local
+  link validation, context budgets, source provenance, inspector regressions,
+  and whitespace errors in path-scoped push and pull-request CI.
 - Added capability-driven Flutter runtime inspection for launch, tree,
   semantics, interaction, and capture with bounded evidence, explicit fallbacks,
   and approval gates for external or destructive effects.

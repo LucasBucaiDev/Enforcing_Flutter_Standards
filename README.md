@@ -276,13 +276,32 @@ integración ni dependencias de previews sin evidencia, comparación y aprobaci�
 Comandos principales:
 
 ```bash
+dart format --output=none --set-exit-if-changed .agents/skills skill-evals tool
+dart run tool/validate_skills.dart
 dart run skill-evals/evidence-driven-development/context_budget_test.dart
 dart run skill-evals/enforcing-flutter-standards/source_catalog_test.dart
 dart run skill-evals/enforcing-flutter-standards/inspect_flutter_project_test.dart
+dart run skill-evals/skills-quality/skills_quality_test.dart
+git diff --check
 ```
 
 Los escenarios y scorecards activos viven bajo `skill-evals/`. La documentación
 histórica permanece fuera de las rutas vigentes y no es ejecutable.
+
+## CI de calidad de skills
+
+`.github/workflows/skills-quality.yml` ejecuta en cada push o pull request que
+afecta las skills, sus evaluaciones o su documentación exactamente los comandos
+anteriores. El workflow usa Dart 3.12.2, permisos de lectura, credenciales de
+checkout no persistentes y actions fijadas por SHA completo.
+
+`tool/validate_skills.dart` comprueba que cada carpeta activa tenga `SKILL.md` y
+`agents/openai.yaml`, que `name` y `description` sean válidos y que los links
+Markdown locales de las skills y del README resuelvan. Los fixtures bajo
+`skill-evals/skills-quality/fixtures/` demuestran los fallos de metadata y links.
+
+El linter externo permanece fuera de este batch y requiere una comparación y
+aprobación separadas.
 
 ## Documentación vigente
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Example skill"
+  short_description: "Broken link fixture"
+  default_prompt: "Use $example-skill for this fixture."
