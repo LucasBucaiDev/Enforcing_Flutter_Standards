@@ -84,7 +84,8 @@ skill's `process_now`; update its route record before expanding domain context.
 | overflow, constraints, `RenderFlex`, unbounded layout, inspector sizing | `references/layout-diagnostics.md` |
 | localization, locale, ARB, `l10n.yaml`, generated messages | `references/localization.md` |
 | Widget Previewer, `@Preview`, preview wrapper or preview failure | `references/widget-previews.md` |
-| screen, widget, responsive, accessibility, screenshot, exact asset | `references/ui-implementation.md` |
+| screen, responsive, accessibility, exact asset | `references/ui-implementation.md` |
+| runtime launch, tree, semantics, interaction, capture | `references/runtime-inspection.md` |
 
 References are independent and one level deep. Do not load one to decide
 whether another applies. Preserve coherent architecture and keep unrelated

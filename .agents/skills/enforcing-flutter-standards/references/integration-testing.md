@@ -26,7 +26,8 @@ or add a dependency without the separate comparison and approval gate.
    project supports it, and avoid arbitrary delays or ordering dependencies.
 5. Run the repository command on the named target. Only when none exists,
    consider `flutter test integration_test/<file> -d <device>` for a supported
-   target and current Flutter SDK behavior.
+   target and current Flutter SDK behavior. When observing or interacting with
+   the running app outside the harness result, apply `runtime-inspection.md`.
 
 ## Common failures
 

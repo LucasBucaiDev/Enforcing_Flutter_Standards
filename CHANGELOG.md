@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added capability-driven Flutter runtime inspection for launch, tree,
+  semantics, interaction, and capture with bounded evidence, explicit fallbacks,
+  and approval gates for external or destructive effects.
 - Added six thin Flutter task entry skills for widget tests, integration tests,
   layout diagnostics, localization, widget previews, and navigation with
   explicit base-skill dependencies and single-recipe routing.

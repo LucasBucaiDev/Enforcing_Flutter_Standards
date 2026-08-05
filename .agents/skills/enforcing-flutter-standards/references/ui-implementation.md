@@ -183,6 +183,9 @@ visual-comparison evidence applicable to the change instead.
 
 ## Rendering and visual comparison
 
+When collecting runtime evidence, apply `runtime-inspection.md` for capability
+discovery, the execution record, safe interaction, and explicit fallback.
+
 When the environment allows it, run and inspect the UI at the representative
 target dimensions and platforms from the matrix. Compare renders or captures
 against the identified source of truth. Check at least:

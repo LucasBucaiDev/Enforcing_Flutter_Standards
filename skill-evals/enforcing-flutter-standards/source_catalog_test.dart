@@ -11,6 +11,7 @@ const _referenceNames = <String>[
   'networking-and-errors.md',
   'packages-and-integrations.md',
   'persistence.md',
+  'runtime-inspection.md',
   'security-and-environments.md',
   'ui-implementation.md',
   'widget-previews.md',

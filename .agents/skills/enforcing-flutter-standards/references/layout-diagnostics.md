@@ -20,6 +20,8 @@ responsive conventions; do not redesign the whole screen to repair one boundary.
    Trace bounded, loose, tight, and unbounded values through the relevant parents.
 4. Use the Flutter inspector to inspect `constraints` and `size`; enable layout
    guidelines only as temporary diagnostic evidence, never production debug code.
+   When collecting that evidence, apply `runtime-inspection.md` for capability
+   discovery, the runtime record, and fallback.
 5. Fix the closest owner of the invalid negotiation. Choose reflow, scroll,
    flex, bounds, or truncation only when the content and target contract support it.
 6. Add or update the smallest widget test when the failure is behaviorally

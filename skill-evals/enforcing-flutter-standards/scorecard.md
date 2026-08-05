@@ -56,8 +56,17 @@ presented as independently verified runtime evidence.
 | Context budgets, active-route cleanup, and widget contract clauses | Pass | `Context budget GREEN: all static gates passed.` |
 | P3 operational references and focused routing | Pass | Five bounded references, navigation workflow, and direct SKILL routes pass the context-budget gate. |
 | P2 entrypoint structure and minimal context | Pass | Six bounded skills declare both bases, one recipe, missing-dependency behavior, UI metadata, and no embedded process references. |
-| Source provenance and active-reference coverage | Pass | `Source catalog validation passed.` covers all thirteen active references. |
+| Source provenance and active-reference coverage | Pass | `Source catalog validation passed.` covers all fourteen active references. |
 | Inspector regression | Pass | `inspect_flutter_project_test.dart`: 10/10 tests. |
+
+## P4 runtime inspection scenarios
+
+| ID | Required behavior | Static gate | Isolated result | Evidence status |
+|---|---|---|---|---|
+| F25 | Complete capabilities produce bounded runtime evidence | Pass | Pending | Capability discovery, full evidence record, and claim boundaries are validated statically. |
+| F26 | Partial capabilities declare unavailable observations | Pass | Pending | Partial classification and explicit fallback are validated statically. |
+| F27 | Missing runtime tools preserve independent static work | Pass | Pending | Unavailable-runtime fallback and pending-validation language are validated statically. |
+| F28 | External-impact interaction stops for approval | Pass | Pending | External mutation and destructive-action gates are validated statically. |
 
 Historical scorecards are non-executable evidence under
 `docs/superpowers/evals/`.

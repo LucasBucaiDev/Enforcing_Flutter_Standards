@@ -277,6 +277,19 @@ void main() {
         'iOS',
         'web',
       ],
+      'runtime-inspection.md': [
+        'Capability discovery',
+        'Never invent a tool',
+        'target entrypoint',
+        'device or platform',
+        'initial state',
+        'actions performed',
+        'evidence obtained',
+        'partial',
+        'unavailable',
+        'external state',
+        'destructive',
+      ],
     };
     for (final entry in flutterContracts.entries) {
       final reference = File('${flutterRoot.path}/references/${entry.key}');
@@ -325,6 +338,42 @@ void main() {
           failures,
         );
       }
+    }
+
+    final runtimeInspection = File(
+      '${flutterRoot.path}/references/runtime-inspection.md',
+    );
+    if (runtimeInspection.existsSync()) {
+      final content = runtimeInspection.readAsStringSync();
+      _checkBudget(
+        'references/runtime-inspection.md',
+        content,
+        maxLines: 120,
+        maxWords: 750,
+        maxBytes: 8 * 1024,
+        failures: failures,
+      );
+      _expect(
+        flutterSkill.readAsStringSync().contains(
+          'references/runtime-inspection.md',
+        ),
+        'Flutter SKILL.md must route directly to runtime-inspection.md.',
+        failures,
+      );
+    }
+    for (final consumer in const [
+      'ui-implementation.md',
+      'layout-diagnostics.md',
+      'integration-testing.md',
+    ]) {
+      final content = File(
+        '${flutterRoot.path}/references/$consumer',
+      ).readAsStringSync();
+      _expect(
+        content.contains('`runtime-inspection.md`'),
+        '$consumer must link to runtime-inspection.md.',
+        failures,
+      );
     }
   }
 
@@ -442,10 +491,10 @@ void main() {
   );
   if (flutterBehaviorScenarios.existsSync()) {
     final content = flutterBehaviorScenarios.readAsStringSync();
-    for (var scenario = 16; scenario <= 24; scenario++) {
+    for (var scenario = 16; scenario <= 28; scenario++) {
       _expect(
         content.contains('## F$scenario —'),
-        'Missing P2 behavior scenario F$scenario.',
+        'Missing active behavior scenario F$scenario.',
         failures,
       );
     }

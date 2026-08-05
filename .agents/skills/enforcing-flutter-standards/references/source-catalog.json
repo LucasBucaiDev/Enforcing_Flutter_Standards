@@ -292,6 +292,15 @@
       "verifiedOn": "2026-08-04",
       "applicability": "widget-previews.md",
       "version": "not-version-bound: repository engineering policy"
+    },
+    {
+      "id": "project-policy-runtime-inspection",
+      "topic": "Capability discovery, portable runtime evidence, safe interaction, and explicit fallbacks",
+      "authority": "project-policy",
+      "url": null,
+      "verifiedOn": "2026-08-04",
+      "applicability": "runtime-inspection.md",
+      "version": "not-version-bound: capability-driven repository engineering policy"
     }
   ]
 }

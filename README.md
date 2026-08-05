@@ -96,6 +96,7 @@ La extensión aplica referencias temáticas sólo desde evidencia observable:
 | ARB, locales y generación l10n | `localization.md` |
 | Widget Previewer y límites de Chrome/native | `widget-previews.md` |
 | UI, responsive, accesibilidad y assets exactos | `ui-implementation.md` |
+| Lanzamiento, árbol, semántica, interacción y captura runtime | `runtime-inspection.md` |
 
 El proceso conserva la arquitectura coherente del proyecto, exige evidencia
 para decisiones de Cubit/Bloc, usa Freezed para datos o variantes, evita ciclos
@@ -134,6 +135,7 @@ plan y aprobación separados.
 │   │   ├── networking-and-errors.md
 │   │   ├── packages-and-integrations.md
 │   │   ├── persistence.md
+│   │   ├── runtime-inspection.md
 │   │   ├── security-and-environments.md
 │   │   ├── source-catalog.json
 │   │   ├── ui-implementation.md
@@ -230,6 +232,20 @@ dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_proj
   --section packageEdges --section cycles
 ```
 
+## Inspección runtime por capacidades
+
+Cuando una tarea necesita ejecutar u observar la app, la skill descubre primero
+las capacidades disponibles y las mapea a lanzamiento, target, árbol o layout,
+semántica, interacción, logs y captura. No presupone un servidor MCP, emulador,
+navegador ni herramienta concreta.
+
+El registro identifica entrypoint, flavor, dispositivo o plataforma,
+dimensiones, estado inicial, acciones y evidencia obtenida. Con capacidades
+parciales declara el alcance faltante; sin capacidades runtime conserva el
+trabajo estático independiente y deja una validación manual pendiente. Toda
+interacción que pueda mutar datos externos o ser destructiva requiere una
+aprobación específica.
+
 ## Recetas operativas Flutter
 
 Las recetas de widget tests, integration tests, diagnóstico de layout,
@@ -252,6 +268,8 @@ integración ni dependencias de previews sin evidencia, comparación y aprobaci�
   auditorías de estado y recetas focalizadas.
 - F16–F24 validan entrypoint único, composición obligatoria, bloqueo por
   dependencia, ausencia de activación genérica y contexto temático mínimo.
+- F25–F28 validan runtime completo, parcial y ausente, además del gate de
+  aprobación para interacciones con impacto externo.
 - `context_budget_test.dart` valida budgets y ausencia de contratos legacy.
 - `inspect_flutter_project_test.dart` cubre las diez interfaces del inspector.
 
