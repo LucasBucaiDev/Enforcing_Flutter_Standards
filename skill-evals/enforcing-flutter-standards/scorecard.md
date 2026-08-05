@@ -68,6 +68,13 @@ presented as independently verified runtime evidence.
 | F27 | Missing runtime tools preserve independent static work | Pass | Pending | Unavailable-runtime fallback and pending-validation language are validated statically. |
 | F28 | External-impact interaction stops for approval | Pass | Pending | External mutation and destructive-action gates are validated statically. |
 
+## Raw artifact discovery scenarios
+
+| ID | Fixture role | Baseline result | Loaded references | Observed evidence |
+|---|---|---|---|---|
+| F29 | Synthetic artifact containing nine supported audit conditions | RED — reported seven of nine supported areas | `audit-and-review.md`; architecture, quality, widget-testing, layout, UI, and runtime references; omitted `networking-and-errors.md` | Fresh isolated audit found invalid state rendering, unsupported selection, overlapping pagination, mixed command boundaries, both responsive failures, and both semantics failures. It missed the presentation dependency on `RepositoryFailure` and unconditional retry, confirming incomplete discovery and routing while the deployed skills remained unchanged. Coordinator verification: analyzer clean and 6/6 characterization tests passed. |
+| F30 | Synthetic false-positive control over the same responsibilities | Pass after fixture stabilization | Fresh isolated source audit read `audit-and-review.md` and the source catalog; no domain finding was supported | The final isolated audit reported no finding. Earlier runs exposed legitimate fixture defects, which were corrected before accepting the control. Coordinator verification supplied the runtime evidence unavailable inside the restricted evaluator: analyzer clean and 8/8 characterization tests passed. |
+
 Historical scorecards are non-executable evidence under
 `docs/superpowers/evals/`.
 

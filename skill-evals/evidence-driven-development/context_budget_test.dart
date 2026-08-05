@@ -491,7 +491,7 @@ void main() {
   );
   if (flutterBehaviorScenarios.existsSync()) {
     final content = flutterBehaviorScenarios.readAsStringSync();
-    for (var scenario = 16; scenario <= 28; scenario++) {
+    for (var scenario = 16; scenario <= 30; scenario++) {
       _expect(
         content.contains('## F$scenario —'),
         'Missing active behavior scenario F$scenario.',

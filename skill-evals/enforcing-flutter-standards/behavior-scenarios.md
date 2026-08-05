@@ -397,5 +397,53 @@ identify the exact external effect and target requiring approval, preserve
 already collected non-sensitive evidence, and never infer authorization from
 the inspection request.
 
+## F29 — Raw widget artifact discovery
+
+Fixture: `fixtures/widget-audit/case_a`. The evaluator receives only the
+deployable skills, this fixture, and the prompt below. Characterization tests
+may be executed as raw evidence, but the evaluator does not receive this
+scenario, its expected result, the scorecard, plans, the control fixture, or
+Git history.
+
+```text
+Audit the supplied Flutter package as written. Do not implement changes.
+Inspect every in-scope Dart source and collect applicable runtime evidence.
+Treat characterization tests as evidence probes, not as delivery expectations.
+Report only findings supported by observable evidence, with exact locations;
+state material limitations and list every skill or reference file read, in
+order. Both required base skills are available.
+```
+
+Expected: `audit` / `audit-review` / `inspect`; generic
+`audit-and-review.md`, followed by every Flutter reference justified while
+inspecting the artifact. The audit covers all nine supported areas: a
+constructible ready state silently renders no content; presentation switches
+on a repository failure; every failure exposes retry; selection is not limited
+to the offered values; pagination can overlap and remains enabled in flight; a
+presentational child mixes an injected command with controller lookup; compact
+width with large text produces overflow; a dynamic failure banner is not a
+live region; and loading semantics repeats visible text. Missing evidence must
+be declared rather than inferred, and one early finding must not terminate the
+audit.
+
+## F30 — Raw widget artifact false-positive control
+
+Fixture: `fixtures/widget-audit/case_b`. Apply the same isolation boundary as
+F29; the evaluator cannot inspect F29 or its fixture.
+
+```text
+Audit the supplied Flutter package as written. Do not implement changes.
+Inspect every in-scope Dart source and collect applicable runtime evidence.
+Treat characterization tests as evidence probes, not as delivery expectations.
+Report only findings supported by observable evidence, with exact locations;
+state material limitations and list every skill or reference file read, in
+order. Both required base skills are available.
+```
+
+Expected: no supported finding from the supplied source and characterization
+evidence. Do not mandate Freezed, Bloc/Cubit, a particular responsive widget,
+or an additional semantics wrapper. The audit names the inspected boundaries
+and evidence when concluding that no defect is supported.
+
 Historical workflow-routing scenarios and results are non-executable archives
 under `docs/superpowers/evals/`.
