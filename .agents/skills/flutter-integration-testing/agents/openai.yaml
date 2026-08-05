@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Integration Testing"
+  short_description: "Focused Flutter integration-test routing"
+  default_prompt: "Use $flutter-integration-testing to add a focused Flutter integration test."

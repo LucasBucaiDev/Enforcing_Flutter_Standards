@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Localization"
+  short_description: "Focused Flutter localization routing"
+  default_prompt: "Use $flutter-localization to change Flutter localization while preserving project conventions."

@@ -35,12 +35,27 @@ presented as independently verified runtime evidence.
 | F14 | Preview records experimental API and Chrome/native limitation | Pass | Pending | Command, annotation, version risk, Chrome, and native-plugin clauses are validated statically. |
 | F15 | Deep-link validation remains router- and platform-specific | Pass | Pending | Navigation contains nested, Android, iOS, DevTools, and web validation evidence. |
 
+## P2 task entrypoint scenarios
+
+| ID | Required behavior | Static gate | Isolated result | Evidence status |
+|---|---|---|---|---|
+| F16 | Widget-test prompt activates one entrypoint and one recipe | Pass | Pass | Fresh isolated catalog read the entrypoint, both bases, `test-first-change.md`, source catalog, and only `widget-testing.md`; no adjacent recipe was loaded. |
+| F17 | Integration prompt activates one entrypoint and one recipe | Pass | Pass | Fresh isolated catalog read the entrypoint, both bases, `test-first-change.md`, source catalog, and only `integration-testing.md`. |
+| F18 | Layout prompt activates one entrypoint and one recipe | Pass | Pass | Fresh isolated catalog read the entrypoint, both bases, `diagnose.md`, source catalog, and only `layout-diagnostics.md`. |
+| F19 | Localization prompt activates one entrypoint and one recipe | Pass | Pass | Fresh isolated catalog read the entrypoint, both bases, `test-first-change.md`, source catalog, and only `localization.md`. |
+| F20 | Preview prompt activates one entrypoint and one recipe | Pass | Pass | Fresh isolated catalog read the entrypoint, both bases, `design-and-approve.md`, source catalog, and only `widget-previews.md`. |
+| F21 | Navigation prompt activates one entrypoint and one recipe | Pass | Pass | Fresh isolated catalog read the entrypoint, both bases, `test-first-change.md`, source catalog, and only `navigation.md`. |
+| F22 | Generic Flutter prompt does not force an entrypoint | Defined | Pass | Fresh isolated catalog used only the two bases, `audit-and-review.md`, source catalog, and `architecture-and-state.md`; no task entrypoint loaded. |
+| F23 | Missing required dependency blocks actionably | Pass | Pass | Catalog without `evidence-driven-development` read only the entrypoint, named the missing skill, told the user to make it available, and stopped before references. |
+| F24 | Focused routing excludes unrelated context | Pass | Pass | Fresh isolated catalog loaded only the layout entrypoint, both bases, `diagnose.md`, source catalog, and `layout-diagnostics.md`; every adjacent recipe and entrypoint remained unloaded. |
+
 ## Static and inspector gates
 
 | Gate | Result | Evidence |
 |---|---|---|
 | Context budgets, active-route cleanup, and widget contract clauses | Pass | `Context budget GREEN: all static gates passed.` |
 | P3 operational references and focused routing | Pass | Five bounded references, navigation workflow, and direct SKILL routes pass the context-budget gate. |
+| P2 entrypoint structure and minimal context | Pass | Six bounded skills declare both bases, one recipe, missing-dependency behavior, UI metadata, and no embedded process references. |
 | Source provenance and active-reference coverage | Pass | `Source catalog validation passed.` covers all thirteen active references. |
 | Inspector regression | Pass | `inspect_flutter_project_test.dart`: 10/10 tests. |
 

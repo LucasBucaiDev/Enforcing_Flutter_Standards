@@ -1,10 +1,14 @@
 # Evidence-Driven Flutter Engineering
 
-Este repositorio contiene dos Agent Skills complementarias:
+Este repositorio contiene dos Agent Skills base complementarias:
 
 - `evidence-driven-development`: workflow de ingeniería portable y agnóstico
   del stack;
 - `enforcing-flutter-standards`: extensión de dominio para Flutter y Dart.
+
+Seis entry skills delgadas mejoran la activación de widget tests, integration
+tests, diagnóstico de layout, localización, widget previews y navegación. Cada
+una compone las dos skills base y selecciona una sola receta temática.
 
 La primera posee los modos, fases, diagnóstico, diseño, aprobación, auditoría,
 TDD, delegación segura, verificación, changelog y contratos de reporte. La
@@ -55,6 +59,24 @@ La única excepción es una decisión técnica Flutter estrictamente read-only q
 no inspecciona código o diffs, no diagnostica un bug, no propone un refactor ni
 planifica o cierra una implementación.
 
+## Entry skills por tarea
+
+Los entrypoints no poseen TDD, aprobación, verificación ni políticas Flutter.
+Declaran como dependencias las dos skills base, bloquean con un mensaje
+accionable si falta alguna y delegan la fase al workflow general.
+
+| Predicado focalizado | Entry skill | Receta seleccionada |
+|---|---|---|
+| Interacción, harness, `WidgetTester` o pump | `flutter-widget-testing` | `widget-testing.md` |
+| Flujo completo, plugin o target real | `flutter-integration-testing` | `integration-testing.md` |
+| Overflow, constraints o sizing | `flutter-layout-diagnostics` | `layout-diagnostics.md` |
+| ARB, locale, plural o `l10n.yaml` | `flutter-localization` | `localization.md` |
+| `@Preview`, wrapper o limitación native/web | `flutter-widget-previews` | `widget-previews.md` |
+| Ruta, redirect, deep link o navegación anidada | `flutter-navigation` | `navigation.md` |
+
+Una solicitud Flutter genérica conserva las skills base sin forzar un
+entrypoint. Un entrypoint tampoco anticipa recetas vecinas por conveniencia.
+
 ## Estándares Flutter
 
 La extensión aplica referencias temáticas sólo desde evidencia observable:
@@ -99,25 +121,31 @@ plan y aprobación separados.
 │       ├── report-contracts.md
 │       ├── test-first-change.md
 │       └── verify-and-complete.md
-└── enforcing-flutter-standards/
-    ├── SKILL.md
-    ├── agents/openai.yaml
-    ├── references/
-    │   ├── architecture-and-state.md
-    │   ├── flutter-quality.md
-    │   ├── integration-testing.md
-    │   ├── layout-diagnostics.md
-    │   ├── localization.md
-    │   ├── navigation.md
-    │   ├── networking-and-errors.md
-    │   ├── packages-and-integrations.md
-    │   ├── persistence.md
-    │   ├── security-and-environments.md
-    │   ├── source-catalog.json
-    │   ├── ui-implementation.md
-    │   ├── widget-previews.md
-    │   └── widget-testing.md
-    └── scripts/inspect_flutter_project.dart
+├── enforcing-flutter-standards/
+│   ├── SKILL.md
+│   ├── agents/openai.yaml
+│   ├── references/
+│   │   ├── architecture-and-state.md
+│   │   ├── flutter-quality.md
+│   │   ├── integration-testing.md
+│   │   ├── layout-diagnostics.md
+│   │   ├── localization.md
+│   │   ├── navigation.md
+│   │   ├── networking-and-errors.md
+│   │   ├── packages-and-integrations.md
+│   │   ├── persistence.md
+│   │   ├── security-and-environments.md
+│   │   ├── source-catalog.json
+│   │   ├── ui-implementation.md
+│   │   ├── widget-previews.md
+│   │   └── widget-testing.md
+│   └── scripts/inspect_flutter_project.dart
+├── flutter-integration-testing/{SKILL.md,agents/openai.yaml}
+├── flutter-layout-diagnostics/{SKILL.md,agents/openai.yaml}
+├── flutter-localization/{SKILL.md,agents/openai.yaml}
+├── flutter-navigation/{SKILL.md,agents/openai.yaml}
+├── flutter-widget-previews/{SKILL.md,agents/openai.yaml}
+└── flutter-widget-testing/{SKILL.md,agents/openai.yaml}
 ```
 
 ## Fuentes, políticas y compatibilidad
@@ -151,6 +179,12 @@ las descubre automáticamente:
 ```text
 .agents/skills/evidence-driven-development/
 .agents/skills/enforcing-flutter-standards/
+.agents/skills/flutter-widget-testing/
+.agents/skills/flutter-integration-testing/
+.agents/skills/flutter-layout-diagnostics/
+.agents/skills/flutter-localization/
+.agents/skills/flutter-widget-previews/
+.agents/skills/flutter-navigation/
 ```
 
 Para usarlas en todos los repositorios, instalalas en `~/.agents/skills/`.
@@ -167,6 +201,8 @@ el flujo:
 ```text
 Use $evidence-driven-development with $enforcing-flutter-standards to plan and
 verify this Flutter change.
+
+Use $flutter-widget-testing to add a focused Flutter widget interaction test.
 ```
 
 Copiar sólo la skill Flutter deja los workflows generales bloqueados por la
@@ -212,9 +248,10 @@ integración ni dependencias de previews sin evidencia, comparación y aprobaci�
 
 - G1–G14 validan routing, planificación, baseline TDD, protección de `main`,
   delegación y comportamiento de la skill general.
-- F1–F15 validan composición, dependencia faltante, referencias Flutter,
-  auditorías de estado y las recetas focalizadas de testing, layout,
-  localización, previews y deep links sin sobregeneralizar reglas.
+- F1–F15 validan composición base, dependencia faltante, referencias Flutter,
+  auditorías de estado y recetas focalizadas.
+- F16–F24 validan entrypoint único, composición obligatoria, bloqueo por
+  dependencia, ausencia de activación genérica y contexto temático mínimo.
 - `context_budget_test.dart` valida budgets y ausencia de contratos legacy.
 - `inspect_flutter_project_test.dart` cubre las diez interfaces del inspector.
 

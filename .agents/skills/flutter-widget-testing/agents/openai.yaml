@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Widget Testing"
+  short_description: "Focused Flutter widget-test routing"
+  default_prompt: "Use $flutter-widget-testing to add a focused Flutter widget interaction test."

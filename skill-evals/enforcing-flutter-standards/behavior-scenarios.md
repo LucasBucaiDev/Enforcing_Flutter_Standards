@@ -241,5 +241,106 @@ route evidence, and name Android, iOS, DevTools, and direct web refresh/back
 validation. Do not impose `go_router` or infer cross-platform success from one
 target.
 
+## F16 — Widget-test prompt activates one entrypoint
+
+```text
+Use the available Flutter skills to add an approved widget interaction test
+with WidgetTester and the repository's existing harness. State every skill and
+reference read, in order.
+```
+
+Expected: `flutter-widget-testing`, both required base skills, the current
+process reference, and only Flutter `widget-testing.md`. No other task
+entrypoint or operational recipe is loaded.
+
+## F17 — Integration prompt activates one entrypoint
+
+```text
+Use the available Flutter skills to test an approved plugin-backed flow with
+integration_test on the configured Android emulator. State every skill and
+reference read, in order.
+```
+
+Expected: `flutter-integration-testing`, both required base skills, the current
+process reference, and only Flutter `integration-testing.md`.
+
+## F18 — Layout prompt activates one entrypoint
+
+```text
+Use the available Flutter skills to diagnose a reproduced RenderFlex overflow
+at the supported compact width. State every skill and reference read, in order.
+```
+
+Expected: `flutter-layout-diagnostics`, both required base skills, the current
+process reference, and only Flutter `layout-diagnostics.md`.
+
+## F19 — Localization prompt activates one entrypoint
+
+```text
+Use the available Flutter skills to add one pluralized ARB message while
+preserving the repository's l10n.yaml and generator. State every skill and
+reference read, in order.
+```
+
+Expected: `flutter-localization`, both required base skills, the current
+process reference, and only Flutter `localization.md`.
+
+## F20 — Preview prompt activates one entrypoint
+
+```text
+Use the available Flutter skills to design an @Preview for a deterministic
+widget on Flutter 3.44.7. State every skill and reference read, in order.
+```
+
+Expected: `flutter-widget-previews`, both required base skills, the current
+process reference, and only Flutter `widget-previews.md`.
+
+## F21 — Navigation prompt activates one entrypoint
+
+```text
+Use the available Flutter skills to implement an approved deep link while
+preserving the app's router and nested branch. State every skill and reference
+read, in order.
+```
+
+Expected: `flutter-navigation`, both required base skills, the current process
+reference, and only Flutter `navigation.md`.
+
+## F22 — Generic Flutter prompt does not force an entrypoint
+
+```text
+Review a changed Flutter data model with value semantics. The task entrypoints
+and both base skills are available. State every skill and reference read, in
+order.
+```
+
+Expected: use `enforcing-flutter-standards` with
+`evidence-driven-development`; do not load any task entrypoint or operational
+recipe without its focused predicate.
+
+## F23 — Missing entrypoint dependency blocks
+
+```text
+The catalog contains flutter-widget-testing and enforcing-flutter-standards,
+but evidence-driven-development is unavailable. Add a widget interaction test.
+State every skill and reference read, in order.
+```
+
+Expected: `flutter-widget-testing` reports the missing
+`evidence-driven-development` dependency and stops before reading a process or
+Flutter recipe. The message names the dependency needed to continue.
+
+## F24 — Entry routing excludes unrelated context
+
+```text
+Use the available Flutter skills to diagnose an unbounded-height layout. State
+every skill and reference read, in order, including anything considered but
+left unloaded.
+```
+
+Expected: `flutter-layout-diagnostics`, both required base skills, the current
+process reference, and only `layout-diagnostics.md`; localization, testing,
+previews, navigation, and general quality remain unloaded.
+
 Historical workflow-routing scenarios and results are non-executable archives
 under `docs/superpowers/evals/`.

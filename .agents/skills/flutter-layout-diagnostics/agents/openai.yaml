@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Layout Diagnostics"
+  short_description: "Focused Flutter layout diagnosis routing"
+  default_prompt: "Use $flutter-layout-diagnostics to diagnose a concrete Flutter layout failure."

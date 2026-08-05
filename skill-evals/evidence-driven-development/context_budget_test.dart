@@ -13,6 +13,14 @@ void main() {
     '${root.path}/.agents/skills/enforcing-flutter-standards',
   );
   final flutterSkill = File('${flutterRoot.path}/SKILL.md');
+  const flutterEntrySkills = <String, String>{
+    'flutter-widget-testing': 'widget-testing.md',
+    'flutter-integration-testing': 'integration-testing.md',
+    'flutter-layout-diagnostics': 'layout-diagnostics.md',
+    'flutter-localization': 'localization.md',
+    'flutter-widget-previews': 'widget-previews.md',
+    'flutter-navigation': 'navigation.md',
+  };
 
   const genericReferences = <String>[
     'diagnose.md',
@@ -317,6 +325,129 @@ void main() {
           failures,
         );
       }
+    }
+  }
+
+  for (final entry in flutterEntrySkills.entries) {
+    final entryRoot = Directory('${root.path}/.agents/skills/${entry.key}');
+    final entrySkill = File('${entryRoot.path}/SKILL.md');
+    final openAiMetadata = File('${entryRoot.path}/agents/openai.yaml');
+
+    _expect(
+      entryRoot.existsSync(),
+      'Missing entry skill ${entry.key}.',
+      failures,
+    );
+    _expect(
+      entrySkill.existsSync(),
+      'Missing ${entry.key}/SKILL.md.',
+      failures,
+    );
+    _expect(
+      openAiMetadata.existsSync(),
+      'Missing ${entry.key}/agents/openai.yaml.',
+      failures,
+    );
+
+    if (entrySkill.existsSync()) {
+      final content = entrySkill.readAsStringSync();
+      _checkBudget(
+        '${entry.key}/SKILL.md',
+        content,
+        maxLines: 40,
+        maxWords: 220,
+        maxBytes: 3 * 1024,
+        failures: failures,
+      );
+      _expect(
+        content.contains('name: ${entry.key}'),
+        '${entry.key} must declare its exact skill name.',
+        failures,
+      );
+      _expect(
+        _frontmatterDescriptionWords(content) <= 55,
+        '${entry.key} description exceeds 55 words.',
+        failures,
+      );
+      for (final dependency in const [
+        'evidence-driven-development',
+        'enforcing-flutter-standards',
+      ]) {
+        _expect(
+          content.contains('`$dependency`'),
+          '${entry.key} must declare required skill $dependency.',
+          failures,
+        );
+      }
+      _expect(
+        content.contains('If either required skill is unavailable'),
+        '${entry.key} must define the missing-dependency gate.',
+        failures,
+      );
+      _expect(
+        content.contains('report the missing skill and stop'),
+        '${entry.key} must block with an actionable dependency message.',
+        failures,
+      );
+      _expect(
+        content.contains('make it available before retrying'),
+        '${entry.key} must state how to recover the missing dependency.',
+        failures,
+      );
+      _expect(
+        content.contains('`${entry.value}`'),
+        '${entry.key} must select only ${entry.value}.',
+        failures,
+      );
+      for (final forbidden in flutterEntrySkills.values.where(
+        (recipe) => recipe != entry.value,
+      )) {
+        _expect(
+          !content.contains('`$forbidden`'),
+          '${entry.key} must not select unrelated recipe $forbidden.',
+          failures,
+        );
+      }
+      for (final duplicatedContract in const [
+        'references/design-and-approve.md',
+        'references/test-first-change.md',
+        'references/verify-and-complete.md',
+      ]) {
+        _expect(
+          !content.contains(duplicatedContract),
+          '${entry.key} must not duplicate process contract $duplicatedContract.',
+          failures,
+        );
+      }
+    }
+
+    if (openAiMetadata.existsSync()) {
+      final content = openAiMetadata.readAsStringSync();
+      _expect(
+        content.contains('\$${entry.key}'),
+        '${entry.key} metadata default prompt must invoke the entry skill.',
+        failures,
+      );
+    }
+  }
+
+  final flutterBehaviorScenarios = File(
+    '${root.path}/skill-evals/enforcing-flutter-standards/'
+    'behavior-scenarios.md',
+  );
+  _expect(
+    flutterBehaviorScenarios.existsSync(),
+    'Missing Flutter behavior scenarios.',
+    failures,
+  );
+  if (flutterBehaviorScenarios.existsSync()) {
+    final content = flutterBehaviorScenarios.readAsStringSync();
+    for (var scenario = 16; scenario <= 24; scenario++) {
+      _expect(
+        content.contains('## F$scenario —'),
+        'Missing P2 behavior scenario F$scenario.',
+        failures,
+      );
     }
   }
 

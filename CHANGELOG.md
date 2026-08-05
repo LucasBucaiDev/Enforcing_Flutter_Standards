@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added six thin Flutter task entry skills for widget tests, integration tests,
+  layout diagnostics, localization, widget previews, and navigation with
+  explicit base-skill dependencies and single-recipe routing.
 - Added focused Flutter recipes for widget and integration testing, layout
   diagnostics, localization, widget previews, and platform-specific deep-link
   validation with versioned provenance and repository-first commands.

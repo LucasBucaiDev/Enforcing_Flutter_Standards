@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Navigation"
+  short_description: "Focused Flutter navigation routing"
+  default_prompt: "Use $flutter-navigation to change or diagnose Flutter navigation and deep links."

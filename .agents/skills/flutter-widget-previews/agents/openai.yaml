@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Widget Previews"
+  short_description: "Focused Flutter widget-preview routing"
+  default_prompt: "Use $flutter-widget-previews to design or diagnose a focused Flutter widget preview."
