@@ -4,6 +4,10 @@
 
 ### Added
 
+- Expanded the read-only Flutter project inspector with schema-v2 localization,
+  preview, integration-test, and deep-link configuration inventories that expose
+  deterministic paths and safe mechanical metadata without runtime claims or
+  configuration values.
 - Added automated skills quality gates for Dart formatting, metadata and local
   link validation, context budgets, source provenance, inspector regressions,
   and whitespace errors in path-scoped push and pull-request CI.

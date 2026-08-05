@@ -56,7 +56,7 @@ source and request focused JSON sections when needed, for example:
 ```text
 dart run <skill-directory>/scripts/inspect_flutter_project.dart \
   --root <project-directory> --format json \
-  --section packageEdges --section cycles
+  --section localization --section deepLinkConfigs
 ```
 
 When the inspector cannot run, perform the same discovery manually and record

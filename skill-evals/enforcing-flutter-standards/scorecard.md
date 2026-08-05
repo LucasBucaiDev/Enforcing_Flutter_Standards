@@ -57,7 +57,7 @@ presented as independently verified runtime evidence.
 | P3 operational references and focused routing | Pass | Five bounded references, navigation workflow, and direct SKILL routes pass the context-budget gate. |
 | P2 entrypoint structure and minimal context | Pass | Six bounded skills declare both bases, one recipe, missing-dependency behavior, UI metadata, and no embedded process references. |
 | Source provenance and active-reference coverage | Pass | `Source catalog validation passed.` covers all fourteen active references. |
-| Inspector regression | Pass | `inspect_flutter_project_test.dart`: 10/10 tests. |
+| Inspector regression | Pass | `inspect_flutter_project_test.dart`: 12/12 tests over fourteen schema-v2 sections. |
 
 ## P4 runtime inspection scenarios
 
@@ -70,3 +70,13 @@ presented as independently verified runtime evidence.
 
 Historical scorecards are non-executable evidence under
 `docs/superpowers/evals/`.
+
+## P6 expanded inspector
+
+| Required behavior | Result | Evidence |
+|---|---|---|
+| Localization inventory | Pass | `l10n.yaml` and ARB paths are classified and sorted without reading message values. |
+| Preview candidates | Pass | Dart files expose annotation counts and preview-API import presence without claiming runtime validity. |
+| Integration harness inventory | Pass | `integration_test/` and legacy `test_driver/` files are classified by mechanical path evidence. |
+| Deep-link configuration candidates | Pass | Android manifests, Apple plists/entitlements, and known web files expose paths and platform types only. |
+| Schema and output contract | Pass | Schema v2, summary/text/JSON consistency, section projection, stable empty lists, and read-only snapshots pass. |

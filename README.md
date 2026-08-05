@@ -215,7 +215,9 @@ la skill general.
 
 El inspector Dart es read-only y reúne inventario mecánico: raíces Flutter,
 paquetes locales y ciclos, archivos grandes, barrels, capas, tests, changelogs,
-análisis y comandos detectables. No emite hallazgos arquitectónicos por sí solo.
+análisis, comandos detectables, localización, previews, integration tests y
+configuración de plataforma relacionada con deep links. No emite hallazgos
+arquitectónicos ni valida comportamiento runtime por sí solo.
 
 Resumen inicial:
 
@@ -230,6 +232,17 @@ Expansión focalizada:
 dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_project.dart \
   --root /ruta/al/proyecto --format json \
   --section packageEdges --section cycles
+```
+
+El schema 2 añade `localization`, `previews`, `integrationTests` y
+`deepLinkConfigs`. Sus registros contienen rutas, tipos candidatos y metadata
+mecánica segura; no leen valores ARB, manifests, plists, entitlements ni
+configuración web. Por ejemplo:
+
+```bash
+dart run .agents/skills/enforcing-flutter-standards/scripts/inspect_flutter_project.dart \
+  --root /ruta/al/proyecto --format json \
+  --section localization --section deepLinkConfigs
 ```
 
 ## Inspección runtime por capacidades
@@ -271,7 +284,8 @@ integración ni dependencias de previews sin evidencia, comparación y aprobaci�
 - F25–F28 validan runtime completo, parcial y ausente, además del gate de
   aprobación para interacciones con impacto externo.
 - `context_budget_test.dart` valida budgets y ausencia de contratos legacy.
-- `inspect_flutter_project_test.dart` cubre las diez interfaces del inspector.
+- `inspect_flutter_project_test.dart` cubre las catorce interfaces del inspector,
+  schema v2, formatos consistentes y el contrato read-only.
 
 Comandos principales:
 

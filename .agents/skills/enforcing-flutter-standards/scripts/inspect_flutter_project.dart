@@ -12,6 +12,10 @@ const _inventorySections = <String>[
   'changelogs',
   'analysisOptions',
   'projectCommands',
+  'localization',
+  'previews',
+  'integrationTests',
+  'deepLinkConfigs',
 ];
 
 const _usage =
@@ -168,6 +172,8 @@ final class _Inspector {
     final changelogs = <String>[];
     final analysisOptions = <String>[];
     final projectCommands = <String>[];
+    final localization = <Map<String, Object>>[];
+    final deepLinkConfigs = <Map<String, Object>>[];
 
     for (final file in files) {
       final relativePath = _relativePath(rootPath, file.path);
@@ -194,6 +200,18 @@ final class _Inspector {
       if (_ProjectClassifiers.isProjectCommandSource(relativePath)) {
         projectCommands.add(relativePath);
       }
+      final localizationRecord = _ProjectClassifiers.localizationRecord(
+        relativePath,
+      );
+      if (localizationRecord != null) {
+        localization.add(localizationRecord);
+      }
+      final deepLinkConfig = _ProjectClassifiers.deepLinkConfigRecord(
+        relativePath,
+      );
+      if (deepLinkConfig != null) {
+        deepLinkConfigs.add(deepLinkConfig);
+      }
     }
 
     packages.sort((left, right) => left.path.compareTo(right.path));
@@ -201,6 +219,8 @@ final class _Inspector {
     changelogs.sort();
     analysisOptions.sort();
     projectCommands.sort();
+    localization.sort(_compareRecordPaths);
+    deepLinkConfigs.sort(_compareRecordPaths);
 
     final packageByCanonicalPath = <String, _Package>{
       for (final package in packages) package.canonicalPath: package,
@@ -210,7 +230,7 @@ final class _Inspector {
     final dartInventory = _DartInventory(dartFiles);
 
     return <String, Object>{
-      'schemaVersion': 1,
+      'schemaVersion': 2,
       'root': rootPath,
       'flutterRoots': packages
           .where((package) => package.isFlutter)
@@ -225,6 +245,10 @@ final class _Inspector {
       'changelogs': changelogs,
       'analysisOptions': analysisOptions,
       'projectCommands': projectCommands,
+      'localization': localization,
+      'previews': dartInventory.previews(),
+      'integrationTests': dartInventory.integrationTests(),
+      'deepLinkConfigs': deepLinkConfigs,
     };
   }
 }
@@ -562,6 +586,53 @@ final class _DartInventory {
     return tests;
   }
 
+  List<Map<String, Object>> previews() {
+    final records = <Map<String, Object>>[];
+    for (final dartFile in dartFiles) {
+      final source = dartFile.file.readAsStringSync();
+      final annotationCount = RegExp(
+        r'@\s*Preview\b',
+      ).allMatches(source).length;
+      final importsPreviewApi = source.contains(
+        'package:flutter/widget_previews.dart',
+      );
+      if (annotationCount == 0 && !importsPreviewApi) continue;
+
+      records.add({
+        'path': dartFile.path,
+        'type': 'previewCandidate',
+        'annotationCount': annotationCount,
+        'importsPreviewApi': importsPreviewApi,
+      });
+    }
+    records.sort(_compareRecordPaths);
+    return records;
+  }
+
+  List<Map<String, Object>> integrationTests() {
+    final records = <Map<String, Object>>[];
+    for (final dartFile in dartFiles) {
+      final segments = dartFile.path.toLowerCase().split('/');
+      if (segments.contains('integration_test')) {
+        records.add({
+          'path': dartFile.path,
+          'type': 'integrationTest',
+          'harness': 'integration_test',
+        });
+      } else if (segments.contains('test_driver')) {
+        records.add({
+          'path': dartFile.path,
+          'type': dartFile.path.endsWith('_test.dart')
+              ? 'legacyDriverTest'
+              : 'legacyDriver',
+          'harness': 'flutter_driver',
+        });
+      }
+    }
+    records.sort(_compareRecordPaths);
+    return records;
+  }
+
   int _physicalLineCount(List<int> bytes) {
     if (bytes.isEmpty) return 0;
     var count = 0;
@@ -686,6 +757,61 @@ final class _ProjectClassifiers {
       'codemagic.yml',
       'codemagic.yaml',
     }.contains(lowerPath);
+  }
+
+  static Map<String, Object>? localizationRecord(String path) {
+    final lowerPath = path.toLowerCase();
+    final basename = _basename(lowerPath);
+    if (basename == 'l10n.yaml' || basename == 'l10n.yml') {
+      return {'path': path, 'type': 'configuration', 'format': 'yaml'};
+    }
+    if (lowerPath.endsWith('.arb')) {
+      return {'path': path, 'type': 'arb', 'format': 'json'};
+    }
+    return null;
+  }
+
+  static Map<String, Object>? deepLinkConfigRecord(String path) {
+    final lowerPath = path.toLowerCase();
+    final basename = _basename(lowerPath);
+    final segments = lowerPath.split('/');
+
+    if (segments.contains('android') && basename == 'androidmanifest.xml') {
+      return {'path': path, 'type': 'androidManifest', 'platform': 'android'};
+    }
+
+    final applePlatform = segments.contains('ios')
+        ? 'ios'
+        : segments.contains('macos')
+        ? 'macos'
+        : null;
+    if (applePlatform != null && lowerPath.endsWith('.entitlements')) {
+      return {
+        'path': path,
+        'type': 'appleEntitlements',
+        'platform': applePlatform,
+      };
+    }
+    if (applePlatform != null && basename == 'info.plist') {
+      return {
+        'path': path,
+        'type': 'applePropertyList',
+        'platform': applePlatform,
+      };
+    }
+
+    if (segments.contains('web')) {
+      final type = switch (basename) {
+        'index.html' => 'webIndex',
+        'manifest.json' => 'webManifest',
+        '_redirects' => 'webRewrite',
+        _ => null,
+      };
+      if (type != null) {
+        return {'path': path, 'type': type, 'platform': 'web'};
+      }
+    }
+    return null;
   }
 }
 

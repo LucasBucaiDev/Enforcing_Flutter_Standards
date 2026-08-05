@@ -47,7 +47,7 @@ Future<void> main() async {
 
         _expectEqual(
           inventory['schemaVersion'],
-          1,
+          2,
           'Unexpected schema version.',
         );
         _expectEqual(
@@ -135,6 +135,139 @@ Future<void> main() async {
     );
 
     passed += await _runTest(
+      'operational artifact inventory catches missing focused discovery',
+      () async {
+        final inventory = await _runJsonInspector(
+          inspector,
+          fixtureRoot,
+          repositoryRoot,
+        );
+
+        _expectEqual(
+          inventory['schemaVersion'],
+          2,
+          'Operational artifact sections require schema version 2.',
+        );
+        _expectEqual(
+          _records(inventory, 'localization'),
+          [
+            {'path': 'l10n.yaml', 'type': 'configuration', 'format': 'yaml'},
+            {'path': 'lib/l10n/app_en.arb', 'type': 'arb', 'format': 'json'},
+            {
+              'path': 'packages/package_a/lib/l10n/package_es.arb',
+              'type': 'arb',
+              'format': 'json',
+            },
+          ],
+          'Localization configuration and ARB files must be sorted.',
+        );
+        _expectEqual(
+          _records(inventory, 'previews'),
+          [
+            {
+              'path': 'lib/previews/import_only.dart',
+              'type': 'previewCandidate',
+              'annotationCount': 0,
+              'importsPreviewApi': true,
+            },
+            {
+              'path': 'lib/previews/payment_preview.dart',
+              'type': 'previewCandidate',
+              'annotationCount': 2,
+              'importsPreviewApi': true,
+            },
+          ],
+          'Preview candidates must expose only mechanical source metadata.',
+        );
+        _expectEqual(
+          _records(inventory, 'integrationTests'),
+          [
+            {
+              'path': 'integration_test/app_test.dart',
+              'type': 'integrationTest',
+              'harness': 'integration_test',
+            },
+            {
+              'path': 'test_driver/app.dart',
+              'type': 'legacyDriver',
+              'harness': 'flutter_driver',
+            },
+            {
+              'path': 'test_driver/app_test.dart',
+              'type': 'legacyDriverTest',
+              'harness': 'flutter_driver',
+            },
+          ],
+          'Integration and legacy driver files must be classified by type.',
+        );
+        _expectEqual(
+          _records(inventory, 'deepLinkConfigs'),
+          [
+            {
+              'path': 'android/app/src/main/AndroidManifest.xml',
+              'type': 'androidManifest',
+              'platform': 'android',
+            },
+            {
+              'path': 'ios/Runner/Info.plist',
+              'type': 'applePropertyList',
+              'platform': 'ios',
+            },
+            {
+              'path': 'ios/Runner/Runner.entitlements',
+              'type': 'appleEntitlements',
+              'platform': 'ios',
+            },
+            {
+              'path': 'macos/Runner/DebugProfile.entitlements',
+              'type': 'appleEntitlements',
+              'platform': 'macos',
+            },
+            {'path': 'web/_redirects', 'type': 'webRewrite', 'platform': 'web'},
+            {'path': 'web/index.html', 'type': 'webIndex', 'platform': 'web'},
+            {
+              'path': 'web/manifest.json',
+              'type': 'webManifest',
+              'platform': 'web',
+            },
+          ],
+          'Platform configuration inventory must expose paths, not values.',
+        );
+      },
+    );
+
+    passed += await _runTest(
+      'projects without operational artifacts keep stable empty sections',
+      () async {
+        final emptyRoot = await Directory.systemTemp.createTemp(
+          'inspect_flutter_project_empty_test_',
+        );
+        try {
+          await _write(emptyRoot, 'pubspec.yaml', 'name: empty_fixture\n');
+          final inventory = await _runJsonInspector(
+            inspector,
+            emptyRoot,
+            repositoryRoot,
+          );
+          for (final section in const [
+            'localization',
+            'previews',
+            'integrationTests',
+            'deepLinkConfigs',
+          ]) {
+            _expectEqual(
+              inventory[section],
+              const <Object>[],
+              '$section must remain an empty JSON list when absent.',
+            );
+          }
+        } finally {
+          await emptyRoot.delete(recursive: true);
+        }
+      },
+    );
+
+    passed += await _runTest(
       'output modes catch default drift or text and JSON inconsistency',
       () async {
         final defaultResult = await Process.run(Platform.resolvedExecutable, [
@@ -193,7 +326,7 @@ Future<void> main() async {
         _expectEqual(summary.exitCode, 0, 'Summary mode must succeed.');
         final output = summary.stdout as String;
         _expect(
-          output.startsWith('Flutter project inventory summary (schema 1)\n'),
+          output.startsWith('Flutter project inventory summary (schema 2)\n'),
           'Summary header is missing.',
         );
         for (final section in const [
@@ -207,6 +340,10 @@ Future<void> main() async {
           'changelogs',
           'analysisOptions',
           'projectCommands',
+          'localization',
+          'previews',
+          'integrationTests',
+          'deepLinkConfigs',
         ]) {
           _expect(
             RegExp('^$section: [0-9]+\$', multiLine: true).hasMatch(output),
@@ -288,6 +425,10 @@ Future<void> main() async {
           'changelogs',
           'analysisOptions',
           'projectCommands',
+          'localization',
+          'previews',
+          'integrationTests',
+          'deepLinkConfigs',
         ]) {
           _expect(
             !RegExp('^$unrelated \\(', multiLine: true).hasMatch(textOutput),
@@ -544,6 +685,36 @@ dependencies:
     'jobs:\n  test:\n    runs-on: ubuntu-latest\n',
   );
   await _write(root, '.circleci/config.yml', 'version: 2.1\njobs: {}\n');
+  await _write(root, 'l10n.yaml', 'arb-dir: lib/l10n\n');
+  await _write(root, 'lib/l10n/app_en.arb', '{"title":"Fixture"}\n');
+  await _write(
+    root,
+    'lib/previews/import_only.dart',
+    "import 'package:flutter/widget_previews.dart';\n",
+  );
+  await _write(root, 'lib/previews/payment_preview.dart', '''
+import 'package:flutter/widget_previews.dart';
+
+@Preview()
+Widget firstPreview() => const Placeholder();
+
+@Preview(name: 'second')
+Widget secondPreview() => const Placeholder();
+''');
+  await _write(root, 'integration_test/app_test.dart', 'void main() {}\n');
+  await _write(root, 'test_driver/app.dart', 'void main() {}\n');
+  await _write(root, 'test_driver/app_test.dart', 'void main() {}\n');
+  await _write(
+    root,
+    'android/app/src/main/AndroidManifest.xml',
+    '<manifest />\n',
+  );
+  await _write(root, 'ios/Runner/Info.plist', '<plist />\n');
+  await _write(root, 'ios/Runner/Runner.entitlements', '<plist />\n');
+  await _write(root, 'macos/Runner/DebugProfile.entitlements', '<plist />\n');
+  await _write(root, 'web/_redirects', '/* /index.html 200\n');
+  await _write(root, 'web/index.html', '<html></html>\n');
+  await _write(root, 'web/manifest.json', '{}\n');
 
   await _write(root, 'lib/root_app.dart', "export 'under_threshold.dart';\n");
   await _writeLines(root, 'lib/under_threshold.dart', 249);
@@ -595,6 +766,11 @@ dependencies:
     root,
     'packages/package_a/test/package_a_test.dart',
     'void main() {}\n',
+  );
+  await _write(
+    root,
+    'packages/package_a/lib/l10n/package_es.arb',
+    '{"title":"Fixture"}\n',
   );
 
   await _write(root, 'packages/package_b/pubspec.yaml', '''
@@ -664,7 +840,7 @@ Map<String, dynamic> _parseTextInventory(String output) {
   final lines = const LineSplitter().convert(output);
   _expectEqual(
     lines.first,
-    'Flutter project inventory (schema 1)',
+    'Flutter project inventory (schema 2)',
     'Text schema header changed.',
   );
   _expect(
@@ -673,7 +849,7 @@ Map<String, dynamic> _parseTextInventory(String output) {
   );
 
   final inventory = <String, dynamic>{
-    'schemaVersion': 1,
+    'schemaVersion': 2,
     'root': lines[1].substring('Root: '.length),
   };
   var index = 2;
