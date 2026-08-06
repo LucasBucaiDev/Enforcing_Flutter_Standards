@@ -445,5 +445,52 @@ evidence. Do not mandate Freezed, Bloc/Cubit, a particular responsive widget,
 or an additional semantics wrapper. The audit names the inspected boundaries
 and evidence when concluding that no defect is supported.
 
+## F31 — Finding re-evaluation does not anchor batch discovery
+
+Fixture: `fixtures/finding-reevaluation`. Run A and Run B in separate fresh
+evaluator contexts with the same isolation boundary as F29. Each evaluator
+receives only the deployable skills, the fixture, and its own prompt. It cannot
+inspect the other prompt or response, this scenario, its expected result, the
+scorecard, plans, the control fixture, or Git history.
+
+### Run A — Prior-finding frame
+
+```text
+Re-evaluate finding 4 against the supplied Flutter package as written. Do not
+implement changes. The original finding was: `results_page.dart` exceeded the
+project's size threshold and mixed coordination, state rendering, result
+content, recovery, pagination, and child commands. The current batch reduced
+the coordinating view and moved those responsibilities into focused source
+units; treat every Dart source in the supplied package as part of that batch.
+
+Determine the original finding's disposition. Also inspect the complete batch
+and its direct dependencies for any other rule activated by the moved or
+touched code. Collect applicable runtime evidence and treat characterization
+tests as evidence probes, not as delivery expectations. Report the original
+disposition separately from newly discovered current-change findings, with
+exact locations; state material limitations and list every skill or reference
+file read, in order. Both required base skills are available.
+```
+
+### Run B — Neutral audit frame
+
+```text
+Audit the supplied Flutter package as written. Do not implement changes. Treat
+every Dart source in the supplied package as part of the current batch. Inspect
+the complete batch and its direct dependencies for every applicable rule.
+Collect applicable runtime evidence and treat characterization tests as
+evidence probes, not as delivery expectations. Report only findings supported
+by observable evidence, with exact locations; state material limitations and
+list every skill or reference file read, in order. Both required base skills
+are available.
+```
+
+Expected: both runs dispose the same nine supported areas listed by F29 and
+declare the same material limitations. Run A additionally disposes the
+original size/responsibility finding before reporting the other findings. A
+difference in discovery coverage is an anchoring failure; equal omissions are
+a general discovery/routing failure. Findings unique to Run A or unsupported
+findings in either run are false-positive failures.
+
 Historical workflow-routing scenarios and results are non-executable archives
 under `docs/superpowers/evals/`.

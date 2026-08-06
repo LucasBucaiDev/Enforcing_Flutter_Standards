@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added a paired finding-reevaluation regression that contrasts a prior-finding
+  frame with a neutral batch audit over the same stabilized Flutter artifact.
 - Made audits exhaustively dispose every applicable area and recalculate
   Flutter routing from inspected sources, with isolated artifact controls for
   complete discovery and false positives.

@@ -1,0 +1,1 @@
+enum RepositoryFailure { connection, access }
