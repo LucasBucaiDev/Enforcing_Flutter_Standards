@@ -4,6 +4,9 @@
 
 ### Added
 
+- Made audits exhaustively dispose every applicable area and recalculate
+  Flutter routing from inspected sources, with isolated artifact controls for
+  complete discovery and false positives.
 - Expanded the read-only Flutter project inspector with schema-v2 localization,
   preview, integration-test, and deep-link configuration inventories that expose
   deterministic paths and safe mechanical metadata without runtime claims or

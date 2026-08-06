@@ -8,14 +8,14 @@ compatibility: Requires evidence-driven-development; sources are validated again
 
 ## Domain extension contract
 
-Apply explicit user and repository instructions first. Use
-`evidence-driven-development` as the required process skill for every Flutter
+Apply user and repository instructions first. Use
+`evidence-driven-development` as the process skill for every Flutter
 audit, review, diagnosis, plan, approval, implementation, or completion task.
-Consume its current mode, scenario, phase, approval boundary, and process
+Consume its mode, scenario, phase, approval boundary, and process
 reference; do not recreate or load its process contracts here.
 
 If `evidence-driven-development` is unavailable, report the missing required
-skill and stop the general workflow. Do not substitute a local audit, test-first,
+skill and stop the workflow. Do not substitute a local audit, test-first,
 verification, or reporting fallback. A `theme-only` response is allowed only
 for a read-only Flutter technical decision that does not inspect existing code
 or a diff, propose a refactor, diagnose a bug, plan implementation, or claim
@@ -43,15 +43,15 @@ and lockfiles, analysis configuration, architecture documentation, `lib/` and
 `test/`, local packages and dependency edges, CI commands, generated-file
 policy, assets, flavors, and existing conventions.
 
-When Dart and filesystem access are available, start read-only discovery with:
+With Dart and filesystem access, start discovery with:
 
 ```text
 dart run <skill-directory>/scripts/inspect_flutter_project.dart \
   --root <project-directory> --format summary
 ```
 
-Treat counts as mechanical evidence, not findings. Confirm relevant facts in
-source and request focused JSON sections when needed, for example:
+Treat counts as inventory, not findings. Confirm facts in source and request
+focused JSON sections when needed:
 
 ```text
 dart run <skill-directory>/scripts/inspect_flutter_project.dart \
@@ -65,10 +65,13 @@ location, exposure path, and required authorized action.
 
 ## Route Flutter references
 
-Load every reference supported by current observable request, repository,
-diff, import, configuration, or command evidence, and none merely because a
-future process phase will need it. Keep Flutter references outside the process
-skill's `process_now`; update its route record before expanding domain context.
+Load only references supported by the request, repository, diff,
+imports, configuration, commands, or inspected sources. Keep Flutter references
+outside `process_now` and update the route record before expanding domain
+context. Recalculate the route after inspecting each source. Before disposing
+it, re-evaluate imports and referenced types against the table.
+A repository, exception, or failure type activates `networking-and-errors.md`.
+Apply the same check to newly observed state, controls, asynchrony, or semantics.
 
 | Evidence | Load |
 |---|---|
@@ -87,16 +90,16 @@ skill's `process_now`; update its route record before expanding domain context.
 | screen, responsive, accessibility, exact asset | `references/ui-implementation.md` |
 | runtime launch, tree, semantics, interaction, capture | `references/runtime-inspection.md` |
 
-References are independent and one level deep. Do not load one to decide
-whether another applies. Preserve coherent architecture and keep unrelated
-debt outside the current approved boundary. During audit or diagnosis, the
-mere presence of Freezed, a widget, tests, or possible future code generation
-does not activate `flutter-quality.md`.
+Preserve architecture and keep unrelated debt outside the approved boundary.
+During audit or diagnosis, the
+mere presence of Freezed, a widget, tests, or future code generation does not
+activate `flutter-quality.md`.
 
-Load a focused operational recipe instead of `flutter-quality.md` when its
-predicate is already known. Do not anticipate adjacent testing, layout,
-localization, preview, or navigation recipes merely because a Flutter widget or
-future verification exists.
+For audits limited to supplied facts, use thematic references governing
+findings. Supplied-fact audits do not load `layout-diagnostics.md`,
+`localization.md`, `runtime-inspection.md`, or other operational recipes unless
+needed to gather evidence. Otherwise load the focused recipe when its predicate
+is observed; do not substitute `flutter-quality.md`.
 
 ## Contribute to the active process phase
 

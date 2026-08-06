@@ -43,6 +43,11 @@ Scope classification: current change | future debt
 ```
 
 Do not report speculation as a finding. State additional evidence needed.
+Do not infer behavior behind an
+opaque callback, uninspected consumer, or missing direct dependency; record
+the absent evidence as an explicit limitation.
+An uninspected lifecycle owner or callback consumer is a limitation, not
+evidence of missing cleanup or cancellation.
 When no finding is supported, name the inspected scope and sources rather than
 substituting generic praise.
 
@@ -54,3 +59,14 @@ established.
 Keep report formatting deferred until findings and classifications are
 complete. Stop on ambiguous scope, unreadable required evidence, contradictory
 facts, or any action that would violate the read-only boundary.
+
+## Completeness closure
+
+Contrast each in-scope file with every applicable rule.
+Do not stop after the first finding. Track each applicable area to a
+supported finding, supported absence, or explicit limitation; missing evidence
+is a limitation, not an absence. Recompute coverage when inspected evidence
+activates another rule. Do not declare the scope resolved while any
+material verification remains pending.
+One finding may cover multiple applicable areas only when its
+evidence, impact, and recommendation dispose each area; otherwise separate them.

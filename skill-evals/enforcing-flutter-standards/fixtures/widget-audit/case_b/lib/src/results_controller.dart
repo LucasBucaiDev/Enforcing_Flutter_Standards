@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import 'results_failure.dart';
@@ -8,23 +10,25 @@ class ResultsController extends ChangeNotifier {
     required this.status,
     required List<String> records,
     required int selectedPageSize,
-    required this.canLoadMore,
-    required bool isLoadingMore,
+    required bool canLoadMore,
     required PresentationFailure? failure,
     required Future<void> Function() onLoadNext,
+    required void Function(Object error, StackTrace stackTrace) onLoadError,
   }) : _records = List.unmodifiable(records),
        _selectedPageSize = _validatedPageSize(selectedPageSize),
-       _isLoadingMore = isLoadingMore,
+       canLoadMore = _validatedAvailability(status, records, canLoadMore),
        _failure = _validatedFailure(status, failure),
-       _onLoadNext = onLoadNext;
+       _onLoadNext = onLoadNext,
+       _onLoadError = onLoadError;
 
   final ResultsStatus status;
   final List<String> _records;
   int _selectedPageSize;
   final bool canLoadMore;
-  bool _isLoadingMore;
+  bool _isLoadingMore = false;
   final PresentationFailure? _failure;
   final Future<void> Function() _onLoadNext;
+  final void Function(Object error, StackTrace stackTrace) _onLoadError;
   Future<void>? _activeLoad;
 
   List<String> get records => _records;
@@ -40,19 +44,50 @@ class ResultsController extends ChangeNotifier {
   }
 
   Future<void> loadNext() {
+    if (status != ResultsStatus.content || !canLoadMore) {
+      return Future<void>.value();
+    }
     final activeLoad = _activeLoad;
     if (activeLoad != null) return activeLoad;
 
-    _isLoadingMore = true;
-    notifyListeners();
-    final operation = Future<void>.sync(_onLoadNext);
-    final trackedOperation = operation.whenComplete(() {
+    final completer = Completer<void>();
+    final trackedOperation = completer.future.whenComplete(() {
       _activeLoad = null;
       _isLoadingMore = false;
       notifyListeners();
     });
     _activeLoad = trackedOperation;
+    _isLoadingMore = true;
+    notifyListeners();
+    Future<void>.sync(_onLoadNext).then(
+      completer.complete,
+      onError: (Object error, StackTrace stackTrace) {
+        try {
+          _onLoadError(error, stackTrace);
+          completer.complete();
+        } catch (handlerError, handlerStackTrace) {
+          completer.completeError(handlerError, handlerStackTrace);
+        }
+      },
+    );
     return trackedOperation;
+  }
+
+  static bool _validatedAvailability(
+    ResultsStatus status,
+    List<String> records,
+    bool canLoadMore,
+  ) {
+    if (status == ResultsStatus.content && records.isEmpty) {
+      throw ArgumentError('Content status requires records');
+    }
+    if (status != ResultsStatus.content && records.isNotEmpty) {
+      throw ArgumentError('Records require content status');
+    }
+    if (status != ResultsStatus.content && canLoadMore) {
+      throw ArgumentError('Pagination requires content status');
+    }
+    return canLoadMore;
   }
 
   static int _validatedPageSize(int value) {

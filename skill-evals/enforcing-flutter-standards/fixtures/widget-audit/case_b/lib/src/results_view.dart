@@ -123,45 +123,51 @@ class _ResultsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      key: const Key('results-body'),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          spacing: 12,
-          runSpacing: 8,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            const Text('Available records for the selected reporting period'),
-            SizedBox(
-              width: 240,
-              child: DropdownButton<int>(
-                isExpanded: true,
-                value: selectedPageSize,
-                items: const [
-                  DropdownMenuItem(value: 10, child: Text('10 per page')),
-                  DropdownMenuItem(value: 20, child: Text('20 per page')),
-                ],
-                onChanged: isLoadingMore
-                    ? null
-                    : (value) {
-                        if (value != null) onPageSizeChanged(value);
-                      },
+    return SingleChildScrollView(
+      child: Column(
+        key: const Key('results-body'),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              const Text('Available records for the selected reporting period'),
+              SizedBox(
+                width: 240,
+                child: DropdownButton<int>(
+                  isExpanded: true,
+                  value: selectedPageSize,
+                  items: pageSizeOptions
+                      .map(
+                        (value) => DropdownMenuItem(
+                          value: value,
+                          child: Text('$value per page'),
+                        ),
+                      )
+                      .toList(growable: false),
+                  onChanged: isLoadingMore
+                      ? null
+                      : (value) {
+                          if (value != null) onPageSizeChanged(value);
+                        },
+                ),
               ),
-            ),
-            IconButton(
-              tooltip: 'Refresh',
-              onPressed: isLoadingMore ? null : onRefresh,
-              icon: const Icon(Icons.refresh),
-            ),
-            TextButton(
-              onPressed: canLoadMore && !isLoadingMore ? onLoadNext : null,
-              child: const Text('Load more'),
-            ),
-          ],
-        ),
-        for (final record in records) Text(record),
-      ],
+              IconButton(
+                tooltip: 'Refresh',
+                onPressed: isLoadingMore ? null : onRefresh,
+                icon: const Icon(Icons.refresh),
+              ),
+              TextButton(
+                onPressed: canLoadMore && !isLoadingMore ? onLoadNext : null,
+                child: const Text('Load more'),
+              ),
+            ],
+          ),
+          for (final record in records) Text(record),
+        ],
+      ),
     );
   }
 }

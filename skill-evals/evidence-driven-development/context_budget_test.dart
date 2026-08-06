@@ -81,6 +81,9 @@ void main() {
     final designContract = File(
       '${genericRoot.path}/references/design-and-approve.md',
     );
+    final auditContract = File(
+      '${genericRoot.path}/references/audit-and-review.md',
+    );
     final implementationContract = File(
       '${genericRoot.path}/references/test-first-change.md',
     );
@@ -112,6 +115,25 @@ void main() {
         'Design contract must define material plan changes.',
         failures,
       );
+    }
+    if (auditContract.existsSync()) {
+      final content = auditContract.readAsStringSync();
+      for (final clause in const [
+        'Contrast each in-scope file with every applicable rule.',
+        'Do not stop after the first finding.',
+        'supported finding, supported absence, or explicit limitation',
+        'material verification remains pending',
+        'opaque callback, uninspected consumer, or missing direct dependency',
+        'One finding may cover multiple applicable areas only when',
+        'evidence, impact, and recommendation dispose each area',
+        'uninspected lifecycle owner or callback consumer is a limitation',
+      ]) {
+        _expect(
+          content.contains(clause),
+          'Audit contract is missing completeness clause: $clause',
+          failures,
+        );
+      }
     }
     if (implementationContract.existsSync()) {
       final content = implementationContract.readAsStringSync();
@@ -210,14 +232,30 @@ void main() {
 
   _expect(flutterSkill.existsSync(), 'Missing Flutter SKILL.md.', failures);
   if (flutterSkill.existsSync()) {
+    final flutterSkillContent = flutterSkill.readAsStringSync();
     _checkBudget(
       'enforcing-flutter-standards/SKILL.md',
-      flutterSkill.readAsStringSync(),
+      flutterSkillContent,
       maxLines: 140,
       maxWords: 800,
       maxBytes: 7 * 1024,
       failures: failures,
     );
+    for (final clause in const [
+      'Recalculate the route after inspecting each source.',
+      're-evaluate imports and referenced types against the table',
+      'repository, exception, or failure type activates',
+      'state, controls, asynchrony, or semantics',
+      'For audits limited to supplied facts',
+      'Supplied-fact audits do not load `layout-diagnostics.md`',
+      '`runtime-inspection.md`, or other operational recipes',
+    ]) {
+      _expect(
+        flutterSkillContent.contains(clause),
+        'Flutter routing is missing iterative clause: $clause',
+        failures,
+      );
+    }
 
     final flutterContracts = <String, List<String>>{
       'architecture-and-state.md': [
