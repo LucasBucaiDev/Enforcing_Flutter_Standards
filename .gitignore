@@ -1,5 +1,8 @@
 .worktrees/
 .venv/
+.dart_tool/
+build/
+skill-evals/enforcing-flutter-standards/fixtures/widget-audit/**/pubspec.lock
 
 # Local environments and credentials
 .env
